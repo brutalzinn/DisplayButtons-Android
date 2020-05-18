@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name" translatable="false">ButtonDeck</string>
+    <string name="default_status">Auto-connecting…</string>
+    <string name="protocol_version_0">Protocol version: {0}</string>
+    <string name="devices_found_none">No devices found!</string>
+    <string name="devices_found_multiple">Multiple devices found!</string>
+    <string name="device_name">Name:</string>
+    <string name="device_ip">Device IP:</string>
+    <string name="rescan_devices">Rescan Devices</string>
+</resources>

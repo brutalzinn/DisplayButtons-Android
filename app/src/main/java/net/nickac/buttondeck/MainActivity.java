@@ -62,23 +62,32 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void run() {
-                try  {
-                    //SocketServer teste = new SocketServer();
-                  //  teste.connect();
-                    Intent intent = new Intent(getApplicationContext(), ButtonDeckActivity.class);
+
+                //SocketServer teste = new SocketServer();
+                //  teste.connect();
+                Intent intent = new Intent(getApplicationContext(), ButtonDeckActivity.class);
 
 
-                    startActivity(intent);
+//                startActivity(intent);
 
-                    //Your code goes here
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
+            //    devices.
+               // Toast.makeText(this, "Connecting to " + devices.get(0).getDeviceName() + "!", Toast.LENGTH_LONG).show();
+
+                            intent.putExtra(ButtonDeckActivity.EXTRA_IP, "127.0.0.1");
+                            startActivity(intent);
+
+
+
+
+
+
             }
-        });
+                });
 
-        thread.start();
-    }
+                thread.start();
+            }
+
 
     @Override
     protected void onResume() {

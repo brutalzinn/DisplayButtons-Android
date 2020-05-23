@@ -1,5 +1,7 @@
 package net.nickac.buttondeck.networking.io;
 
+import android.util.Log;
+
 import net.nickac.buttondeck.networking.INetworkPacket;
 import net.nickac.buttondeck.utils.Constants;
 
@@ -58,8 +60,8 @@ public class SocketServer {
     public void sendPacket(INetworkPacket packet) {
         ArchitectureAnnotation annot = packet.getClass().getAnnotation(ArchitectureAnnotation.class);
         if (annot != null) {
-            if (!(annot.value() == PacketArchitecture.CLIENT_TO_SERVER || annot.value() == PacketArchitecture.BOTH_WAYS)) {
-                throw new IllegalStateException("Packet doesn't support being sent to the server.");
+            if (!(annot.value() == PacketArchitecture.SERVER_TO_CLIENT || annot.value() == PacketArchitecture.BOTH_WAYS)) {
+           throw new IllegalStateException("Packet doesn't support being sent to the server.");
             }
         }
         toDeliver.add(packet);
@@ -78,6 +80,8 @@ public class SocketServer {
                     if (packet != null) {
                         packet.fromInputStream(inputStream);
                    //     packet.execute(this, true);
+                        packet.execute_server(this, true);
+                        Log.i("ButtonDeck", "read packet with ID " + packet.getPacketId() + ".");
                     }
 
                 } else {
@@ -109,7 +113,7 @@ public class SocketServer {
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
                         DataOutputStream stream = new DataOutputStream(baos);
 
-                        //Log.i("ButtonDeck", "Written packet with ID " + iNetworkPacket.getPacketId() + ".");
+                       Log.i("ButtonDeck", "Written packet with ID " + iNetworkPacket.getPacketId() + ".");
                         stream.writeLong(iNetworkPacket.getPacketId());
                         iNetworkPacket.toOutputStream(stream);
 
@@ -162,13 +166,12 @@ public class SocketServer {
             System.out.println("connecting...");
             internalSocket = mSocketServer.accept();
 
-            InputStream is = internalSocket.getInputStream();
-            OutputStream os = internalSocket.getOutputStream();
 
-            mReaderFromClient = new BufferedReader(new InputStreamReader(is));
-            mServerWriter = new BufferedWriter(new OutputStreamWriter(os));
+            for (Runnable r : eventConnected) {
+                r.run();
+            }
 
-                dataThread = new Thread(this::readData);
+            dataThread = new Thread(this::readData);
                 dataThread.start();
                 dataDeliveryThread = new Thread(this::sendData);
                 dataDeliveryThread.start();
@@ -177,9 +180,9 @@ public class SocketServer {
             System.out.println("Fail to create socket.." + e.toString());
         }
         try {
-     //       mServerWriter.close();
-      //      mReaderFromClient.close();
-       //     mSocketServer.close();
+     //  mServerWriter.close();
+     //     mReaderFromClient.close();
+     //      mSocketServer.close();
         } catch (Exception e) {
         }
     }

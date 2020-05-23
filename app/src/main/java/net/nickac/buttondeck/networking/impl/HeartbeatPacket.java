@@ -1,6 +1,7 @@
 package net.nickac.buttondeck.networking.impl;
 
 import net.nickac.buttondeck.networking.INetworkPacket;
+import net.nickac.buttondeck.networking.io.SocketServer;
 import net.nickac.buttondeck.networking.io.TcpClient;
 
 import java.io.DataInputStream;
@@ -15,6 +16,10 @@ import java.io.IOException;
 public class HeartbeatPacket implements INetworkPacket {
     @Override
     public void execute(TcpClient client, boolean received) {
+
+    }
+    @Override
+    public void execute_server(SocketServer client, boolean received) {
 
     }
 

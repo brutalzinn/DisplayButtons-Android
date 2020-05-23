@@ -1,5 +1,6 @@
 package net.nickac.buttondeck.networking;
 
+import net.nickac.buttondeck.networking.io.SocketServer;
 import net.nickac.buttondeck.networking.io.TcpClient;
 
 import java.io.DataInputStream;
@@ -13,7 +14,7 @@ import java.io.IOException;
  */
 public interface INetworkPacket {
     void execute(TcpClient client, boolean received);
-
+    void execute_server(SocketServer client, boolean received);
     INetworkPacket clonePacket();
 
     long getPacketId();

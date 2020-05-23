@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.nickac.buttondeck.networking.io.SocketServer;
 import net.nickac.buttondeck.utils.Constants;
 import net.nickac.buttondeck.utils.networkscan.NetworkDevice;
 import net.nickac.buttondeck.utils.networkscan.NetworkDeviceAdapter;
@@ -18,8 +19,10 @@ import net.nickac.buttondeck.utils.networkscan.NetworkSearch;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.sql.DriverManager.println;
+
 public class MainActivity extends AppCompatActivity {
-    String autoScanPref = "didAutoScan";
+   public String autoScanPref = "didAutoScan";
 
     public static boolean isEmulator() {
         return Build.FINGERPRINT.startsWith("generic")
@@ -53,8 +56,28 @@ public class MainActivity extends AppCompatActivity {
         rescanButton.setVisibility(!alreadyScanned ? View.INVISIBLE : View.VISIBLE);
 
         if (!alreadyScanned) {
-            scanDevices();
+    //        scanDevices();
         }
+        Thread thread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try  {
+                    //SocketServer teste = new SocketServer();
+                  //  teste.connect();
+                    Intent intent = new Intent(getApplicationContext(), ButtonDeckActivity.class);
+
+
+                    startActivity(intent);
+
+                    //Your code goes here
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
     }
 
     @Override
@@ -73,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private void scanDevices() {
+    public void scanDevices() {
         if (isEmulator()) {
             // Emulator
             Intent intent = new Intent(this, ButtonDeckActivity.class);

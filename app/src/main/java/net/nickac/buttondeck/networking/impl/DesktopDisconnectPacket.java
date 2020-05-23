@@ -1,6 +1,7 @@
 package net.nickac.buttondeck.networking.impl;
 
 import net.nickac.buttondeck.networking.INetworkPacket;
+import net.nickac.buttondeck.networking.io.SocketServer;
 import net.nickac.buttondeck.networking.io.TcpClient;
 
 import java.io.DataInputStream;
@@ -19,7 +20,12 @@ public class DesktopDisconnectPacket implements INetworkPacket {
             System.exit(0);
         }
     }
-
+    @Override
+    public void execute_server(SocketServer client, boolean received) {
+        if (received) {
+            System.exit(0);
+        }
+    }
     @Override
     public INetworkPacket clonePacket() {
         return new DesktopDisconnectPacket();

@@ -3,6 +3,7 @@ package net.nickac.buttondeck.networking.impl;
 import net.nickac.buttondeck.networking.INetworkPacket;
 import net.nickac.buttondeck.networking.io.ArchitectureAnnotation;
 import net.nickac.buttondeck.networking.io.PacketArchitecture;
+import net.nickac.buttondeck.networking.io.SocketServer;
 import net.nickac.buttondeck.networking.io.TcpClient;
 import net.nickac.buttondeck.utils.networkscan.DiscoverRunner;
 
@@ -26,6 +27,12 @@ public class AlternativeHelloPacket implements INetworkPacket {
         client.close();
     }
 
+    @Override
+    public void execute_server(SocketServer client, boolean received) {
+        if (!received) return;
+        DiscoverRunner.devices.put(client.getConnectionUUID(), deviceName);
+        client.close();
+    }
     @Override
     public INetworkPacket clonePacket() {
         return new AlternativeHelloPacket();

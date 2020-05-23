@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import net.nickac.buttondeck.networking.INetworkPacket;
 import net.nickac.buttondeck.networking.io.ArchitectureAnnotation;
 import net.nickac.buttondeck.networking.io.PacketArchitecture;
+import net.nickac.buttondeck.networking.io.SocketServer;
 import net.nickac.buttondeck.networking.io.TcpClient;
 import net.nickac.buttondeck.utils.Constants;
 
@@ -55,7 +56,37 @@ public class SlotImageClearChunkPacket implements INetworkPacket {
             }
         }
     }
+    @Override
+    public void execute_server(SocketServer client, boolean received) {
+        if (Constants.buttonDeckContext != null) {
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    for (int slot : toClear) {
+                        ImageButton view = Constants.buttonDeckContext.getImageButton(slot);
 
+                        if (view != null) {
+                            //Log.i("ButtonDeck", "Setting button [CHUNK]!");
+                            view.setScaleType(ImageView.ScaleType.FIT_XY);
+                            view.setBackgroundResource(0);
+                        }
+                        System.gc();
+                    }
+                    synchronized (this) {
+                        this.notify();
+                    }
+                }
+            };
+            synchronized (runnable) {
+                Constants.buttonDeckContext.runOnUiThread(runnable);
+                try {
+                    runnable.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
     @Override
     public INetworkPacket clonePacket() {
         return new SlotImageClearChunkPacket();

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import net.nickac.buttondeck.networking.INetworkPacket;
 import net.nickac.buttondeck.networking.io.ArchitectureAnnotation;
 import net.nickac.buttondeck.networking.io.PacketArchitecture;
+import net.nickac.buttondeck.networking.io.SocketServer;
 import net.nickac.buttondeck.networking.io.TcpClient;
 import net.nickac.buttondeck.utils.Constants;
 
@@ -27,6 +28,10 @@ public class SlotImageChangeChunkPacket implements INetworkPacket {
 
     @Override
     public void execute(TcpClient client, boolean received) {
+
+    }
+    @Override
+    public void execute_server(SocketServer client, boolean received) {
 
     }
 

@@ -4,6 +4,7 @@ import android.os.Build;
 
 import net.nickac.buttondeck.networking.INetworkPacket;
 import net.nickac.buttondeck.networking.compat.GuidCompact;
+import net.nickac.buttondeck.networking.io.SocketServer;
 import net.nickac.buttondeck.networking.io.TcpClient;
 
 import java.io.DataInputStream;
@@ -22,6 +23,12 @@ public class DeviceIdentityPacket implements INetworkPacket {
     static String deviceGuid;
     @Override
     public void execute(TcpClient client, boolean received) {
+        if (received) {
+            client.sendPacket(clonePacket());
+        }
+    }
+    @Override
+    public void execute_server(SocketServer client, boolean received) {
         if (received) {
             client.sendPacket(clonePacket());
         }

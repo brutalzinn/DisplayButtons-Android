@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import net.nickac.buttondeck.networking.INetworkPacket;
 import net.nickac.buttondeck.networking.io.ArchitectureAnnotation;
 import net.nickac.buttondeck.networking.io.PacketArchitecture;
+import net.nickac.buttondeck.networking.io.SocketServer;
 import net.nickac.buttondeck.networking.io.TcpClient;
 import net.nickac.buttondeck.utils.Constants;
 
@@ -51,7 +52,28 @@ public class SlotImageClearPacket implements INetworkPacket {
             }
         }
     }
+    @Override
+    public void execute_server(SocketServer client, boolean received) {
+        if (received) {
+            if (Constants.buttonDeckContext != null) {
+                int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + slot, "id", Constants.buttonDeckContext.getPackageName());
+                if (id <= 0) return;
+                if (Constants.buttonDeckContext != null)
+                    Constants.buttonDeckContext.runOnUiThread(() -> {
+                        //Log.i("ButtonDeck", "Finding ID!");
 
+                        ImageButton view = Constants.buttonDeckContext.findViewById(id);
+                        if (view != null) {
+                            //Log.i("ButtonDeck", "Setting button!");
+
+                            view.setScaleType(ImageView.ScaleType.FIT_XY);
+                            view.setBackgroundResource(0);
+                        }
+                        System.gc();
+                    });
+            }
+        }
+    }
     @Override
     public INetworkPacket clonePacket() {
         return new SlotImageClearPacket();

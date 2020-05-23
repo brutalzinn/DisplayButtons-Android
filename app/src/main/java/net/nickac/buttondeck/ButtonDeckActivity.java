@@ -24,6 +24,7 @@ import android.widget.ImageView;
 
 import net.nickac.buttondeck.networking.impl.ButtonInteractPacket;
 import net.nickac.buttondeck.networking.impl.HelloPacket;
+import net.nickac.buttondeck.networking.io.SocketServer;
 import net.nickac.buttondeck.networking.io.TcpClient;
 import net.nickac.buttondeck.utils.Constants;
 
@@ -37,6 +38,8 @@ public class ButtonDeckActivity extends AppCompatActivity {
     public static final String EXTRA_IP = "net.nickac.buttondeck.networking.IP";
     private static final int IDLE_DELAY_MINUTES = 5;
     private static TcpClient client;
+    private static SocketServer server;
+    private static int mode = 1;
     Handler _idleHandler = new Handler();
     Runnable _idleRunnable = () -> {
         dimScreen(1.0f);
@@ -108,12 +111,23 @@ public class ButtonDeckActivity extends AppCompatActivity {
 
 
         if (savedInstanceState == null && client == null) {
-            client = new TcpClient(connectIP, connectPort);
-            try {
-                client.connect();
-                client.onConnected(() -> client.sendPacket(new HelloPacket()));
-            } catch (IOException e) {
+            if(mode  == 0 ) {
+                client = new TcpClient(connectIP, connectPort);
+                try {
+                    client.connect();
+                    client.onConnected(() -> client.sendPacket(new HelloPacket()));
+                } catch (IOException e) {
+                }
             }
+            else {
+                server = new SocketServer();
+                try {
+                    server.connect();
+                    server.onConnected(() -> server.sendPacket(new HelloPacket()));
+                } catch (IOException e) {
+                }
+            }
+
         }
 
         Display display = getWindowManager().getDefaultDisplay();
@@ -145,19 +159,19 @@ public class ButtonDeckActivity extends AppCompatActivity {
                         case MotionEvent.ACTION_DOWN:
                             mDownTouch[0] = true;
                             view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
-                            if (client != null) {
-                                client.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_DOWN));
+                            if (server != null) {
+                                server.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_DOWN));
                             }
                             return false;
 
                         case MotionEvent.ACTION_UP:
-                            if (client != null) {
-                                client.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_UP));
+                            if (server != null) {
+                                server.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_UP));
                             }
                             if (mDownTouch[0]) {
                                 mDownTouch[0] = false;
-                                if (client != null) {
-                                    client.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_CLICK));
+                                if (server != null) {
+                                    server.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_CLICK));
                                 }
                                 return true;
                             }

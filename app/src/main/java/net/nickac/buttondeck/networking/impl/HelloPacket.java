@@ -3,12 +3,14 @@ package net.nickac.buttondeck.networking.impl;
 import net.nickac.buttondeck.networking.INetworkPacket;
 import net.nickac.buttondeck.networking.io.ArchitectureAnnotation;
 import net.nickac.buttondeck.networking.io.PacketArchitecture;
+import net.nickac.buttondeck.networking.io.SocketServer;
 import net.nickac.buttondeck.networking.io.TcpClient;
 import net.nickac.buttondeck.utils.Constants;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.Socket;
 
 import static net.nickac.buttondeck.utils.Constants.DEVICE_GUID_PREF;
 import static net.nickac.buttondeck.utils.Constants.sharedPreferences;
@@ -24,7 +26,10 @@ public class HelloPacket implements INetworkPacket {
     public void execute(TcpClient client, boolean received) {
 
     }
+    @Override
+    public void execute_server(SocketServer client, boolean received) {
 
+    }
     @Override
     public INetworkPacket clonePacket() {
         return new HelloPacket();

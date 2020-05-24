@@ -85,8 +85,6 @@ public class TcpClient {
             }
         }
         toDeliver.add(packet);
-
-
     }
 
     private void readData() {

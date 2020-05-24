@@ -124,11 +124,15 @@ public class ButtonDeckActivity extends AppCompatActivity {
                 }
             }
             else {
-                server = new SocketServer();
-                try {
-                    server.connect();
-                    server.onConnected(() -> server.sendPacket(new HelloPacket()));
 
+                try {
+
+                    SocketServer socket = new SocketServer( 5095);
+                 //   socket.setCreateNewThread(false);
+                    socket.connect(1000);
+               //   socket.sendPacket(new HelloPacket());
+              //    socket.waitForDisconnection();
+                //    server.waitForDisconnection();
 
                //server.waitForDisconnection();
                 } catch (Exception e) {
@@ -216,8 +220,8 @@ public class ButtonDeckActivity extends AppCompatActivity {
     protected void onStop() {
         Constants.buttonDeckContext = null;
         super.onStop();
-    if (server != null) server.close();
-      server = null;
+ //   if (server != null) server.close();
+   //   server = null;
     }
 
     @Override

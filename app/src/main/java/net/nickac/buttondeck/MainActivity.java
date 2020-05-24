@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         rescanButton.setVisibility(!alreadyScanned ? View.INVISIBLE : View.VISIBLE);
 
         if (!alreadyScanned) {
-    //        scanDevices();
+        // scanDevices();
         }
         Thread thread = new Thread(new Runnable() {
 
@@ -73,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
 
             //    devices.
                // Toast.makeText(this, "Connecting to " + devices.get(0).getDeviceName() + "!", Toast.LENGTH_LONG).show();
-
-                            intent.putExtra(ButtonDeckActivity.EXTRA_IP, "127.0.0.1");
+             //   Toast.makeText(getApplicationContext(), "Connecting por usb !", Toast.LENGTH_LONG).show();
+                intent.putExtra(ButtonDeckActivity.EXTRA_IP, "127.0.0.1");
                             startActivity(intent);
 
 
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             }
                 });
 
-                thread.start();
+             thread.start();
             }
 
 
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
 
                     //Connect to the device
                     Intent intent = new Intent(this, ButtonDeckActivity.class);
-                    intent.putExtra(ButtonDeckActivity.EXTRA_IP, devices.get(0).getIp());
+                    intent.putExtra(ButtonDeckActivity.EXTRA_IP, "127.0.0.1");
                     startActivity(intent);
                     break;
                 default:

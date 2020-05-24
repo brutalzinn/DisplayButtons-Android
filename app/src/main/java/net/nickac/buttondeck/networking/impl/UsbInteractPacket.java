@@ -21,14 +21,18 @@ import static net.nickac.buttondeck.utils.Constants.sharedPreferences;
  * Please see the project root to find the LICENSE file.
  */
 @ArchitectureAnnotation(PacketArchitecture.SERVER_TO_CLIENT)
-public class UsbInteractClass implements INetworkPacket {
+public class UsbInteractPacket implements INetworkPacket {
     @Override
     public void execute(TcpClient client, boolean received) {
-
+        if (received) {
+            client.sendPacket(clonePacket());
+        }
     }
     @Override
     public void execute_server(SocketServer client, boolean received) {
-
+        if (received) {
+            client.sendPacket(clonePacket());
+        }
     }
     @Override
     public INetworkPacket clonePacket() {

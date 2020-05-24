@@ -16,6 +16,7 @@ import net.nickac.buttondeck.networking.impl.SingleSlotImageChangePacket;
 import net.nickac.buttondeck.networking.impl.SlotImageChangeChunkPacket;
 import net.nickac.buttondeck.networking.impl.SlotImageClearChunkPacket;
 import net.nickac.buttondeck.networking.impl.SlotImageClearPacket;
+import net.nickac.buttondeck.networking.impl.UsbInteractPacket;
 
 /**
  * Created by NickAc on 24/12/2017.
@@ -29,7 +30,7 @@ public class Constants {
 
     public static String DEVICE_GUID_PREF = "device_guid";
     public static int PROTOCOL_VERSION = 12;
-    public static int PORT_NUMBER = 5090;
+    public static int PORT_NUMBER = 5095;
     public static LongSparseArray<INetworkPacket> packetMap = new LongSparseArray<>();
 
     static {
@@ -43,6 +44,7 @@ public class Constants {
         registerPacket(new ButtonInteractPacket(ButtonInteractPacket.ButtonAction.NONE));
         registerPacket(new SlotImageClearPacket());
         registerPacket(new SlotImageClearChunkPacket());
+     //   registerPacket(new UsbInteractPacket());
     }
 
 

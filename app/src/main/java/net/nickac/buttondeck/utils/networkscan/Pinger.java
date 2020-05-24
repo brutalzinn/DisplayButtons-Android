@@ -1,5 +1,7 @@
 package net.nickac.buttondeck.utils.networkscan;
 
+import android.util.Log;
+
 import net.nickac.buttondeck.utils.NickTuple;
 
 import java.net.InetAddress;
@@ -56,7 +58,8 @@ public class Pinger {
                 } catch (UnknownHostException e) {
                 }
                 resAddresses.add(a);
-            }
+                Log.d("DEBUG", a.getKey().getHostAddress());
+           }
 
         }
 
@@ -64,6 +67,7 @@ public class Pinger {
 
         for (NickTuple<InetAddress, String> a : resAddresses) {
             foundDev.add(new NetworkDevice(a.getKey().getHostAddress(), a.getValue()));
+
         }
 
 

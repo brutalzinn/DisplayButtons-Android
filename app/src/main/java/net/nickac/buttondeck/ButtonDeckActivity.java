@@ -24,9 +24,10 @@ import android.widget.ImageView;
 
 import net.nickac.buttondeck.networking.impl.AlternativeHelloPacket;
 import net.nickac.buttondeck.networking.impl.ButtonInteractPacket;
+import net.nickac.buttondeck.networking.impl.DeviceIdentityPacket;
 import net.nickac.buttondeck.networking.impl.HeartbeatPacket;
 import net.nickac.buttondeck.networking.impl.HelloPacket;
-import net.nickac.buttondeck.networking.impl.UsbInteractClass;
+import net.nickac.buttondeck.networking.impl.UsbInteractPacket;
 import net.nickac.buttondeck.networking.io.SocketServer;
 import net.nickac.buttondeck.networking.io.TcpClient;
 import net.nickac.buttondeck.utils.Constants;
@@ -126,11 +127,11 @@ public class ButtonDeckActivity extends AppCompatActivity {
                 server = new SocketServer();
                 try {
                     server.connect();
-                    server.onConnected(() -> server.sendPacket(new UsbInteractClass()));
+                    server.onConnected(() -> server.sendPacket(new HelloPacket()));
 
 
-
-                } catch (IOException e) {
+               //server.waitForDisconnection();
+                } catch (Exception e) {
                 }
             }
 
@@ -215,8 +216,8 @@ public class ButtonDeckActivity extends AppCompatActivity {
     protected void onStop() {
         Constants.buttonDeckContext = null;
         super.onStop();
-   //     if (server != null) server.close();
-     //   server = null;
+    if (server != null) server.close();
+      server = null;
     }
 
     @Override

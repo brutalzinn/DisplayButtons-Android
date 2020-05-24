@@ -40,7 +40,7 @@ public class DiscoverRunner implements Runnable {
             socket.setCreateNewThread(false);
             socket.connect(timeout);
             socket.sendPacket(new AlternativeHelloPacket());
-            socket.waitForDisconnection();
+         socket.waitForDisconnection();
             return new NickTuple<>(true, devices.get(socket.getConnectionUUID()));
         } catch (Exception ex) {
             return new NickTuple<>(false, "");

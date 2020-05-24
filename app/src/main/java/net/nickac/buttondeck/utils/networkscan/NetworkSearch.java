@@ -78,7 +78,8 @@ public class NetworkSearch {
                         if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
                             String ipAddress = inetAddress.getHostAddress();
                             Log.e("IP address", "" + ipAddress);
-                            return ipAddress;
+                           return ipAddress;
+                            //return "127.0.0.1";
                         }
                     }
                 }

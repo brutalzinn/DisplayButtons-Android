@@ -8,6 +8,7 @@ import net.nickac.buttondeck.utils.Constants;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,24 +47,37 @@ public class SocketServer {
     private Thread dataThread;
     private Thread dataDeliveryThread;
     private List<Runnable> eventConnected = new ArrayList<>();
-
+    private int timeout = 1500;
+    public void connect(int timeout) throws IOException {
+        this.timeout = timeout;
+        connect();
+    }
 
     public void connect() throws IOException {
         if (createNewThread) {
             internalThread = new Thread(() -> {
-                SocketServer();
+                try {
+                    SocketServer();
+                } catch (IOException e) {
+                }
             });
             internalThread.start();
         } else {
             SocketServer();
         }
     }
+    public void waitForDisconnection() throws InterruptedException, IOException {
+       // dataDeliveryThread.join();
+       internalSocket.close();
+       connect();
+
+    }
     public void sendPacket(INetworkPacket packet) {
         ArchitectureAnnotation annot = packet.getClass().getAnnotation(ArchitectureAnnotation.class);
         if (annot != null) {
-            if (!(annot.value() == PacketArchitecture.SERVER_TO_CLIENT || annot.value() == PacketArchitecture.BOTH_WAYS)) {
-           throw new IllegalStateException("Packet doesn't support being sent to the server.");
-            }
+        //    if (!(annot.value() == PacketArchitecture.CLIENT_TO_SERVER || annot.value() == PacketArchitecture.BOTH_WAYS)) {
+       // throw new IllegalStateException("Packet doesn't support being sent to the server.");
+     //     }
         }
         toDeliver.add(packet);
 
@@ -80,8 +95,10 @@ public class SocketServer {
                     if (packet != null) {
                         packet.fromInputStream(inputStream);
                    //     packet.execute(this, true);
+                        //
+              //        Log.i("ButtonDeck", "read packet with ID " + packet.getPacketId() + ".");
                         packet.execute_server(this, true);
-                        Log.i("ButtonDeck", "read packet with ID " + packet.getPacketId() + ".");
+
                     }
 
                 } else {
@@ -92,8 +109,9 @@ public class SocketServer {
         } catch (IOException e1) {
             e1.printStackTrace();
         }
-        ////Log.e("ButtonDeck", "ReadData stopped!");
+     Log.e("ButtonDeck", "ReadData stopped!");
     }
+
 
     private void sendData() {
         DataOutputStream outputStream;
@@ -121,9 +139,10 @@ public class SocketServer {
                         outputStream.flush();
                         iNetworkPacket.execute_server(this, false);
 
-                        stream.close();
-                        baos.close();
-                        iter.remove();
+                   stream.close();
+                     baos.close();
+                    iter.remove();
+
                     }
                 }
             }
@@ -139,8 +158,8 @@ public class SocketServer {
             if (internalThread != null) internalThread.interrupt();
             if (dataThread != null) dataThread.interrupt();
             if (dataDeliveryThread != null) dataDeliveryThread.interrupt();
-            if (internalSocket != null) internalSocket.close();
-        } catch (IOException e) {
+        //   if (internalSocket != null) internalSocket.close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -152,23 +171,22 @@ public class SocketServer {
     }
 
 
-    private void initSocket() throws IOException {
-
-
-
-    }
-    public void SocketServer() {
+    public void SocketServer()  throws IOException {
 
         try {
 
             mSocketServer = new ServerSocket(SERVER_PORT);
 
             System.out.println("connecting...");
+
             internalSocket = mSocketServer.accept();
+
+
 
 
             for (Runnable r : eventConnected) {
                 r.run();
+
             }
 
             dataThread = new Thread(this::readData);
@@ -180,9 +198,7 @@ public class SocketServer {
             System.out.println("Fail to create socket.." + e.toString());
         }
         try {
-     //  mServerWriter.close();
-     //     mReaderFromClient.close();
-     //      mSocketServer.close();
+          // internalSocket.close();
         } catch (Exception e) {
         }
     }

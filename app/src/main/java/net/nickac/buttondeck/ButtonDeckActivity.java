@@ -129,8 +129,9 @@ public class ButtonDeckActivity extends AppCompatActivity {
 
                     SocketServer socket = new SocketServer( 5095);
                  //   socket.setCreateNewThread(false);
-                    socket.connect(1000);
-               //   socket.sendPacket(new HelloPacket());
+          //          socket.StartServer();
+                    socket.connect();
+                    socket.onConnected(() -> socket.sendPacket(new HelloPacket()));
               //    socket.waitForDisconnection();
                 //    server.waitForDisconnection();
 
@@ -220,8 +221,8 @@ public class ButtonDeckActivity extends AppCompatActivity {
     protected void onStop() {
         Constants.buttonDeckContext = null;
         super.onStop();
- //   if (server != null) server.close();
-   //   server = null;
+  if (server != null) server.close();
+  server = null;
     }
 
     @Override

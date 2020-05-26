@@ -91,7 +91,17 @@ public class SocketServer {
         if (createNewThread) {
             internalThread = new Thread(() -> {
                 try {
-                    SocketServer();
+                    mSocketServer = new ServerSocket(SERVER_PORT);
+
+
+                    Log.d("DEBUG","connecting... ");
+                    //     internalSocket.close();
+                    internalSocket = mSocketServer.accept();
+                    while(true){
+
+                        SocketServer();
+                    }
+
                 } catch (IOException e) {
                 }
             });
@@ -153,7 +163,7 @@ public class SocketServer {
                         packet.fromInputStream(inputStream);
                         //     packet.execute(this, true);
                         //
-                        //        Log.i("ButtonDeck", "read packet with ID " + packet.getPacketId() + ".");
+                  Log.i("ButtonDeck", "read packet with ID " + packet.getPacketId() + ".");
                         packet.execute_server(this, true);
 
                     }
@@ -184,34 +194,31 @@ public class SocketServer {
 
         try {
 
-            mSocketServer = new ServerSocket(SERVER_PORT);
 
-           Log.d("DEBUG","connecting... ");
-       //     internalSocket.close();
-          internalSocket = mSocketServer.accept();
-            PrintStream os = new PrintStream(internalSocket.getOutputStream());
-           DataInputStream is = new DataInputStream(internalSocket.getInputStream());
+          ///  PrintStream os = new PrintStream(internalSocket.getOutputStream());
+ ///          DataInputStream is = new DataInputStream(internalSocket.getInputStream());
 
         ;
 
-            Log.d("DEBUG", "Message Received: " + is.readLine());
+         //   Log.d("DEBUG", "Message Received: " + is.readLine());
           //  internalSocket.setSoTimeout(timeout);
            // internalSocket.setTcpNoDelay(true);
          //   internalSocket.connect(new InetSocketAddress(ip, port), timeout);
 
-            for (Runnable r : eventConnected) {
-                r.run();
+         for (Runnable r : eventConnected) {
+              r.run();
 
-            }
+         }
 
-         // dataThread = new Thread(this::readData);
-         //      dataThread.start();
-          //    dataDeliveryThread = new Thread(this::sendData);
-          //   dataDeliveryThread.start();
+       dataThread = new Thread(this::readData);
+          dataThread.start();
+        dataDeliveryThread = new Thread(this::sendData);
+          dataDeliveryThread.start();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             Log.d("DEBUG","fail to create a socket... ");
         }
+
         }
 
 

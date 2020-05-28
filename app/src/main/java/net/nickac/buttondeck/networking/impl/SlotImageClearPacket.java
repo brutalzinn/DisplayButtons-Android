@@ -19,7 +19,7 @@ import java.io.IOException;
  * This project is licensed with the MIT license.
  * Please see the project root to find the LICENSE file.
  */
-@ArchitectureAnnotation(PacketArchitecture.SERVER_TO_CLIENT)
+@ArchitectureAnnotation(PacketArchitecture.CLIENT_TO_SERVER)
 public class SlotImageClearPacket implements INetworkPacket {
     int slot = -1;
 
@@ -54,25 +54,25 @@ public class SlotImageClearPacket implements INetworkPacket {
     }
     @Override
     public void execute_server(SocketServer client, boolean received) {
-//        if (received) {
-//            if (Constants.buttonDeckContext != null) {
-//                int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + slot, "id", Constants.buttonDeckContext.getPackageName());
-//                if (id <= 0) return;
-//                if (Constants.buttonDeckContext != null)
-//                    Constants.buttonDeckContext.runOnUiThread(() -> {
-//                        //Log.i("ButtonDeck", "Finding ID!");
-//
-//                        ImageButton view = Constants.buttonDeckContext.findViewById(id);
-//                        if (view != null) {
-//                            //Log.i("ButtonDeck", "Setting button!");
-//
-//                            view.setScaleType(ImageView.ScaleType.FIT_XY);
-//                            view.setBackgroundResource(0);
-//                        }
-//                        System.gc();
-//                    });
-//            }
-//        }
+        if (received) {
+            if (Constants.buttonDeckContext != null) {
+                int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + slot, "id", Constants.buttonDeckContext.getPackageName());
+                if (id <= 0) return;
+                if (Constants.buttonDeckContext != null)
+                    Constants.buttonDeckContext.runOnUiThread(() -> {
+                        //Log.i("ButtonDeck", "Finding ID!");
+
+                        ImageButton view = Constants.buttonDeckContext.findViewById(id);
+                        if (view != null) {
+                            //Log.i("ButtonDeck", "Setting button!");
+
+                            view.setScaleType(ImageView.ScaleType.FIT_XY);
+                            view.setBackgroundResource(0);
+                        }
+                        System.gc();
+                    });
+            }
+        }
     }
     @Override
     public INetworkPacket clonePacket() {

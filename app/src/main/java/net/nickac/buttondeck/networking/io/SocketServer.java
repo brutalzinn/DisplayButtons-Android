@@ -91,16 +91,21 @@ public class SocketServer {
         if (createNewThread) {
             internalThread = new Thread(() -> {
                 try {
+
                     mSocketServer = new ServerSocket(SERVER_PORT);
 
-
-                    Log.d("DEBUG","connecting... ");
-                    //     internalSocket.close();
                     internalSocket = mSocketServer.accept();
-                    while(true){
 
                         SocketServer();
-                    }
+
+
+
+
+
+
+
+
+
 
                 } catch (IOException e) {
                 }
@@ -112,11 +117,11 @@ public class SocketServer {
     }
 
     private void sendData() {
-        DataOutputStream outputStream;
+        PrintStream outputStream;
         try {
-            outputStream = new DataOutputStream(internalSocket.getOutputStream());
+            outputStream = new PrintStream(internalSocket.getOutputStream());
 
-            while (internalSocket != null ) {
+            while (internalSocket != null && internalSocket.isConnected()) {
                 if (toDeliver.size() < 1) {
                     Thread.sleep(50);
                     continue;
@@ -155,7 +160,7 @@ public class SocketServer {
         DataInputStream inputStream;
         try {
             inputStream = new DataInputStream(internalSocket.getInputStream());
-            while (internalSocket != null ) {
+            while (internalSocket != null && internalSocket.isConnected()) {
                 if (inputStream.available() > 0) {
                     long packetNumber = inputStream.readLong();
                     INetworkPacket packet = Constants.getNewPacket(packetNumber);
@@ -183,7 +188,7 @@ public class SocketServer {
             if (internalThread != null) internalThread.interrupt();
             if (dataThread != null) dataThread.interrupt();
             if (dataDeliveryThread != null) dataDeliveryThread.interrupt();
-         if (internalSocket != null) internalSocket.close();
+        // if (internalSocket != null) internalSocket.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -195,28 +200,28 @@ public class SocketServer {
         try {
 
 
-          ///  PrintStream os = new PrintStream(internalSocket.getOutputStream());
- ///          DataInputStream is = new DataInputStream(internalSocket.getInputStream());
+        // PrintStream os = new PrintStream(internalSocket.getOutputStream());
+      //  DataInputStream is = new DataInputStream(internalSocket.getInputStream());
 
         ;
 
-         //   Log.d("DEBUG", "Message Received: " + is.readLine());
+//         Log.d("DEBUG", "Message Received: " + is.readLine());
           //  internalSocket.setSoTimeout(timeout);
            // internalSocket.setTcpNoDelay(true);
-         //   internalSocket.connect(new InetSocketAddress(ip, port), timeout);
+       //   internalSocket.connect(new InetSocketAddress(ip, port), timeout);
 
          for (Runnable r : eventConnected) {
               r.run();
 
          }
 
-       dataThread = new Thread(this::readData);
-          dataThread.start();
-        dataDeliveryThread = new Thread(this::sendData);
-          dataDeliveryThread.start();
+     dataThread = new Thread(this::readData);
+   dataThread.start();
+      dataDeliveryThread = new Thread(this::sendData);
+   dataDeliveryThread.start();
 
         } catch (Exception e) {
-            Log.d("DEBUG","fail to create a socket... ");
+            Log.d("DEBUG","fail to create a socket... " + e);
         }
 
         }

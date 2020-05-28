@@ -22,7 +22,7 @@ import java.io.IOException;
  * This project is licensed with the MIT license.
  * Please see the project root to find the LICENSE file.
  */
-@ArchitectureAnnotation(PacketArchitecture.SERVER_TO_CLIENT)
+@ArchitectureAnnotation(PacketArchitecture.CLIENT_TO_SERVER)
 public class SlotImageChangeChunkPacket implements INetworkPacket {
     private static final int bytesLimit = 1024 * 50;
 

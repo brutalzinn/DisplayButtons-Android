@@ -20,7 +20,7 @@ import static net.nickac.buttondeck.utils.Constants.sharedPreferences;
  * This project is licensed with the MIT license.
  * Please see the project root to find the LICENSE file.
  */
-@ArchitectureAnnotation(PacketArchitecture.CLIENT_TO_SERVER)
+@ArchitectureAnnotation(PacketArchitecture.SERVER_TO_CLIENT)
 public class HelloPacket implements INetworkPacket {
     @Override
     public void execute(TcpClient client, boolean received) {

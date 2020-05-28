@@ -23,7 +23,8 @@ public class DesktopDisconnectPacket implements INetworkPacket {
     @Override
     public void execute_server(SocketServer client, boolean received) {
        if (received) {
-          System.exit(0);
+         System.exit(0);
+
        }
     }
     @Override

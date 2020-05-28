@@ -114,7 +114,7 @@ public class ButtonDeckActivity extends AppCompatActivity {
         }
 
 
-        if (savedInstanceState == null && client == null) {
+        if (savedInstanceState == null && server == null) {
             if(mode  == 0 ) {
                 client = new TcpClient(connectIP, connectPort);
                 try {
@@ -127,12 +127,13 @@ public class ButtonDeckActivity extends AppCompatActivity {
 
                 try {
 
-                    SocketServer socket = new SocketServer( 5095);
+                   server = new SocketServer( 5095);
                  //   socket.setCreateNewThread(false);
           //          socket.StartServer();
-                    socket.connect();
-                    socket.onConnected(() -> socket.sendPacket(new HelloPacket()));
-              //    socket.waitForDisconnection();
+                    server.connect();
+                    server.onConnected(() -> server.sendPacket(new HelloPacket()));
+               //     server.onConnected(() -> server.sendPacket(new AlternativeHelloPacket()));
+         //   server.waitForDisconnection();
                 //    server.waitForDisconnection();
 
                //server.waitForDisconnection();

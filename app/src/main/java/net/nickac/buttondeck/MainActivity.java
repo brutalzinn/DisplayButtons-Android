@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -44,49 +45,61 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Button rescanButton = findViewById(R.id.rescanButton);
+        setContentView(R.layout.activity_principal_menu);
 
-        rescanButton.setOnClickListener(view -> scanDevices());
+        View.OnClickListener actionHandle = null;
 
-        TextView textView = findViewById(R.id.protocolVersionTextView);
-        textView.setText(textView.getText().toString().replace("{0}", String.valueOf(Constants.PROTOCOL_VERSION)));
-
-        boolean alreadyScanned = getPreferences(MODE_PRIVATE).getBoolean(autoScanPref, false);
-        rescanButton.setVisibility(!alreadyScanned ? View.INVISIBLE : View.VISIBLE);
-
-        if (!alreadyScanned) {
-      // scanDevices();
-        }
-        Thread thread = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-
-                //SocketServer teste = new SocketServer();
-                //  teste.connect();
-                Intent intent = new Intent(getApplicationContext(), ButtonDeckActivity.class);
-
-
-            startActivity(intent);
-
-
-            //    devices.
-               // Toast.makeText(this, "Connecting to " + devices.get(0).getDeviceName() + "!", Toast.LENGTH_LONG).show();
-             //   Toast.makeText(getApplicationContext(), "Connecting por usb !", Toast.LENGTH_LONG).show();
-               // intent.putExtra(ButtonDeckActivity.EXTRA_IP, "127.0.0.1");
-             //               startActivity(intent);
+//        rescanButton.setOnClickListener(view -> scanDevices());
 
 
 
 
+        actionHandle = v -> {
+            switch (v.getId()) {
+                case R.id.button_socket:
+                    setContentView(R.layout.activity_main);
+                    Log.d("DEBUG","CALLED SOCKET WIFI");
 
 
+                    TextView textView = findViewById(R.id.protocolVersionTextView);
+                    textView.setText(textView.getText().toString().replace("{0}", String.valueOf(Constants.PROTOCOL_VERSION)));
+
+                    Button rescanButton = findViewById(R.id.rescanButton);
+
+                    boolean alreadyScanned = getPreferences(MODE_PRIVATE).getBoolean(autoScanPref, false);
+                    rescanButton.setVisibility(!alreadyScanned ? View.INVISIBLE : View.VISIBLE);
+                    //if (!alreadyScanned) {
+
+
+
+
+                        scanDevices();
+
+                  //  }
+                    break;
+
+                case R.id.button_usb:
+                    Intent intent = new Intent(getApplicationContext(), ButtonDeckActivity.class);
+                //    intent.putExtra(ButtonDeckActivity.EXTRA_MODE, 1);
+                    intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "1");
+                    startActivity(intent);
+
+
+                    break;
             }
-                });
+        };
 
-            thread.start();
-            }
+        (findViewById(R.id.button_usb)).setOnClickListener(actionHandle);
+
+        (findViewById(R.id.button_socket)).setOnClickListener(actionHandle);
+        //    devices.
+        // Toast.makeText(this, "Connecting to " + devices.get(0).getDeviceName() + "!", Toast.LENGTH_LONG).show();
+        //   Toast.makeText(getApplicationContext(), "Connecting por usb !", Toast.LENGTH_LONG).show();
+        // intent.putExtra(ButtonDeckActivity.EXTRA_IP, "127.0.0.1");
+        //               startActivity(intent);
+
+
+    }
 
 
     @Override
@@ -136,7 +149,8 @@ public class MainActivity extends AppCompatActivity {
 
                     //Connect to the device
                     Intent intent = new Intent(this, ButtonDeckActivity.class);
-                    intent.putExtra(ButtonDeckActivity.EXTRA_IP, "127.0.0.1");
+                    intent.putExtra(ButtonDeckActivity.EXTRA_IP, devices.get(0).getIp());
+                 intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "0");
                     startActivity(intent);
                     break;
                 default:
@@ -152,6 +166,8 @@ public class MainActivity extends AppCompatActivity {
                         //Connect to the device
                         Intent intent2 = new Intent(this, ButtonDeckActivity.class);
                         intent2.putExtra(ButtonDeckActivity.EXTRA_IP, item.getIp());
+                        intent2.putExtra(ButtonDeckActivity.EXTRA_MODE, "0");
+                        //intent2.putExtra(ButtonDeckActivity.EXTRA_MODE, "0");
                         dialogInterface.dismiss();
                         startActivity(intent2);
                     });

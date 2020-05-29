@@ -1,5 +1,7 @@
 package net.nickac.buttondeck.networking.io;
 
+import android.util.Log;
+
 import net.nickac.buttondeck.networking.INetworkPacket;
 import net.nickac.buttondeck.utils.Constants;
 
@@ -81,7 +83,7 @@ public class TcpClient {
         ArchitectureAnnotation annot = packet.getClass().getAnnotation(ArchitectureAnnotation.class);
         if (annot != null) {
             if (!(annot.value() == PacketArchitecture.CLIENT_TO_SERVER || annot.value() == PacketArchitecture.BOTH_WAYS)) {
-                throw new IllegalStateException("Packet doesn't support being sent to the server.");
+          //      throw new IllegalStateException("Packet doesn't support being sent to the server.");
             }
         }
         toDeliver.add(packet);
@@ -130,7 +132,7 @@ public class TcpClient {
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
                         DataOutputStream stream = new DataOutputStream(baos);
 
-                        //Log.i("ButtonDeck", "Written packet with ID " + iNetworkPacket.getPacketId() + ".");
+                  Log.i("ButtonDeck", "Written packet with ID " + iNetworkPacket.getPacketId() + ".");
                         stream.writeLong(iNetworkPacket.getPacketId());
                         iNetworkPacket.toOutputStream(stream);
 

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.HapticFeedbackConstants;
@@ -40,10 +41,11 @@ import static net.nickac.buttondeck.utils.Constants.sharedPreferencesName;
 public class ButtonDeckActivity extends AppCompatActivity {
 
     public static final String EXTRA_IP = "net.nickac.buttondeck.networking.IP";
+    public static final String EXTRA_MODE = "0";
     private static final int IDLE_DELAY_MINUTES = 5;
     private static TcpClient client;
     private static SocketServer server;
-    private static int mode = 1;
+    //private static final int mode = 1;
     Handler _idleHandler = new Handler();
     Runnable _idleRunnable = () -> {
         dimScreen(1.0f);
@@ -96,6 +98,7 @@ public class ButtonDeckActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String connectIP = intent.getStringExtra(EXTRA_IP);
+        int what_is_the_mode = Integer.valueOf(intent.getStringExtra(EXTRA_MODE));
         int connectPort = Constants.PORT_NUMBER;
 
         vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -115,8 +118,9 @@ public class ButtonDeckActivity extends AppCompatActivity {
 
 
         if (savedInstanceState == null && server == null) {
-            if(mode  == 0 ) {
+            if(what_is_the_mode  == 0) {
                 client = new TcpClient(connectIP, connectPort);
+                Log.d("DEBUG", "Escolhido conexão por wifi");
                 try {
                     client.connect();
                     client.onConnected(() -> client.sendPacket(new HelloPacket()));
@@ -126,7 +130,7 @@ public class ButtonDeckActivity extends AppCompatActivity {
             else {
 
                 try {
-
+                    Log.d("DEBUG", "Escolhido conexão por usb");
                    server = new SocketServer( 5095);
                  //   socket.setCreateNewThread(false);
           //          socket.StartServer();

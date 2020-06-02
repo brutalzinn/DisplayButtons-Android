@@ -24,7 +24,7 @@ import static java.sql.DriverManager.println;
 
 public class MainActivity extends AppCompatActivity {
    public String autoScanPref = "didAutoScan";
-
+    public static final String EXTRA_MODE = "0";
     public static boolean isEmulator() {
         return Build.FINGERPRINT.startsWith("generic")
                 || Build.FINGERPRINT.startsWith("unknown")
@@ -47,10 +47,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal_menu);
 
+
         View.OnClickListener actionHandle = null;
 
 //        rescanButton.setOnClickListener(view -> scanDevices());
 
+        String mode = getIntent().getStringExtra("mode");
+try {
+    if (mode.length() > 0) {
+
+        Intent intent = new Intent(getApplicationContext(), ButtonDeckActivity.class);
+        intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "1");
+        startActivity(intent);
+        Log.d("debug", mode);
+    }
+
+}catch (Exception e){
+    println("DEU ERRO AQUI. MAS PASSO BEM");
+
+}
 
 
 

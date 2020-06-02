@@ -170,36 +170,58 @@ public class ButtonDeckActivity extends AppCompatActivity {
 
                 button.setLayoutParams(params);
 
-                int finalI = i;
-                button.setOnTouchListener((view, event) -> {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            mDownTouch[0] = true;
-                            view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
-                            if (server != null) {
-                                server.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_DOWN));
-                            }
-                            return false;
-
-                        case MotionEvent.ACTION_UP:
-                            if (server != null) {
-                                server.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_UP));
-                            }
-                            if (mDownTouch[0]) {
-                                mDownTouch[0] = false;
-                                if (server != null) {
-                                    server.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_CLICK));
+                    int finalI = i;
+                    button.setOnTouchListener((view, event) -> {
+                        switch (event.getAction()) {
+                            case MotionEvent.ACTION_DOWN:
+                                mDownTouch[0] = true;
+                                view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
+                                if(what_is_the_mode == 1) {
+                                    if (server != null) {
+                                        server.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_DOWN));
+                                    }
                                 }
-                                return true;
-                            }
-                    }
-                    return false;
-                });
+                                else {
+                                    if (client != null) {
+                                        client.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_DOWN));
+                                    }
+                                }
+                                return false;
+
+                            case MotionEvent.ACTION_UP:
+                                if(what_is_the_mode == 1) {
+                                    if (server != null) {
+                                        server.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_UP));
+                                    }
+                                    if (mDownTouch[0]) {
+                                        mDownTouch[0] = false;
+                                        if (server != null) {
+                                            server.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_CLICK));
+                                        }
+                                        return true;
+                                    }
+                                }
+                                else {
+                                    if (client != null) {
+                                        client.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_UP));
+                                    }
+                                    if (mDownTouch[0]) {
+                                        mDownTouch[0] = false;
+                                        if (client != null) {
+                                            client.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_CLICK));
+                                        }
+                                        return true;
+                                    }
+
+                                }
+                        }
+                        return false;
+                    });
+                }
             }
         }
 
 
-    }
 
     @Override
     public void onUserInteraction() {

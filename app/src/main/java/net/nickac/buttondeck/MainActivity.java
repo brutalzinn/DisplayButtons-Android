@@ -83,14 +83,15 @@ try {
 
                     boolean alreadyScanned = getPreferences(MODE_PRIVATE).getBoolean(autoScanPref, false);
                     rescanButton.setVisibility(!alreadyScanned ? View.INVISIBLE : View.VISIBLE);
-                    //if (!alreadyScanned) {
+                    rescanButton.setOnClickListener(view -> scanDevices());
+                   if (!alreadyScanned) {
 
 
 
 
                         scanDevices();
 
-                  //  }
+                    }
                     break;
 
                 case R.id.button_usb:

@@ -66,7 +66,7 @@ try {
         Intent intent = new Intent(getApplicationContext(), ButtonDeckActivity.class);
         intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "1");
         startActivity(intent);
-        Log.d("debug", mode);
+        Log.d("debug", "ENTRANDO NO MODO USB AUTOMATICAMENTE.. " + mode);
     }
 
 }catch (Exception e){

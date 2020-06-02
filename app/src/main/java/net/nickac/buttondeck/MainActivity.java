@@ -46,8 +46,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal_menu);
-
-
+        Button config_button = findViewById(R.id.main_action_config);
+        config_button.setOnClickListener (new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ConfigActivity.class);
+            //    intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "1");
+                startActivity(intent);
+              //  setContentView(R.layout.activity_config_app);
+            }
+        });
         View.OnClickListener actionHandle = null;
 
 //        rescanButton.setOnClickListener(view -> scanDevices());

@@ -17,6 +17,10 @@
             android:name=".ButtonDeckActivity"
             android:usesCleartextTraffic="true"
             android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".ConfigActivity"
+            android:usesCleartextTraffic="true"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
 
 
         <activity

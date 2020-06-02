@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.os.Build;
@@ -40,10 +41,12 @@ import static net.nickac.buttondeck.utils.Constants.sharedPreferencesName;
 
 public class ButtonDeckActivity extends AppCompatActivity {
 
+    public static final String TEXT = "text";
     public static final String EXTRA_IP = "net.nickac.buttondeck.networking.IP";
     public static final String EXTRA_MODE = "0";
     private static final int IDLE_DELAY_MINUTES = 5;
     private static TcpClient client;
+    public static final String SHARED_PREFS = "sharedPrefs";
     private static SocketServer server;
     //private static final int mode = 1;
     Handler _idleHandler = new Handler();
@@ -89,7 +92,7 @@ public class ButtonDeckActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        loadData();
         setContentView(R.layout.activity_button_deck);
 
         //Save our reference on a variable. This will allow us to access this activity later.
@@ -120,7 +123,7 @@ public class ButtonDeckActivity extends AppCompatActivity {
         if (savedInstanceState == null && server == null) {
             if(what_is_the_mode  == 0) {
                 client = new TcpClient(connectIP, connectPort);
-                Log.d("DEBUG", "Escolhido conexão por wifi");
+                Log.d("DEBUG", "Escolhido conexão por wifi, na porta " + connectPort);
                 try {
                     client.connect();
                     client.onConnected(() -> client.sendPacket(new HelloPacket()));
@@ -130,8 +133,8 @@ public class ButtonDeckActivity extends AppCompatActivity {
             else {
 
                 try {
-                    Log.d("DEBUG", "Escolhido conexão por usb");
-                   server = new SocketServer( 5095);
+                    Log.d("DEBUG", "Escolhido conexão por usb, por redirecionamneto na porta," + connectPort);
+                   server = new SocketServer( connectPort);
                  //   socket.setCreateNewThread(false);
           //          socket.StartServer();
                     server.connect();
@@ -219,10 +222,15 @@ public class ButtonDeckActivity extends AppCompatActivity {
                     });
                 }
             }
-        }
+
+    }
 
 
-
+    public void loadData() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        Constants.PORT_NUMBER = Integer.valueOf(sharedPreferences.getString(TEXT, ""));
+        // switchOnOff = sharedPreferences.getBoolean(SWITCH1, false);
+    }
     @Override
     public void onUserInteraction() {
         dimScreen(0.0f);

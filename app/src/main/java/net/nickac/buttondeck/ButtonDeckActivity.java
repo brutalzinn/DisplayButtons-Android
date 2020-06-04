@@ -228,7 +228,7 @@ public class ButtonDeckActivity extends AppCompatActivity {
 
     public void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        Constants.PORT_NUMBER = Integer.valueOf(sharedPreferences.getString(TEXT, ""));
+        Constants.PORT_NUMBER = Integer.valueOf(sharedPreferences.getString(TEXT, "5095"));
         // switchOnOff = sharedPreferences.getBoolean(SWITCH1, false);
     }
     @Override

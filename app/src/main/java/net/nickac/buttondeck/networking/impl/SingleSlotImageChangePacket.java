@@ -82,7 +82,7 @@ public class SingleSlotImageChangePacket implements INetworkPacket {
 
 
                 int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + imageSlot, "id", Constants.buttonDeckContext.getPackageName());
-                if (id <= 0) return;
+                if (imageSlot <= 0) return;
                 Constants.buttonDeckContext.runOnUiThread(() -> {
                 //  Log.i("ButtonDeck", "Findind ID!");
 

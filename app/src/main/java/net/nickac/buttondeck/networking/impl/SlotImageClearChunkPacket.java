@@ -1,5 +1,6 @@
 package net.nickac.buttondeck.networking.impl;
 
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -32,11 +33,11 @@ public class SlotImageClearChunkPacket implements INetworkPacket {
                 @Override
                 public void run() {
                     for (int slot : toClear) {
-                        ImageButton view = Constants.buttonDeckContext.getImageButton(slot);
+                        Button view = Constants.buttonDeckContext.getImageButton(slot);
 
                         if (view != null) {
                             //Log.i("ButtonDeck", "Setting button [CHUNK]!");
-                            view.setScaleType(ImageView.ScaleType.FIT_XY);
+                         //   view.setScaleType(ImageView.ScaleType.FIT_XY);
                             view.setBackgroundResource(0);
                         }
                         System.gc();
@@ -63,11 +64,11 @@ public class SlotImageClearChunkPacket implements INetworkPacket {
                 @Override
                 public void run() {
                     for (int slot : toClear) {
-                        ImageButton view = Constants.buttonDeckContext.getImageButton(slot);
+                        Button view = Constants.buttonDeckContext.getImageButton(slot);
 
                         if (view != null) {
                             //Log.i("ButtonDeck", "Setting button [CHUNK]!");
-                            view.setScaleType(ImageView.ScaleType.FIT_XY);
+                          //  view.setScaleType(ImageView.ScaleType.FIT_XY);
                             view.setBackgroundResource(0);
                         }
                         System.gc();

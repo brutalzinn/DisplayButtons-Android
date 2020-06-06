@@ -7,4 +7,7 @@
     <string name="device_name">Name:</string>
     <string name="device_ip">Device IP:</string>
     <string name="rescan_devices">Rescan Devices</string>
+
+<string name="action_settings">Settings</string>
+<string name="hello_world">Hello world!</string>
 </resources>

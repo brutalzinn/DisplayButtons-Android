@@ -1,5 +1,6 @@
 package net.nickac.buttondeck;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,6 +26,8 @@ import static java.sql.DriverManager.println;
 public class MainActivity extends AppCompatActivity {
    public String autoScanPref = "didAutoScan";
     public static final String EXTRA_MODE = "0";
+    public static String mode_init = "0";
+    public static String mode_init_ip = "127.0.0.1";
     public static boolean isEmulator() {
         return Build.FINGERPRINT.startsWith("generic")
                 || Build.FINGERPRINT.startsWith("unknown")
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal_menu);
+
         Button config_button = findViewById(R.id.main_action_config);
         config_button.setOnClickListener (new View.OnClickListener() {
             public void onClick(View v) {
@@ -66,6 +70,7 @@ try {
         Intent intent = new Intent(getApplicationContext(), ButtonDeckActivity.class);
         intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "1");
         startActivity(intent);
+        mode_init = "1";
         Log.d("debug", "ENTRANDO NO MODO USB AUTOMATICAMENTE.. " + mode);
     }
 
@@ -91,6 +96,7 @@ try {
                     boolean alreadyScanned = getPreferences(MODE_PRIVATE).getBoolean(autoScanPref, false);
                     rescanButton.setVisibility(!alreadyScanned ? View.INVISIBLE : View.VISIBLE);
                     rescanButton.setOnClickListener(view -> scanDevices());
+                    mode_init = "0";
                    if (!alreadyScanned) {
 
 
@@ -99,12 +105,14 @@ try {
                         scanDevices();
 
                     }
+
                     break;
 
                 case R.id.button_usb:
                     Intent intent = new Intent(getApplicationContext(), ButtonDeckActivity.class);
                 //    intent.putExtra(ButtonDeckActivity.EXTRA_MODE, 1);
                     intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "1");
+                    mode_init = "1";
                     startActivity(intent);
 
 
@@ -173,6 +181,7 @@ try {
                     //Connect to the device
                     Intent intent = new Intent(this, ButtonDeckActivity.class);
                     intent.putExtra(ButtonDeckActivity.EXTRA_IP, devices.get(0).getIp());
+                    mode_init_ip = devices.get(0).getIp();
                  intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "0");
                     startActivity(intent);
                     break;
@@ -189,6 +198,7 @@ try {
                         //Connect to the device
                         Intent intent2 = new Intent(this, ButtonDeckActivity.class);
                         intent2.putExtra(ButtonDeckActivity.EXTRA_IP, item.getIp());
+                        mode_init_ip = item.getIp();
                         intent2.putExtra(ButtonDeckActivity.EXTRA_MODE, "0");
                         //intent2.putExtra(ButtonDeckActivity.EXTRA_MODE, "0");
                         dialogInterface.dismiss();

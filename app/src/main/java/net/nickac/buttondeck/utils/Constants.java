@@ -12,6 +12,7 @@ import net.nickac.buttondeck.networking.impl.DesktopDisconnectPacket;
 import net.nickac.buttondeck.networking.impl.DeviceIdentityPacket;
 import net.nickac.buttondeck.networking.impl.HeartbeatPacket;
 import net.nickac.buttondeck.networking.impl.HelloPacket;
+import net.nickac.buttondeck.networking.impl.MatrizPacket;
 import net.nickac.buttondeck.networking.impl.SingleSlotImageChangePacket;
 import net.nickac.buttondeck.networking.impl.SlotImageChangeChunkPacket;
 import net.nickac.buttondeck.networking.impl.SlotImageClearChunkPacket;
@@ -44,6 +45,7 @@ public class Constants {
         registerPacket(new ButtonInteractPacket(ButtonInteractPacket.ButtonAction.NONE));
         registerPacket(new SlotImageClearPacket());
         registerPacket(new SlotImageClearChunkPacket());
+        registerPacket(new MatrizPacket());
      //   registerPacket(new UsbInteractPacket());
     }
 

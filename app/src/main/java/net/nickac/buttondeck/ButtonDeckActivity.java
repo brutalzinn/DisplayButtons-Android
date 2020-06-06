@@ -9,6 +9,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
@@ -16,13 +17,17 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.HapticFeedbackConstants;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 
 import net.nickac.buttondeck.networking.impl.AlternativeHelloPacket;
 import net.nickac.buttondeck.networking.impl.ButtonInteractPacket;
@@ -36,6 +41,8 @@ import net.nickac.buttondeck.utils.Constants;
 
 import java.io.IOException;
 
+import static net.nickac.buttondeck.networking.impl.MatrizPacket.NUM_COLS;
+import static net.nickac.buttondeck.networking.impl.MatrizPacket.NUM_ROWS;
 import static net.nickac.buttondeck.utils.Constants.sharedPreferences;
 import static net.nickac.buttondeck.utils.Constants.sharedPreferencesName;
 
@@ -48,6 +55,8 @@ public class ButtonDeckActivity extends AppCompatActivity {
     private static TcpClient client;
     public static final String SHARED_PREFS = "sharedPrefs";
     private static SocketServer server;
+
+    Button buttons[][] = new Button[NUM_ROWS][NUM_COLS];
     //private static final int mode = 1;
     Handler _idleHandler = new Handler();
     Runnable _idleRunnable = () -> {
@@ -62,9 +71,13 @@ public class ButtonDeckActivity extends AppCompatActivity {
         getWindow().setAttributes(lp);
     }
 
-    public ImageButton getImageButton(int id) {
-        return findViewById(getResources().getIdentifier("button" + id, "id", Constants.buttonDeckContext.getPackageName()));
+    public Button getImageButton(int id) {
+        View view;
+        LayoutInflater inflater = (LayoutInflater)   getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        view = inflater.inflate(R.layout.activity_button_deck, null);
+        return view.findViewWithTag("button" + id);
     }
+
 
     @TargetApi(19)
     @Override
@@ -81,7 +94,72 @@ public class ButtonDeckActivity extends AppCompatActivity {
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
     }
+    public void populateButtons() {
+        TableLayout table = (TableLayout) findViewById(R.id.tableForButtons);
+int id = 1 ;
+        for (int row = 0; row < NUM_ROWS; row++) {
+            TableRow tableRow = new TableRow(this);
+            tableRow.setLayoutParams(new TableLayout.LayoutParams(
+                    TableLayout.LayoutParams.MATCH_PARENT,
+                    TableLayout.LayoutParams.MATCH_PARENT,
+                    1.0f));
+            table.addView(tableRow);
 
+            for (int col = 0; col < NUM_COLS; col++){
+
+                final int FINAL_COL = col;
+                final int FINAL_ROW = row;
+
+                Button button = new Button(this);
+                button.setLayoutParams(new TableRow.LayoutParams(
+                        TableRow.LayoutParams.MATCH_PARENT,
+                        TableRow.LayoutParams.MATCH_PARENT,
+                        1.0f));
+button.setTag("button"+id);
+                button.setText(button.getTag().toString());
+                id = id + 1;
+                // Make text not clip on small buttons
+                button.setPadding(0, 0, 0, 0);
+
+
+
+                tableRow.addView(button);
+                buttons[row][col] = button;
+            }
+        }
+    }
+    private void limpar() {
+
+        int id = 1;
+        for (int row = 0; row < NUM_ROWS; row++) {
+            for (int col = 0; col < NUM_COLS; col++) {
+
+                Button button = buttons[row][col];
+                ViewGroup layout = (ViewGroup) button.getParent();
+                if(null!=layout) //for safety only  as you are doing onClick
+                    layout.removeView(button);
+            }
+            }
+    }
+    private void lockButtonSizes() {
+        for (int row = 0; row < NUM_ROWS; row++) {
+            for (int col = 0; col < NUM_COLS; col++) {
+                Button button = buttons[row][col];
+
+                int width = button.getWidth();
+                button.setMinWidth(width);
+                button.setMaxWidth(width);
+
+                int height = button.getHeight();
+                button.setMinHeight(height);
+                button.setMaxHeight(height);
+            }
+        }
+    }
+    private static Context context;
+    public static Context getAppContext() {
+        return ButtonDeckActivity.context;
+    }
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,11 +170,14 @@ public class ButtonDeckActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        loadData();
+
         setContentView(R.layout.activity_button_deck);
+        populateButtons();
+        ButtonDeckActivity.context = getApplicationContext();
 
         //Save our reference on a variable. This will allow us to access this activity later.
         Constants.buttonDeckContext = this;
+        loadData();
 
 
         Intent intent = getIntent();
@@ -158,14 +239,16 @@ public class ButtonDeckActivity extends AppCompatActivity {
         int optimalSize = ((height - (85 * 2)) - (40 * 3)) / 3;
 
         int optimalFinal = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, optimalSize, getResources().getDisplayMetrics());
-
-        for (int i = 0; i < 15; i++) {
+int calc = NUM_COLS * NUM_ROWS;
+        for (int i = 0; i < calc; i++) {
             final boolean[] mDownTouch = {false};
 
-            ImageView button = getImageButton(i + 1);
+            Button button = getImageButton(i + 1);
             if (button != null) {
+
+                Log.d("DEBUG:" , "ID BOTÃO:"+ button.getId());
                 ViewGroup.LayoutParams params = button.getLayoutParams();
-                button.setAdjustViewBounds(true);
+             //   button.setAdjustViewBounds(true);
                 button.setMaxWidth(optimalSize);
                 button.setMaxHeight(optimalSize);
                 params.width = optimalFinal;
@@ -266,3 +349,4 @@ public class ButtonDeckActivity extends AppCompatActivity {
         Constants.buttonDeckContext = this;
     }
 }
+

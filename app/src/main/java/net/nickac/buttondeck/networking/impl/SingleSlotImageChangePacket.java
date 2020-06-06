@@ -3,6 +3,7 @@ package net.nickac.buttondeck.networking.impl;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -63,6 +64,7 @@ public class SingleSlotImageChangePacket implements INetworkPacket {
         byte[] imageBytes = new byte[bytesLimit];
 
         int imageSlot = reader.readInt();
+        Log.i("ButtonDeck", "Findind ID!" + imageSlot);
         int arrayLenght = reader.readInt();
         reader.readFully(imageBytes, 0, arrayLenght);
         /*if (numberRead != arrayLenght) {
@@ -77,12 +79,14 @@ public class SingleSlotImageChangePacket implements INetworkPacket {
                 //Log.i("ButtonDeck", "Starting to decode the bitmap!");
                 Bitmap bmp = BitmapFactory.decodeByteArray(imageBytes, 0, arrayLenght);
                 //Log.i("ButtonDeck", "Decode Complete!");
+
+
                 int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + imageSlot, "id", Constants.buttonDeckContext.getPackageName());
                 if (id <= 0) return;
                 Constants.buttonDeckContext.runOnUiThread(() -> {
-                    ////Log.i("ButtonDeck", "Findind ID!");
+                //  Log.i("ButtonDeck", "Findind ID!");
 
-                    ImageButton view = Constants.buttonDeckContext.findViewById(id);
+                    ImageButton view = Constants.buttonDeckContext.findViewById(imageSlot);
                     if (view != null) {
                         ////Log.i("ButtonDeck", "Setting button!");
 

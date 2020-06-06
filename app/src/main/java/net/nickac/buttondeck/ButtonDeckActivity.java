@@ -41,6 +41,7 @@ import net.nickac.buttondeck.networking.io.TcpClient;
 import net.nickac.buttondeck.utils.Constants;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import static net.nickac.buttondeck.networking.impl.MatrizPacket.NUM_COLS;
 import static net.nickac.buttondeck.networking.impl.MatrizPacket.NUM_ROWS;
@@ -73,11 +74,7 @@ public class ButtonDeckActivity extends AppCompatActivity {
         getWindow().setAttributes(lp);
     }
 
-public ImageButton getImageButton(int id ){
 
-    View viewPrincipal = findViewById(R.id.tableForButtons);
-    return viewPrincipal.findViewWithTag("button"+id);
-}
 
 
     @TargetApi(19)
@@ -116,7 +113,7 @@ int id = 1 ;
                         TableRow.LayoutParams.MATCH_PARENT,
                         TableRow.LayoutParams.MATCH_PARENT,
                         1.0f));
-button.setTag("button"+id);
+button.setId(id);
 
 
 
@@ -203,26 +200,19 @@ button.setTag("button"+id);
 
 
                 tablerow.addView(button);
-                buttons[row][col] = button;
+//                buttons[row][col] = button;
                 }
 
             }
+        Constants.buttonDeckContext = this;
         }
 
     public void limpar() {
 
-        int id = 1;
-        for (int row = 0; row < NUM_ROWS; row++) {
-            for (int col = 0; col < NUM_COLS; col++) {
-            ImageButton button = getImageButton(id);
-              if (button != null) {
-
-                tablerow.removeView(button);
-               }
-
-
-            }
-        }
+    TableLayout view =   findViewById(R.id.tableForButtons);
+        int count=view.getChildCount();
+        for(int i=0;i<count;i++)
+            view.removeAllViews();
     }
 
     private static Context context;

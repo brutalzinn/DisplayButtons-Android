@@ -40,7 +40,7 @@ public class SlotImageClearPacket implements INetworkPacket {
                     Constants.buttonDeckContext.runOnUiThread(() -> {
                     //Log.i("ButtonDeck", "Finding ID!");
 
-                    ImageButton view = Constants.buttonDeckContext.findViewById(id);
+                    ImageButton view = Constants.buttonDeckContext.findViewById(slot);
                     if (view != null) {
                         //Log.i("ButtonDeck", "Setting button!");
 

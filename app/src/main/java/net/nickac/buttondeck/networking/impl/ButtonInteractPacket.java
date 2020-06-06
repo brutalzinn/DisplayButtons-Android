@@ -1,5 +1,7 @@
 package net.nickac.buttondeck.networking.impl;
 
+import android.util.Log;
+
 import net.nickac.buttondeck.networking.INetworkPacket;
 import net.nickac.buttondeck.networking.io.ArchitectureAnnotation;
 import net.nickac.buttondeck.networking.io.PacketArchitecture;
@@ -51,7 +53,7 @@ public class ButtonInteractPacket implements INetworkPacket {
     public void toOutputStream(DataOutputStream writer) throws IOException {
         writer.writeInt(action.getId());
         writer.writeInt(slotID);
-        //Log.d("ButtonDeck", "Wrote interaction with " + action.name() + ".");
+    Log.d("ButtonDeck", "Wrote interaction with " + slotID + ".");
     }
 
     @Override

@@ -26,6 +26,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
@@ -56,7 +57,8 @@ public class ButtonDeckActivity extends AppCompatActivity {
     public static final String SHARED_PREFS = "sharedPrefs";
     private static SocketServer server;
 
-    Button buttons[][] = new Button[NUM_ROWS][NUM_COLS];
+    ImageButton buttons[][] = new ImageButton[NUM_ROWS][NUM_COLS];
+    TableRow tablerow;
     //private static final int mode = 1;
     Handler _idleHandler = new Handler();
     Runnable _idleRunnable = () -> {
@@ -71,12 +73,11 @@ public class ButtonDeckActivity extends AppCompatActivity {
         getWindow().setAttributes(lp);
     }
 
-    public Button getImageButton(int id) {
-        View view;
-        LayoutInflater inflater = (LayoutInflater)   getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        view = inflater.inflate(R.layout.activity_button_deck, null);
-        return view.findViewWithTag("button" + id);
-    }
+public ImageButton getImageButton(int id ){
+
+    View viewPrincipal = findViewById(R.id.tableForButtons);
+    return viewPrincipal.findViewWithTag("button"+id);
+}
 
 
     @TargetApi(19)
@@ -94,68 +95,136 @@ public class ButtonDeckActivity extends AppCompatActivity {
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
     }
-    public void populateButtons() {
+    public void populateButtons(int what_is_the_mode) {
         TableLayout table = (TableLayout) findViewById(R.id.tableForButtons);
 int id = 1 ;
         for (int row = 0; row < NUM_ROWS; row++) {
-            TableRow tableRow = new TableRow(this);
-            tableRow.setLayoutParams(new TableLayout.LayoutParams(
+            tablerow = new TableRow(this);
+            tablerow.setLayoutParams(new TableLayout.LayoutParams(
                     TableLayout.LayoutParams.MATCH_PARENT,
                     TableLayout.LayoutParams.MATCH_PARENT,
                     1.0f));
-            table.addView(tableRow);
+            table.addView(tablerow);
 
             for (int col = 0; col < NUM_COLS; col++){
 
                 final int FINAL_COL = col;
                 final int FINAL_ROW = row;
 
-                Button button = new Button(this);
+                ImageButton button = new ImageButton(this);
                 button.setLayoutParams(new TableRow.LayoutParams(
                         TableRow.LayoutParams.MATCH_PARENT,
                         TableRow.LayoutParams.MATCH_PARENT,
                         1.0f));
 button.setTag("button"+id);
-                button.setText(button.getTag().toString());
+
+
+
+
+
+                Display display = getWindowManager().getDefaultDisplay();
+                Point size = new Point();
+                display.getRealSize(size);
+                int height = size.y;
+
+                int optimalSize = ((height - (85 * 2)) - (40 * 3)) / 3;
+
+                int optimalFinal = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, optimalSize, getResources().getDisplayMetrics());
+                int calc = NUM_COLS * NUM_ROWS;
+
+                    final boolean[] mDownTouch = {false};
+
+                    //ImageButton button = getImageButton(i + 1);
+                    if (button != null) {
+
+                        Log.d("DEBUG:" , "ID BOTÃO:"+ button.getId());
+                        ViewGroup.LayoutParams params = button.getLayoutParams();
+                        button.setAdjustViewBounds(true);
+                        button.setMaxWidth(optimalSize);
+                        button.setMaxHeight(optimalSize);
+                        params.width = optimalFinal;
+                        params.height = optimalFinal;
+
+                        button.setLayoutParams(params);
+
+                        int finalI = id;
+                        button.setOnTouchListener((view, event) -> {
+                            switch (event.getAction()) {
+                                case MotionEvent.ACTION_DOWN:
+                                    mDownTouch[0] = true;
+                                    view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
+                                    if(what_is_the_mode == 1) {
+                                        if (server != null) {
+                                            server.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_DOWN));
+                                        }
+                                    }
+                                    else {
+                                        if (client != null) {
+                                            client.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_DOWN));
+                                        }
+                                    }
+                                    return false;
+
+                                case MotionEvent.ACTION_UP:
+                                    if(what_is_the_mode == 1) {
+                                        if (server != null) {
+                                            server.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_UP));
+                                        }
+                                        if (mDownTouch[0]) {
+                                            mDownTouch[0] = false;
+                                            if (server != null) {
+                                                server.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_CLICK));
+                                            }
+                                            return true;
+                                        }
+                                    }
+                                    else {
+                                        if (client != null) {
+                                            client.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_UP));
+                                        }
+                                        if (mDownTouch[0]) {
+                                            mDownTouch[0] = false;
+                                            if (client != null) {
+                                                client.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_CLICK));
+                                            }
+                                            return true;
+                                        }
+
+                                    }
+                            }
+                            return false;
+                        });
+                    }
+
                 id = id + 1;
                 // Make text not clip on small buttons
                 button.setPadding(0, 0, 0, 0);
 
 
 
-                tableRow.addView(button);
+                tablerow.addView(button);
                 buttons[row][col] = button;
+                }
+
             }
         }
-    }
-    private void limpar() {
+
+    public void limpar() {
 
         int id = 1;
         for (int row = 0; row < NUM_ROWS; row++) {
             for (int col = 0; col < NUM_COLS; col++) {
+            ImageButton button = getImageButton(id);
+              if (button != null) {
 
-                Button button = buttons[row][col];
-                ViewGroup layout = (ViewGroup) button.getParent();
-                if(null!=layout) //for safety only  as you are doing onClick
-                    layout.removeView(button);
-            }
-            }
-    }
-    private void lockButtonSizes() {
-        for (int row = 0; row < NUM_ROWS; row++) {
-            for (int col = 0; col < NUM_COLS; col++) {
-                Button button = buttons[row][col];
+                tablerow.removeView(button);
+               }
 
-                int width = button.getWidth();
-                button.setMinWidth(width);
-                button.setMaxWidth(width);
 
-                int height = button.getHeight();
-                button.setMinHeight(height);
-                button.setMaxHeight(height);
             }
         }
     }
+
     private static Context context;
     public static Context getAppContext() {
         return ButtonDeckActivity.context;
@@ -172,19 +241,20 @@ button.setTag("button"+id);
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_button_deck);
-        //populateButtons();
-        ButtonDeckActivity.context = getApplicationContext();
+
+
+
 
         //Save our reference on a variable. This will allow us to access this activity later.
-        Constants.buttonDeckContext = this;
         loadData();
-
+        //limpar();
+       // populateButtons();
 
         Intent intent = getIntent();
         String connectIP = intent.getStringExtra(EXTRA_IP);
         int what_is_the_mode = Integer.valueOf(intent.getStringExtra(EXTRA_MODE));
         int connectPort = Constants.PORT_NUMBER;
-
+        Constants.buttonDeckContext = this;
         vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         //Ask android to keep the screen on
@@ -230,81 +300,8 @@ button.setTag("button"+id);
             }
 
         }
+populateButtons(what_is_the_mode);
 
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getRealSize(size);
-        int height = size.y;
-
-        int optimalSize = ((height - (85 * 2)) - (40 * 3)) / 3;
-
-        int optimalFinal = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, optimalSize, getResources().getDisplayMetrics());
-int calc = NUM_COLS * NUM_ROWS;
-        for (int i = 0; i < calc; i++) {
-            final boolean[] mDownTouch = {false};
-
-            Button button = getImageButton(i + 1);
-            if (button != null) {
-
-                Log.d("DEBUG:" , "ID BOTÃO:"+ button.getId());
-                ViewGroup.LayoutParams params = button.getLayoutParams();
-             //   button.setAdjustViewBounds(true);
-                button.setMaxWidth(optimalSize);
-                button.setMaxHeight(optimalSize);
-                params.width = optimalFinal;
-                params.height = optimalFinal;
-
-                button.setLayoutParams(params);
-
-                    int finalI = i;
-                    button.setOnTouchListener((view, event) -> {
-                        switch (event.getAction()) {
-                            case MotionEvent.ACTION_DOWN:
-                                mDownTouch[0] = true;
-                                view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
-                                if(what_is_the_mode == 1) {
-                                    if (server != null) {
-                                        server.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_DOWN));
-                                    }
-                                }
-                                else {
-                                    if (client != null) {
-                                        client.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_DOWN));
-                                    }
-                                }
-                                return false;
-
-                            case MotionEvent.ACTION_UP:
-                                if(what_is_the_mode == 1) {
-                                    if (server != null) {
-                                        server.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_UP));
-                                    }
-                                    if (mDownTouch[0]) {
-                                        mDownTouch[0] = false;
-                                        if (server != null) {
-                                            server.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_CLICK));
-                                        }
-                                        return true;
-                                    }
-                                }
-                                else {
-                                    if (client != null) {
-                                        client.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_UP));
-                                    }
-                                    if (mDownTouch[0]) {
-                                        mDownTouch[0] = false;
-                                        if (client != null) {
-                                            client.sendPacket(new ButtonInteractPacket(finalI, ButtonInteractPacket.ButtonAction.BUTTON_CLICK));
-                                        }
-                                        return true;
-                                    }
-
-                                }
-                        }
-                        return false;
-                    });
-                }
-            }
 
     }
 

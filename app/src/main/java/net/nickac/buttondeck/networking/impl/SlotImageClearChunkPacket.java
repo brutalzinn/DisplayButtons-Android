@@ -33,7 +33,7 @@ public class SlotImageClearChunkPacket implements INetworkPacket {
                 @Override
                 public void run() {
                     for (int slot : toClear) {
-                        Button view = Constants.buttonDeckContext.getImageButton(slot);
+                        ImageButton view = Constants.buttonDeckContext.getImageButton(slot);
 
                         if (view != null) {
                             //Log.i("ButtonDeck", "Setting button [CHUNK]!");
@@ -64,7 +64,7 @@ public class SlotImageClearChunkPacket implements INetworkPacket {
                 @Override
                 public void run() {
                     for (int slot : toClear) {
-                        Button view = Constants.buttonDeckContext.getImageButton(slot);
+                        ImageButton view = Constants.buttonDeckContext.getImageButton(slot);
 
                         if (view != null) {
                             //Log.i("ButtonDeck", "Setting button [CHUNK]!");

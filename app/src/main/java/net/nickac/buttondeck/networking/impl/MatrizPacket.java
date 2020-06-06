@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.logging.Handler;
 
 import static android.support.v4.content.ContextCompat.startActivity;
+import static java.lang.Integer.valueOf;
 
 /**
  * Created by NickAc on 27/12/2017.
@@ -67,12 +68,12 @@ public class MatrizPacket implements INetworkPacket {
 
 
                 Constants.buttonDeckContext.runOnUiThread(() -> {
-                    ButtonDeckActivity teste = new ButtonDeckActivity();
-                    teste.populateButtons();
-                //    Intent intent = new Intent(ButtonDeckActivity.getAppContext(), ButtonDeckActivity.class);
-               //     intent.putExtra(ButtonDeckActivity.EXTRA_MODE, MainActivity.mode_init);
-              //      intent.putExtra(ButtonDeckActivity.EXTRA_IP, MainActivity.mode_init_ip);
-                 //   ButtonDeckActivity.getAppContext().startActivity(intent);
+                    //ButtonDeckActivity teste = new ButtonDeckActivity();
+                  //  teste.populateButtons();
+
+               Constants.buttonDeckContext.limpar();
+                    Constants.buttonDeckContext.populateButtons(valueOf(MainActivity.mode_init));
+
                 });
             });
             th.start();

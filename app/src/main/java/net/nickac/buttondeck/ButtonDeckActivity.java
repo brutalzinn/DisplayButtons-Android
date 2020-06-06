@@ -172,7 +172,7 @@ button.setTag("button"+id);
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_button_deck);
-        populateButtons();
+        //populateButtons();
         ButtonDeckActivity.context = getApplicationContext();
 
         //Save our reference on a variable. This will allow us to access this activity later.

@@ -67,10 +67,12 @@ public class MatrizPacket implements INetworkPacket {
 
 
                 Constants.buttonDeckContext.runOnUiThread(() -> {
-                    Intent intent = new Intent(ButtonDeckActivity.getAppContext(), ButtonDeckActivity.class);
-                    intent.putExtra(ButtonDeckActivity.EXTRA_MODE, MainActivity.mode_init);
-                    intent.putExtra(ButtonDeckActivity.EXTRA_IP, MainActivity.mode_init_ip);
-                    ButtonDeckActivity.getAppContext().startActivity(intent);
+                    ButtonDeckActivity teste = new ButtonDeckActivity();
+                    teste.populateButtons();
+                //    Intent intent = new Intent(ButtonDeckActivity.getAppContext(), ButtonDeckActivity.class);
+               //     intent.putExtra(ButtonDeckActivity.EXTRA_MODE, MainActivity.mode_init);
+              //      intent.putExtra(ButtonDeckActivity.EXTRA_IP, MainActivity.mode_init_ip);
+                 //   ButtonDeckActivity.getAppContext().startActivity(intent);
                 });
             });
             th.start();

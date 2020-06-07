@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import net.nickac.buttondeck.networking.impl.AlternativeHelloPacket;
 import net.nickac.buttondeck.networking.impl.ButtonInteractPacket;
@@ -57,9 +58,10 @@ public class ButtonDeckActivity extends AppCompatActivity {
     private static TcpClient client;
     public static final String SHARED_PREFS = "sharedPrefs";
     private static SocketServer server;
-
+    //private static View TableRow;
+    TextView labels[][] = new TextView[NUM_ROWS][NUM_COLS];
     ImageButton buttons[][] = new ImageButton[NUM_ROWS][NUM_COLS];
-    TableRow tablerow;
+  TableRow tablerow;
     //private static final int mode = 1;
     Handler _idleHandler = new Handler();
     Runnable _idleRunnable = () -> {
@@ -76,7 +78,12 @@ public class ButtonDeckActivity extends AppCompatActivity {
 
 
 
+public  static ImageButton GetButtonImage (int id){
 
+    ImageButton linLayout = (ImageButton)  Constants.buttonDeckContext.tablerow.findViewWithTag("button"+id);
+
+        return linLayout;
+    }
     @TargetApi(19)
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -92,6 +99,7 @@ public class ButtonDeckActivity extends AppCompatActivity {
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
     }
+    @SuppressLint("ClickableViewAccessibility")
     public void populateButtons(int what_is_the_mode) {
         TableLayout table = (TableLayout) findViewById(R.id.tableForButtons);
 int id = 1 ;
@@ -109,13 +117,18 @@ int id = 1 ;
                 final int FINAL_ROW = row;
 
                 ImageButton button = new ImageButton(this);
+                TextView getActionView = new TextView(this);
+
+                getActionView.setLayoutParams(new TableRow.LayoutParams(
+                        TableRow.LayoutParams.MATCH_PARENT,
+                        TableRow.LayoutParams.MATCH_PARENT,
+                        1.0f));
                 button.setLayoutParams(new TableRow.LayoutParams(
                         TableRow.LayoutParams.MATCH_PARENT,
                         TableRow.LayoutParams.MATCH_PARENT,
                         1.0f));
-button.setId(id);
-
-
+button.setTag("button" +id);
+getActionView.setTag("label"+id);
 
 
 
@@ -124,7 +137,7 @@ button.setId(id);
                 display.getRealSize(size);
                 int height = size.y;
 
-                int optimalSize = ((height - (85 * 2)) - (40 * 3)) / 3;
+                int optimalSize = ((height - (80 * 2)) - (80 * 3)) / 3;
 
                 int optimalFinal = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, optimalSize, getResources().getDisplayMetrics());
                 int calc = NUM_COLS * NUM_ROWS;
@@ -200,6 +213,7 @@ button.setId(id);
 
 
                 tablerow.addView(button);
+                tablerow.addView(getActionView);
 //                buttons[row][col] = button;
                 }
 

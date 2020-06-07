@@ -221,7 +221,14 @@ int id = 1 ;
                 }
 
             }
-        Constants.buttonDeckContext = this;
+
+
+
+
+
+
+
+
         }
 
     public void limpar() {
@@ -248,15 +255,15 @@ int id = 1 ;
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_button_deck);
-
-
-
+        loadData();
+        Constants.buttonDeckContext = this;
 
         //Save our reference on a variable. This will allow us to access this activity later.
-        loadData();
-        //limpar();
-       // populateButtons();
 
+        //limpar();
+        // populateButtons();
+
+    //private void ExecuteConector(){
         Intent intent = getIntent();
         String connectIP = intent.getStringExtra(EXTRA_IP);
 
@@ -306,7 +313,7 @@ int id = 1 ;
             }
 
         }
-populateButtons(what_is_the_mode);
+//populateButtons(what_is_the_mode);
 
 
     }

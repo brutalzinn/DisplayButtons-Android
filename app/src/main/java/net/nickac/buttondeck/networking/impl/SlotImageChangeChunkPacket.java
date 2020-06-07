@@ -75,8 +75,13 @@ public class SlotImageChangeChunkPacket implements INetworkPacket {
             //Start a new thread to create a bitmap
             Thread th = new Thread(() -> {
                 Bitmap bmp = BitmapFactory.decodeByteArray(imageBytes, 0, arrayLength);
+<<<<<<< HEAD
          //       int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + imageSlot, "id", Constants.buttonDeckContext.getPackageName());
                 if (imageSlot <= 0) return;
+=======
+                int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + imageSlot, "id", Constants.buttonDeckContext.getPackageName());
+                if (id <= 0) return;
+>>>>>>> parent of 614de25... problema de imagem resolvido
                 Constants.buttonDeckContext.runOnUiThread(() -> {
                     ImageButton view = Constants.buttonDeckContext.GetButtonImage(imageSlot);
                     if (view != null) {

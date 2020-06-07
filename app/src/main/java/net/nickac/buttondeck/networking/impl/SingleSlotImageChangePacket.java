@@ -81,8 +81,13 @@ public class SingleSlotImageChangePacket implements INetworkPacket {
                 //Log.i("ButtonDeck", "Decode Complete!");
 
 
+<<<<<<< HEAD
                // int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + imageSlot, "id", Constants.buttonDeckContext.getPackageName());
                 if (imageSlot <= 0) return;
+=======
+                int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + imageSlot, "id", Constants.buttonDeckContext.getPackageName());
+                if (id <= 0) return;
+>>>>>>> parent of 614de25... problema de imagem resolvido
                 Constants.buttonDeckContext.runOnUiThread(() -> {
                 //  Log.i("ButtonDeck", "Findind ID!");
 

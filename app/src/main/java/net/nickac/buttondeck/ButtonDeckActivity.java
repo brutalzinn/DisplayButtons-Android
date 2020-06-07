@@ -59,10 +59,9 @@ public class ButtonDeckActivity extends AppCompatActivity {
     public static final String SHARED_PREFS = "sharedPrefs";
     private static SocketServer server;
     //private static View TableRow;
-    public  int what_is_the_mode = MainActivity.mode_init;
-    public  int connectPort = Constants.PORT_NUMBER;
+    TextView labels[][] = new TextView[NUM_ROWS][NUM_COLS];
+    ImageButton buttons[][] = new ImageButton[NUM_ROWS][NUM_COLS];
   TableRow tablerow;
-  ImageButton button;
     //private static final int mode = 1;
     Handler _idleHandler = new Handler();
     Runnable _idleRunnable = () -> {
@@ -72,7 +71,6 @@ public class ButtonDeckActivity extends AppCompatActivity {
     Vibrator vibe;
 
     public void dimScreen(float dim) {
-
         WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.dimAmount = dim;
         getWindow().setAttributes(lp);
@@ -81,11 +79,10 @@ public class ButtonDeckActivity extends AppCompatActivity {
 
 
 public  static ImageButton GetButtonImage (int id){
-    TableLayout view =  Constants.buttonDeckContext.findViewById(R.id.tableForButtons);
 
-    //val  linLayout = Constants.buttonDeckContext.button.findViewWithTag("button"+id);
+    ImageButton linLayout = (ImageButton)  Constants.buttonDeckContext.tablerow.findViewWithTag("button"+id);
 
-        return view.findViewWithTag("button"+id);
+        return linLayout;
     }
     @TargetApi(19)
     @Override
@@ -119,7 +116,7 @@ int id = 1 ;
                 final int FINAL_COL = col;
                 final int FINAL_ROW = row;
 
-                 button = new ImageButton(this);
+                ImageButton button = new ImageButton(this);
                 TextView getActionView = new TextView(this);
 
                 getActionView.setLayoutParams(new TableRow.LayoutParams(
@@ -130,8 +127,8 @@ int id = 1 ;
                         TableRow.LayoutParams.MATCH_PARENT,
                         TableRow.LayoutParams.MATCH_PARENT,
                         1.0f));
-                button.setTag(button.getId(),"button" + id);
-//getActionView.setTag("label"+id);
+button.setTag("button" +id);
+getActionView.setTag("label"+id);
 
 
 
@@ -216,7 +213,7 @@ int id = 1 ;
 
 
                 tablerow.addView(button);
-   //             tablerow.addView(getActionView);
+                tablerow.addView(getActionView);
 //                buttons[row][col] = button;
                 }
 
@@ -266,7 +263,8 @@ int id = 1 ;
     //private void ExecuteConector(){
         Intent intent = getIntent();
         String connectIP = intent.getStringExtra(EXTRA_IP);
-
+        int what_is_the_mode = Integer.valueOf(intent.getStringExtra(EXTRA_MODE));
+        int connectPort = Constants.PORT_NUMBER;
         Constants.buttonDeckContext = this;
         vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -349,14 +347,8 @@ int id = 1 ;
     protected void onStop() {
         Constants.buttonDeckContext = null;
         super.onStop();
-        if(what_is_the_mode == 0){
-            if (client != null) client.close();
-            client = null;
-        }else{
-            if (server != null) server.close();
-            server = null;
-        }
-
+  if (server != null) server.close();
+  server = null;
     }
 
     @Override

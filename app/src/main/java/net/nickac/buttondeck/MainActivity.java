@@ -26,7 +26,7 @@ import static java.sql.DriverManager.println;
 public class MainActivity extends AppCompatActivity {
    public String autoScanPref = "didAutoScan";
     public static final String EXTRA_MODE = "0";
-    public static int mode_init = 0;
+    public static String mode_init = "0";
     public static String mode_init_ip = "127.0.0.1";
     public static boolean isEmulator() {
         return Build.FINGERPRINT.startsWith("generic")
@@ -70,7 +70,7 @@ try {
         Intent intent = new Intent(getApplicationContext(), ButtonDeckActivity.class);
         intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "1");
         startActivity(intent);
-        mode_init = 1;
+        mode_init = "1";
         Log.d("debug", "ENTRANDO NO MODO USB AUTOMATICAMENTE.. " + mode);
     }
 
@@ -96,7 +96,7 @@ try {
                     boolean alreadyScanned = getPreferences(MODE_PRIVATE).getBoolean(autoScanPref, false);
                     rescanButton.setVisibility(!alreadyScanned ? View.INVISIBLE : View.VISIBLE);
                     rescanButton.setOnClickListener(view -> scanDevices());
-                    mode_init = 0;
+                    mode_init = "0";
                    if (!alreadyScanned) {
 
 
@@ -112,7 +112,7 @@ try {
                     Intent intent = new Intent(getApplicationContext(), ButtonDeckActivity.class);
                 //    intent.putExtra(ButtonDeckActivity.EXTRA_MODE, 1);
                     intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "1");
-                    mode_init = 1;
+                    mode_init = "1";
                     startActivity(intent);
 
 
@@ -182,8 +182,7 @@ try {
                     Intent intent = new Intent(this, ButtonDeckActivity.class);
                     intent.putExtra(ButtonDeckActivity.EXTRA_IP, devices.get(0).getIp());
                     mode_init_ip = devices.get(0).getIp();
-                    mode_init = 0;
-               //  intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "0");
+                 intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "0");
                     startActivity(intent);
                     break;
                 default:
@@ -200,7 +199,7 @@ try {
                         Intent intent2 = new Intent(this, ButtonDeckActivity.class);
                         intent2.putExtra(ButtonDeckActivity.EXTRA_IP, item.getIp());
                         mode_init_ip = item.getIp();
-                        mode_init = 0;
+                        intent2.putExtra(ButtonDeckActivity.EXTRA_MODE, "0");
                         //intent2.putExtra(ButtonDeckActivity.EXTRA_MODE, "0");
                         dialogInterface.dismiss();
                         startActivity(intent2);

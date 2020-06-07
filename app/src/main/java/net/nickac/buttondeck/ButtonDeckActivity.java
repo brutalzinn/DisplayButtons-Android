@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import net.nickac.buttondeck.networking.impl.AlternativeHelloPacket;
 import net.nickac.buttondeck.networking.impl.ButtonInteractPacket;
@@ -75,6 +76,17 @@ public class ButtonDeckActivity extends AppCompatActivity {
     }
 
 
+// experimental
+
+public static ImageButton getButtonByTag(int id){
+    View parentView = Constants.buttonDeckContext.findViewById( R.id.tableForButtons );
+    ImageButton column_var = parentView.findViewWithTag("button"+id);
+
+return column_var;
+
+
+
+}
 
 
     @TargetApi(19)
@@ -92,6 +104,7 @@ public class ButtonDeckActivity extends AppCompatActivity {
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
     }
+    @SuppressLint("ClickableViewAccessibility")
     public void populateButtons(int what_is_the_mode) {
         TableLayout table = (TableLayout) findViewById(R.id.tableForButtons);
 int id = 1 ;
@@ -109,13 +122,21 @@ int id = 1 ;
                 final int FINAL_ROW = row;
 
                 ImageButton button = new ImageButton(this);
+                TextView textview = new TextView(this);
                 button.setLayoutParams(new TableRow.LayoutParams(
                         TableRow.LayoutParams.MATCH_PARENT,
                         TableRow.LayoutParams.MATCH_PARENT,
                         1.0f));
-button.setId(id);
 
 
+                textview.setLayoutParams(new TableRow.LayoutParams(
+                        TableRow.LayoutParams.MATCH_PARENT,
+                        TableRow.LayoutParams.MATCH_PARENT,
+                        1.0f));
+
+                button.setTag("button"+id);
+                textview.setTag("textview"+id);
+                textview.setText("BTN:"+button.getId()+" \n + TXT:"+textview.getId());
 
 
 
@@ -134,7 +155,7 @@ button.setId(id);
                     //ImageButton button = getImageButton(i + 1);
                     if (button != null) {
 
-                        Log.d("DEBUG:" , "ID BOTÃO:"+ button.getId());
+
                         ViewGroup.LayoutParams params = button.getLayoutParams();
                         button.setAdjustViewBounds(true);
                         button.setMaxWidth(optimalSize);
@@ -148,6 +169,7 @@ button.setId(id);
                         button.setOnTouchListener((view, event) -> {
                             switch (event.getAction()) {
                                 case MotionEvent.ACTION_DOWN:
+                                    Log.d("DEBUG:" , "ID BOTÃO:"+ button.getId());
                                     mDownTouch[0] = true;
                                     view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
                                     if(what_is_the_mode == 1) {
@@ -200,6 +222,7 @@ button.setId(id);
 
 
                 tablerow.addView(button);
+                tablerow.addView(textview);
 //                buttons[row][col] = button;
                 }
 

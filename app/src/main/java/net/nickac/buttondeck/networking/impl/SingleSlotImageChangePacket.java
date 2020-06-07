@@ -86,7 +86,9 @@ public class SingleSlotImageChangePacket implements INetworkPacket {
                 Constants.buttonDeckContext.runOnUiThread(() -> {
                 //  Log.i("ButtonDeck", "Findind ID!");
 
-                    ImageButton view = Constants.buttonDeckContext.findViewById(imageSlot);
+                 //   ImageButton view = Constants.buttonDeckContext.findViewById(imageSlot);
+
+                    ImageButton view = Constants.buttonDeckContext.getButtonByTag(imageSlot);
                     if (view != null) {
                         ////Log.i("ButtonDeck", "Setting button!");
 

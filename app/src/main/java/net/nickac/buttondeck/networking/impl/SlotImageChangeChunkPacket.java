@@ -78,7 +78,8 @@ public class SlotImageChangeChunkPacket implements INetworkPacket {
                 int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + imageSlot, "id", Constants.buttonDeckContext.getPackageName());
                 if (imageSlot <= 0) return;
                 Constants.buttonDeckContext.runOnUiThread(() -> {
-                    ImageButton view = Constants.buttonDeckContext.findViewById(imageSlot);
+                   // ImageButton view = Constants.buttonDeckContext.findViewById(imageSlot);
+                    ImageButton view = Constants.buttonDeckContext.getButtonByTag(imageSlot);
                     if (view != null) {
                         view.setScaleType(ImageView.ScaleType.FIT_XY);
                         view.setBackground(new BitmapDrawable(Constants.buttonDeckContext.getResources(), bmp));

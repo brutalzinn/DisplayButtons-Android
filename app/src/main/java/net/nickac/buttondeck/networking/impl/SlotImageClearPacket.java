@@ -34,13 +34,13 @@ public class SlotImageClearPacket implements INetworkPacket {
     public void execute(TcpClient client, boolean received) {
         if (received) {
             if (Constants.buttonDeckContext != null) {
-               // int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + slot, "id", Constants.buttonDeckContext.getPackageName());
-             //   if (id <= 0) return;
+                int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + slot, "id", Constants.buttonDeckContext.getPackageName());
+                if (id <= 0) return;
                 if (Constants.buttonDeckContext != null)
                     Constants.buttonDeckContext.runOnUiThread(() -> {
                     //Log.i("ButtonDeck", "Finding ID!");
 
-                    ImageButton view = Constants.buttonDeckContext.GetButtonImage(slot);
+                    ImageButton view = Constants.buttonDeckContext.findViewById(slot);
                     if (view != null) {
                         //Log.i("ButtonDeck", "Setting button!");
 

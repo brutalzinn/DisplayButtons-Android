@@ -64,7 +64,7 @@ public class SlotImageClearChunkPacket implements INetworkPacket {
                 @Override
                 public void run() {
                     for (int slot : toClear) {
-                        ImageButton view = Constants.buttonDeckContext.GetButtonImage(slot);
+                        ImageButton view = Constants.buttonDeckContext.findViewById(slot);
 
                         if (view != null) {
                             //Log.i("ButtonDeck", "Setting button [CHUNK]!");

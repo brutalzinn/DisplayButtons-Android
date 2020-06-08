@@ -108,15 +108,16 @@ return column_var;
     public void populateButtons(int what_is_the_mode) {
         TableLayout table = (TableLayout) findViewById(R.id.tableForButtons);
 int id = 1 ;
-        for (int row = 0; row < NUM_ROWS; row++) {
+        for (int col = 0; col < NUM_COLS; col++){
+
             tablerow = new TableRow(this);
             tablerow.setLayoutParams(new TableLayout.LayoutParams(
                     TableLayout.LayoutParams.MATCH_PARENT,
                     TableLayout.LayoutParams.MATCH_PARENT,
                     1.0f));
             table.addView(tablerow);
-
-            for (int col = 0; col < NUM_COLS; col++){
+            for (int row = 0; row < NUM_ROWS; row++) {
+//            for (int col = 0; col < NUM_COLS; col++){
 
                 final int FINAL_COL = col;
                 final int FINAL_ROW = row;
@@ -148,7 +149,7 @@ int id = 1 ;
                 int optimalSize = ((height - (85 * 2)) - (40 * 3)) / 3;
 
                 int optimalFinal = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, optimalSize, getResources().getDisplayMetrics());
-                int calc = NUM_COLS * NUM_ROWS;
+
 
                     final boolean[] mDownTouch = {false};
 
@@ -157,15 +158,15 @@ int id = 1 ;
 
 
                         ViewGroup.LayoutParams params = button.getLayoutParams();
-                        button.setAdjustViewBounds(true);
+                        //button.setAdjustViewBounds(true);
                         button.setMaxWidth(optimalSize);
                         button.setMaxHeight(optimalSize);
-                        params.width = optimalFinal;
-                        params.height = optimalFinal;
+                       params.width = optimalFinal;
+                      params.height = optimalFinal;
 
                         button.setLayoutParams(params);
 
-                        int finalI = id;
+                        int finalI = id - 1;
                         button.setOnTouchListener((view, event) -> {
                             switch (event.getAction()) {
                                 case MotionEvent.ACTION_DOWN:

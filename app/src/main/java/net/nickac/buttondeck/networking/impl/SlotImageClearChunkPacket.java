@@ -33,11 +33,11 @@ public class SlotImageClearChunkPacket implements INetworkPacket {
                 @Override
                 public void run() {
                     for (int slot : toClear) {
-                        ImageButton view = Constants.buttonDeckContext.findViewById(slot);
+                        ImageButton view = Constants.buttonDeckContext.getButtonByTag(slot);
 
                         if (view != null) {
                             //Log.i("ButtonDeck", "Setting button [CHUNK]!");
-                         //   view.setScaleType(ImageView.ScaleType.FIT_XY);
+                         view.setScaleType(ImageView.ScaleType.FIT_XY);
                             view.setBackgroundResource(0);
                         }
                         System.gc();
@@ -64,11 +64,11 @@ public class SlotImageClearChunkPacket implements INetworkPacket {
                 @Override
                 public void run() {
                     for (int slot : toClear) {
-                      //  ImageButton view = Constants.buttonDeckContext.findViewById(slot);
-                        ImageButton view = Constants.buttonDeckContext.getButtonByTag(slot);
+                        ImageButton view = Constants.buttonDeckContext.findViewById(slot);
+
                         if (view != null) {
                             //Log.i("ButtonDeck", "Setting button [CHUNK]!");
-                          //  view.setScaleType(ImageView.ScaleType.FIT_XY);
+                            //   view.setScaleType(ImageView.ScaleType.FIT_XY);
                             view.setBackgroundResource(0);
                         }
                         System.gc();

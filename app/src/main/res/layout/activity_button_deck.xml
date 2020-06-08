@@ -10,13 +10,22 @@
     tools:context=".ButtonDeckActivity" >
 
 
+    <TableLayout
+        android:id="@+id/tableForButtons"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
 
-<TableLayout
-android:id="@+id/tableForButtons"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:layout_marginTop="0dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:stretchColumns="*">
 
-android:stretchColumns="*" >
-
-</TableLayout></RelativeLayout>
+    </TableLayout></RelativeLayout>

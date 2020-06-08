@@ -108,15 +108,16 @@ return column_var;
     public void populateButtons(int what_is_the_mode) {
         TableLayout table = (TableLayout) findViewById(R.id.tableForButtons);
 int id = 1 ;
-        for (int col = 0; col < NUM_COLS; col++){
-
+//erro corrigido 08/06/2020
+        for (int row = 0; row < NUM_ROWS; row++) {
             tablerow = new TableRow(this);
             tablerow.setLayoutParams(new TableLayout.LayoutParams(
                     TableLayout.LayoutParams.MATCH_PARENT,
                     TableLayout.LayoutParams.MATCH_PARENT,
                     1.0f));
             table.addView(tablerow);
-            for (int row = 0; row < NUM_ROWS; row++) {
+
+                for (int col = 0; col < NUM_COLS; col++){
 //            for (int col = 0; col < NUM_COLS; col++){
 
                 final int FINAL_COL = col;

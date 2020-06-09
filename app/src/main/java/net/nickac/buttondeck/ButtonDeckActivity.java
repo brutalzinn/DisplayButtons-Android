@@ -58,7 +58,8 @@ public class ButtonDeckActivity extends AppCompatActivity {
     private static TcpClient client;
     public static final String SHARED_PREFS = "sharedPrefs";
     private static SocketServer server;
-
+private static int width ;
+    private static int height;
     ImageButton buttons[][] = new ImageButton[NUM_ROWS][NUM_COLS];
     TableRow tablerow;
     //private static final int mode = 1;
@@ -125,16 +126,9 @@ int id = 1 ;
 
                 ImageButton button = new ImageButton(this);
                 TextView textview = new TextView(this);
-                button.setLayoutParams(new TableRow.LayoutParams(
-                        TableRow.LayoutParams.MATCH_PARENT,
-                        TableRow.LayoutParams.MATCH_PARENT,
-                        1.0f));
 
 
-                textview.setLayoutParams(new TableRow.LayoutParams(
-                        TableRow.LayoutParams.MATCH_PARENT,
-                        TableRow.LayoutParams.MATCH_PARENT,
-                        1.0f));
+
 
                 button.setTag("button"+id);
                 textview.setTag("textview"+id);
@@ -142,14 +136,22 @@ int id = 1 ;
 
 
 
-                Display display = getWindowManager().getDefaultDisplay();
-                Point size = new Point();
-                display.getRealSize(size);
-                int height = size.y;
 
-                int optimalSize = ((height - (85 * 2)) - (40 * 3)) / 3;
 
-                int optimalFinal = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, optimalSize, getResources().getDisplayMetrics());
+
+
+
+                        Display display = getWindowManager().getDefaultDisplay();
+                         width = display.getWidth();
+                         height = display.getHeight();
+                         Log.d("LOG","USANDO SDK antigo");
+
+
+
+                    int optimalSize = ((height - ( 5 * 2)) - (5 * 2)) / 2;
+
+                    int optimalFinal = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, optimalSize, getResources().getDisplayMetrics());
+
 
 
                     final boolean[] mDownTouch = {false};
@@ -157,14 +159,14 @@ int id = 1 ;
                     //ImageButton button = getImageButton(i + 1);
                     if (button != null) {
 
-
-                        ViewGroup.LayoutParams params = button.getLayoutParams();
-                        //button.setAdjustViewBounds(true);
+            //            button.setLayoutParams(params);
+                        TableRow.LayoutParams params = new TableRow.LayoutParams();
+                     //   button.setAdjustViewBounds(true);
                         button.setMaxWidth(optimalSize);
                         button.setMaxHeight(optimalSize);
-                       params.width = optimalFinal;
-                      params.height = optimalFinal;
 
+                        params.width = optimalFinal;
+                        params.height = optimalFinal;
                         button.setLayoutParams(params);
 
                         int finalI = id - 1;
@@ -224,7 +226,7 @@ int id = 1 ;
 
 
                 tablerow.addView(button);
-                tablerow.addView(textview);
+
 //                buttons[row][col] = button;
                 }
 

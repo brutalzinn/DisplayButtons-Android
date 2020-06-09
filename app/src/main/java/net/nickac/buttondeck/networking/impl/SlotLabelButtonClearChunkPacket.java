@@ -1,8 +1,8 @@
-package net.nickac.buttondeck.networking.impl.implementation;
+package net.nickac.buttondeck.networking.impl;
 
-import android.widget.Button;
+import android.util.Log;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 import net.nickac.buttondeck.networking.INetworkPacket;
 import net.nickac.buttondeck.networking.io.ArchitectureAnnotation;
@@ -16,6 +16,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static net.nickac.buttondeck.networking.impl.MatrizPacket.can_start;
 
 /**
  * Created by NickAc on 06/01/2018.
@@ -37,8 +39,8 @@ public class SlotLabelButtonClearChunkPacket implements INetworkPacket {
 
                         if (view != null) {
                             //Log.i("ButtonDeck", "Setting button [CHUNK]!");
-                         view.setScaleType(ImageView.ScaleType.FIT_XY);
-                            view.setBackgroundResource(0);
+                   //      view.setScaleType(ImageView.ScaleType.FIT_XY);
+                  //          view.setBackgroundResource(0);
                         }
                         System.gc();
                     }
@@ -63,13 +65,14 @@ public class SlotLabelButtonClearChunkPacket implements INetworkPacket {
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
+                    if(can_start == false) return;
                     for (int slot : toClear) {
-                        ImageButton view = Constants.buttonDeckContext.getButtonByTag(slot);
+                        TextView view = Constants.buttonDeckContext.getTextViewyTag(slot);
 
                         if (view != null) {
-                            //Log.i("ButtonDeck", "Setting button [CHUNK]!");
-                            view.setScaleType(ImageView.ScaleType.FIT_XY);
-                            view.setBackgroundResource(0);
+                    Log.i("ButtonDeck", "Setting Label [CHUNK]!");
+                            view.setText("");
+
                         }
                         System.gc();
                     }
@@ -95,7 +98,7 @@ public class SlotLabelButtonClearChunkPacket implements INetworkPacket {
 
     @Override
     public long getPacketId() {
-        return 10;
+        return 13;
     }
 
     @Override

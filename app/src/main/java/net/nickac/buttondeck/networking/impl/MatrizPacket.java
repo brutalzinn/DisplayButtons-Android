@@ -13,6 +13,8 @@ import net.nickac.buttondeck.ButtonDeckActivity;
 import net.nickac.buttondeck.MainActivity;
 import net.nickac.buttondeck.R;
 import net.nickac.buttondeck.networking.INetworkPacket;
+import net.nickac.buttondeck.networking.io.ArchitectureAnnotation;
+import net.nickac.buttondeck.networking.io.PacketArchitecture;
 import net.nickac.buttondeck.networking.io.SocketServer;
 import net.nickac.buttondeck.networking.io.TcpClient;
 import net.nickac.buttondeck.utils.Constants;
@@ -30,17 +32,21 @@ import static java.lang.Integer.valueOf;
  * This project is licensed with the MIT license.
  * Please see the project root to find the LICENSE file.
  */
+@ArchitectureAnnotation(PacketArchitecture.CLIENT_TO_SERVER)
 public class MatrizPacket implements INetworkPacket {
     public static int  NUM_ROWS = 3;
     public static  int NUM_COLS = 5;
-
+public static boolean can_start  = false;
     @Override
     public void execute(TcpClient client, boolean received) {
 
     }
     @Override
     public void execute_server(SocketServer client, boolean received) {
+if(received){
+    client.sendPacket(clonePacket());
 
+}
     }
 
     @Override
@@ -55,7 +61,7 @@ public class MatrizPacket implements INetworkPacket {
 
     @Override
     public void toOutputStream(DataOutputStream writer) throws IOException {
-
+writer.writeBoolean(true);
     }
 
     @Override
@@ -73,7 +79,7 @@ public class MatrizPacket implements INetworkPacket {
 
                Constants.buttonDeckContext.limpar();
                     Constants.buttonDeckContext.populateButtons(valueOf(MainActivity.mode_init));
-
+can_start  = true;
                 });
             });
             th.start();

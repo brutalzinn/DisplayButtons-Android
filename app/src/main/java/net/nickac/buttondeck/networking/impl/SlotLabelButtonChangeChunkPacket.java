@@ -1,10 +1,6 @@
-package net.nickac.buttondeck.networking.impl.implementation;
+package net.nickac.buttondeck.networking.impl;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 import net.nickac.buttondeck.networking.INetworkPacket;
 import net.nickac.buttondeck.networking.io.ArchitectureAnnotation;
@@ -17,6 +13,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import static net.nickac.buttondeck.networking.impl.MatrizPacket.can_start;
+
 /**
  * Created by NickAc on 31/12/2017.
  * This project is licensed with the MIT license.
@@ -24,7 +22,7 @@ import java.io.IOException;
  */
 @ArchitectureAnnotation(PacketArchitecture.CLIENT_TO_SERVER)
 public class SlotLabelButtonChangeChunkPacket implements INetworkPacket {
-    private static final int bytesLimit = 1024 * 50;
+
 
     @Override
     public void execute(TcpClient client, boolean received) {
@@ -42,14 +40,13 @@ public class SlotLabelButtonChangeChunkPacket implements INetworkPacket {
 
     @Override
     public long getPacketId() {
-        return 7;
+        return 12;
     }
 
     @Override
     public void toOutputStream(DataOutputStream writer) {
 
     }
-
     @Override
     public void fromInputStream(DataInputStream reader) throws IOException {
         int imagesToRead = reader.readInt();
@@ -64,25 +61,68 @@ public class SlotLabelButtonChangeChunkPacket implements INetworkPacket {
     }
 
     private void readDeckImage(DataInputStream reader) throws IOException {
-        byte[] imageBytes = new byte[bytesLimit];
 
-        int imageSlot = reader.readInt();
-        int arrayLength = reader.readInt();
-        reader.readFully(imageBytes, 0, arrayLength);
+        int labelSlot = reader.readInt();
+        String font = reader.readUTF();
+        String text = reader.readUTF();
+        int size = reader.readInt();
+        int pos = reader.readInt();
+        int color = reader.readInt();
 
 
         if (Constants.buttonDeckContext != null) {
             //Start a new thread to create a bitmap
             Thread th = new Thread(() -> {
-                Bitmap bmp = BitmapFactory.decodeByteArray(imageBytes, 0, arrayLength);
+
+                ///    int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + imageSlot, "id", Constants.buttonDeckContext.getPackageName());
+                if (labelSlot <= 0) return;
+                Constants.buttonDeckContext.runOnUiThread(() -> {
+                    // ImageButton view = Constants.buttonDeckContext.findViewById(imageSlot);
+                    TextView view = Constants.buttonDeckContext.getTextViewyTag(labelSlot);
+                    if (view != null) {
+                    view.setText(text);
+
+                        //view.setTextSize(size);
+                       // view.setTextColor(color);
+
+
+                    }
+
+                });
+            });
+            th.start();
+        }
+
+
+    }
+
+    private void readDeckLabel(DataInputStream reader) throws IOException {
+
+
+        int labelSlot = reader.readInt();
+        String font = reader.readUTF();
+        String text = reader.readUTF();
+        int size = reader.readInt();
+        int pos = reader.readInt();
+        int color = reader.readInt();
+
+
+        if (Constants.buttonDeckContext != null) {
+            //Start a new thread to create a bitmap
+            Thread th = new Thread(() -> {
+if(can_start == false) return;
             ///    int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + imageSlot, "id", Constants.buttonDeckContext.getPackageName());
-                if (imageSlot <= 0) return;
+                if (labelSlot <= 0) return;
                 Constants.buttonDeckContext.runOnUiThread(() -> {
                    // ImageButton view = Constants.buttonDeckContext.findViewById(imageSlot);
-                    ImageButton view = Constants.buttonDeckContext.getButtonByTag(imageSlot);
+                    TextView view = Constants.buttonDeckContext.getTextViewyTag(labelSlot);
                     if (view != null) {
-                        view.setScaleType(ImageView.ScaleType.FIT_XY);
-                        view.setBackground(new BitmapDrawable(Constants.buttonDeckContext.getResources(), bmp));
+                       view.setText(text);
+
+                       view.setTextSize(size);
+                       view.setTextColor(color);
+
+
                     }
 
                 });

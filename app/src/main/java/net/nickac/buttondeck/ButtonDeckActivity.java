@@ -6,10 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Debug;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
@@ -17,32 +15,22 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.HapticFeedbackConstants;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import net.nickac.buttondeck.networking.impl.AlternativeHelloPacket;
 import net.nickac.buttondeck.networking.impl.ButtonInteractPacket;
-import net.nickac.buttondeck.networking.impl.DeviceIdentityPacket;
-import net.nickac.buttondeck.networking.impl.HeartbeatPacket;
 import net.nickac.buttondeck.networking.impl.HelloPacket;
-import net.nickac.buttondeck.networking.impl.UsbInteractPacket;
 import net.nickac.buttondeck.networking.io.SocketServer;
 import net.nickac.buttondeck.networking.io.TcpClient;
 import net.nickac.buttondeck.utils.Constants;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import static net.nickac.buttondeck.networking.impl.MatrizPacket.NUM_COLS;
 import static net.nickac.buttondeck.networking.impl.MatrizPacket.NUM_ROWS;
@@ -88,7 +76,15 @@ return column_var;
 
 
 }
+    public static TextView getTextViewyTag(int id){
+        View parentView = Constants.buttonDeckContext.findViewById( R.id.tableForButtons );
+        TextView column_var = parentView.findViewWithTag("textview"+id);
 
+        return column_var;
+
+
+
+    }
 
     @TargetApi(19)
     @Override
@@ -226,7 +222,7 @@ int id = 1 ;
 
 
                 tablerow.addView(button);
-
+                    tablerow.addView(textview);
 //                buttons[row][col] = button;
                 }
 

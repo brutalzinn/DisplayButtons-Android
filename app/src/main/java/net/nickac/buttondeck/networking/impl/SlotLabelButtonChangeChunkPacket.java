@@ -30,7 +30,8 @@ import static net.nickac.buttondeck.networking.impl.MatrizPacket.can_start;
  */
 @ArchitectureAnnotation(PacketArchitecture.CLIENT_TO_SERVER)
 public class SlotLabelButtonChangeChunkPacket implements INetworkPacket {
-
+public int deckCount_total = 0;
+    public int deckCount_packets = 0;
 
     @Override
     public void execute(TcpClient client, boolean received) {
@@ -38,6 +39,13 @@ public class SlotLabelButtonChangeChunkPacket implements INetworkPacket {
     }
     @Override
     public void execute_server(SocketServer client, boolean received) {
+        if(received){
+if(deckCount_total < deckCount_packets){
+
+    client.sendPacket(clonePacket());
+}
+
+        }
 
     }
 
@@ -52,19 +60,20 @@ public class SlotLabelButtonChangeChunkPacket implements INetworkPacket {
     }
 
     @Override
-    public void toOutputStream(DataOutputStream writer) {
-
+    public void toOutputStream(DataOutputStream writer) throws IOException {
+        writer.writeInt(1);
     }
     @Override
     public void fromInputStream(DataInputStream reader) throws IOException {
         int imagesToRead = reader.readInt();
-
+        deckCount_total = imagesToRead;
         for (int i = 0; i < imagesToRead; i++) {
+
             try {
                 readDeckImage(reader);
             } catch (IOException ignored) {
             }
-
+            deckCount_packets = i;
         }
     }
 

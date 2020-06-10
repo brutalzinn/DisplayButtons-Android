@@ -44,7 +44,7 @@ public class SocketServer {
     private UUID connectionUUID = UUID.randomUUID();
     private String ip;
     private int port;
-    private ServerSocket server;
+    public ServerSocket server;
     private Socket internalSocket;
     private Thread internalThread;
     private Thread dataThread;

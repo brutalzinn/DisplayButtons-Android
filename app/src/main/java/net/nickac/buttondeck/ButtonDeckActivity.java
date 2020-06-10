@@ -46,7 +46,7 @@ public class ButtonDeckActivity extends AppCompatActivity {
     private static final int IDLE_DELAY_MINUTES = 5;
     private static TcpClient client;
     public static final String SHARED_PREFS = "sharedPrefs";
-    private static SocketServer server;
+    public static SocketServer server;
 private static int width ;
     private static int height;
     ImageButton buttons[][] = new ImageButton[NUM_ROWS][NUM_COLS];

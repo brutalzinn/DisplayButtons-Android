@@ -1,5 +1,6 @@
 package net.nickac.buttondeck.networking.impl;
 
+import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -35,11 +36,11 @@ public class SlotImageClearChunkPacket implements INetworkPacket {
                 @Override
                 public void run() {
                     for (int slot : toClear) {
-                        ImageButton view = Constants.buttonDeckContext.getButtonByTag(slot);
+                        Button view = Constants.buttonDeckContext.getButtonByTag(slot);
 
                         if (view != null) {
                           Log.i("ButtonDeck", "Setting button [CHUNK]!");
-                         view.setScaleType(ImageView.ScaleType.FIT_XY);
+                       //  view.setScaleType(ImageView.ScaleType.FIT_XY);
                             view.setBackgroundResource(0);
                         }
                         System.gc();
@@ -66,13 +67,14 @@ public class SlotImageClearChunkPacket implements INetworkPacket {
                 @Override
                 public void run() {
                     for (int slot : toClear) {
-                        ImageButton view = Constants.buttonDeckContext.getButtonByTag(slot);
-                        TextView view_teste = Constants.buttonDeckContext.getTextViewyTag(slot);
+                        Button view = Constants.buttonDeckContext.getButtonByTag(slot);
+                       // TextView view_teste = Constants.buttonDeckContext.getTextViewyTag(slot);
                         if (view != null) {
                             Log.i("ButtonDeck", "Setting button [CHUNK]!");
-                            view.setScaleType(ImageView.ScaleType.FIT_XY);
-                            view.setBackgroundResource(0);
-                            view_teste.setText(null);
+                        //    view.setScaleX(ImageView.ScaleType.FIT_XY);
+                         //   view.setCompoundDrawablesWithIntrinsicBounds(null, null , null, null);
+                            view.setBackground(null);
+                            view.setText(null);
                         }
                         System.gc();
                     }

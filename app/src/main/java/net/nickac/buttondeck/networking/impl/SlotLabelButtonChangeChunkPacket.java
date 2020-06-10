@@ -1,5 +1,13 @@
 package net.nickac.buttondeck.networking.impl;
 
+import android.graphics.Color;
+import android.provider.CalendarContract;
+import android.text.Html;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.nickac.buttondeck.networking.INetworkPacket;
@@ -67,7 +75,7 @@ public class SlotLabelButtonChangeChunkPacket implements INetworkPacket {
         String text = reader.readUTF();
         int size = reader.readInt();
         int pos = reader.readInt();
-        int color = reader.readInt();
+        String color = reader.readUTF();
 
 
         if (Constants.buttonDeckContext != null) {
@@ -77,13 +85,19 @@ public class SlotLabelButtonChangeChunkPacket implements INetworkPacket {
                 ///    int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + imageSlot, "id", Constants.buttonDeckContext.getPackageName());
                 if (labelSlot <= 0) return;
                 Constants.buttonDeckContext.runOnUiThread(() -> {
-                    // ImageButton view = Constants.buttonDeckContext.findViewById(imageSlot);
-                    TextView view = Constants.buttonDeckContext.getTextViewyTag(labelSlot);
+                Button view = Constants.buttonDeckContext.getButtonByTag(labelSlot);
+                //    TextView view = Constants.buttonDeckContext.getTextViewyTag(labelSlot);
                     if (view != null) {
-                    view.setText(text);
+                        Log.d("DEbug", "MUDANDO LABEL PARA" + text + " NO ID: " + labelSlot);
 
-                        //view.setTextSize(size);
-                       // view.setTextColor(color);
+
+                        view.setTextColor(Color.parseColor(color));
+                        view.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+
+                        view.setPadding(0,pos,0,0);
+                        view.setText(Html.fromHtml(text));
+                     //  view.setTextSize(size);
+                      //view.setTextColor(color);
 
 
                     }
@@ -96,38 +110,4 @@ public class SlotLabelButtonChangeChunkPacket implements INetworkPacket {
 
     }
 
-    private void readDeckLabel(DataInputStream reader) throws IOException {
-
-
-        int labelSlot = reader.readInt();
-        String font = reader.readUTF();
-        String text = reader.readUTF();
-        int size = reader.readInt();
-        int pos = reader.readInt();
-        int color = reader.readInt();
-
-
-        if (Constants.buttonDeckContext != null) {
-            //Start a new thread to create a bitmap
-            Thread th = new Thread(() -> {
-if(can_start == false) return;
-            ///    int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + imageSlot, "id", Constants.buttonDeckContext.getPackageName());
-                if (labelSlot <= 0) return;
-                Constants.buttonDeckContext.runOnUiThread(() -> {
-                   // ImageButton view = Constants.buttonDeckContext.findViewById(imageSlot);
-                    TextView view = Constants.buttonDeckContext.getTextViewyTag(labelSlot);
-                    if (view != null) {
-                       view.setText(text);
-
-                       view.setTextSize(size);
-                       view.setTextColor(color);
-
-
-                    }
-
-                });
-            });
-            th.start();
-        }
-    }
 }

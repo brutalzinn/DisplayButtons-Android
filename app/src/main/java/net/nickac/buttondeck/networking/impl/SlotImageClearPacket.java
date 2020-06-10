@@ -1,5 +1,6 @@
 package net.nickac.buttondeck.networking.impl;
 
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -41,7 +42,7 @@ public class SlotImageClearPacket implements INetworkPacket {
                     //Log.i("ButtonDeck", "Finding ID!");
 
                    // ImageButton view = Constants.buttonDeckContext.findViewById(slot);
-                        ImageButton view = Constants.buttonDeckContext.getButtonByTag(slot);
+                        Button view = Constants.buttonDeckContext.getButtonByTag(slot);
 
                     if (view != null) {
                         //Log.i("ButtonDeck", "Setting button!");
@@ -65,12 +66,12 @@ public class SlotImageClearPacket implements INetworkPacket {
                         //Log.i("ButtonDeck", "Finding ID!");
 
                         // ImageButton view = Constants.buttonDeckContext.findViewById(slot);
-                        ImageButton view = Constants.buttonDeckContext.getButtonByTag(slot);
+                        Button view = Constants.buttonDeckContext.getButtonByTag(slot);
 
                         if (view != null) {
                             //Log.i("ButtonDeck", "Setting button!");
 
-                            view.setScaleType(ImageView.ScaleType.FIT_XY);
+                           // view.setScaleType(ImageView.ScaleType.FIT_XY);
                             view.setBackgroundResource(0);
                         }
                         System.gc();

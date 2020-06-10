@@ -1,6 +1,7 @@
 package net.nickac.buttondeck.networking.impl;
 
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -35,7 +36,7 @@ public class SlotLabelButtonClearChunkPacket implements INetworkPacket {
                 @Override
                 public void run() {
                     for (int slot : toClear) {
-                        ImageButton view = Constants.buttonDeckContext.getButtonByTag(slot);
+                        Button view = Constants.buttonDeckContext.getButtonByTag(slot);
 
                         if (view != null) {
                             //Log.i("ButtonDeck", "Setting button [CHUNK]!");
@@ -67,7 +68,7 @@ public class SlotLabelButtonClearChunkPacket implements INetworkPacket {
                 public void run() {
                     if(can_start == false) return;
                     for (int slot : toClear) {
-                        TextView view = Constants.buttonDeckContext.getTextViewyTag(slot);
+                        TextView view = Constants.buttonDeckContext.getButtonByTag(slot);
 
                         if (view != null) {
                     Log.i("ButtonDeck", "Setting Label [CHUNK]!");

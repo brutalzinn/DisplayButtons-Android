@@ -19,6 +19,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -67,24 +68,16 @@ private static int width ;
 
 // experimental
 
-public static ImageButton getButtonByTag(int id){
+public static Button getButtonByTag(int id){
     View parentView = Constants.buttonDeckContext.findViewById( R.id.tableForButtons );
-    ImageButton column_var = parentView.findViewWithTag("button"+id);
+    Button column_var = parentView.findViewWithTag("button"+id);
 
 return column_var;
 
 
 
 }
-    public static TextView getTextViewyTag(int id){
-        View parentView = Constants.buttonDeckContext.findViewById( R.id.tableForButtons );
-        TextView column_var = parentView.findViewWithTag("textview"+id);
 
-        return column_var;
-
-
-
-    }
 
     @TargetApi(19)
     @Override
@@ -120,15 +113,14 @@ int id = 1 ;
                 final int FINAL_COL = col;
                 final int FINAL_ROW = row;
 
-                ImageButton button = new ImageButton(this);
-                TextView textview = new TextView(this);
-
+                Button button = new Button(this);
 
 
 
                 button.setTag("button"+id);
-                textview.setTag("textview"+id);
-                textview.setText("BTN:"+button.getId()+" \n + TXT:"+textview.getId());
+
+             //   textview.setTag("textview"+id);
+
 
 
 
@@ -144,7 +136,7 @@ int id = 1 ;
 
 
 
-                    int optimalSize = ((height - ( 5 * 2)) - (5 * 2)) / 2;
+                    int optimalSize = ((height - ( 20 * (2 + NUM_COLS))) - (5 * 2)) / 2;
 
                     int optimalFinal = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, optimalSize, getResources().getDisplayMetrics());
 
@@ -222,7 +214,7 @@ int id = 1 ;
 
 
                 tablerow.addView(button);
-                    tablerow.addView(textview);
+                  //  tablerow.addView(textview);
 //                buttons[row][col] = button;
                 }
 

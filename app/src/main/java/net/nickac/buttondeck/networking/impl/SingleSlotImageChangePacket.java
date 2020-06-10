@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -88,11 +89,11 @@ public class SingleSlotImageChangePacket implements INetworkPacket {
 
                  //   ImageButton view = Constants.buttonDeckContext.findViewById(imageSlot);
 
-                    ImageButton view = Constants.buttonDeckContext.getButtonByTag(imageSlot);
+                    Button view = Constants.buttonDeckContext.getButtonByTag(imageSlot);
                     if (view != null) {
-                        ////Log.i("ButtonDeck", "Setting button!");
+                      Log.i("ButtonDeck", "Setting button!");
 
-                        view.setScaleType(ImageView.ScaleType.FIT_XY);
+                    //    view.setScaleType(ImageView.ScaleType.FIT_XY);
                         view.setBackground(new BitmapDrawable(Constants.buttonDeckContext.getResources(), bmp));
                     }
                     System.gc();

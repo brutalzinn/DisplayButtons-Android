@@ -2,7 +2,12 @@ package net.nickac.buttondeck.networking.impl;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorRes;
+import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -79,10 +84,15 @@ public class SlotImageChangeChunkPacket implements INetworkPacket {
                 if (imageSlot <= 0) return;
                 Constants.buttonDeckContext.runOnUiThread(() -> {
                    // ImageButton view = Constants.buttonDeckContext.findViewById(imageSlot);
-                    ImageButton view = Constants.buttonDeckContext.getButtonByTag(imageSlot);
+                    Button view = Constants.buttonDeckContext.getButtonByTag(imageSlot);
                     if (view != null) {
-                        view.setScaleType(ImageView.ScaleType.FIT_XY);
+                        //view.setScaleType(ImageView.ScaleType.FIT_XY);
+
+                        Log.d("DEBUG","SETTTING THE BUTTON " + imageSlot);
+                   //     view.setCompoundDrawablesWithIntrinsicBounds(null, top , null, null);
+                      //  view.setBackgroundColor(Color.TRANSPARENT);
                         view.setBackground(new BitmapDrawable(Constants.buttonDeckContext.getResources(), bmp));
+
                     }
 
                 });

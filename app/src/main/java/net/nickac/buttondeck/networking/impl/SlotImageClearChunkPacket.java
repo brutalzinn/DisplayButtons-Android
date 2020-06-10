@@ -74,9 +74,10 @@ public class SlotImageClearChunkPacket implements INetworkPacket {
                         //    view.setScaleX(ImageView.ScaleType.FIT_XY);
                          //   view.setCompoundDrawablesWithIntrinsicBounds(null, null , null, null);
                             view.setBackground(null);
-                            view.setText(null);
+                            view.setText("");
+                            view.setGravity(0x00000000);
                         }
-                        System.gc();
+                      System.gc();
                     }
                     synchronized (this) {
                         this.notify();
@@ -86,7 +87,7 @@ public class SlotImageClearChunkPacket implements INetworkPacket {
             synchronized (runnable) {
                 Constants.buttonDeckContext.runOnUiThread(runnable);
                 try {
-                    runnable.wait();
+                 runnable.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

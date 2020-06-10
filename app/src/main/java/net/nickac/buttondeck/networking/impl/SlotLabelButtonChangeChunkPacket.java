@@ -86,16 +86,20 @@ public class SlotLabelButtonChangeChunkPacket implements INetworkPacket {
                 if (labelSlot <= 0) return;
                 Constants.buttonDeckContext.runOnUiThread(() -> {
                 Button view = Constants.buttonDeckContext.getButtonByTag(labelSlot);
-                //    TextView view = Constants.buttonDeckContext.getTextViewyTag(labelSlot);
+                //  TextView button = Constants.buttonDeckContext.getTextViewyTag(labelSlot);
                     if (view != null) {
                         Log.d("DEbug", "MUDANDO LABEL PARA" + text + " NO ID: " + labelSlot);
 
 
                         view.setTextColor(Color.parseColor(color));
-                        view.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+                        view.setTextSize(size);
+                        view.setGravity(pos);
 
-                        view.setPadding(0,pos,0,0);
-                        view.setText(Html.fromHtml(text));
+
+                  //      view.setPadding(0,pos,0,0);
+
+                        view.setText(text);
+
                      //  view.setTextSize(size);
                       //view.setTextColor(color);
 

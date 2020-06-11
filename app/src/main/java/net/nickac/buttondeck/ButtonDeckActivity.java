@@ -33,6 +33,7 @@ import net.nickac.buttondeck.utils.Constants;
 
 import java.io.IOException;
 
+import static java.lang.Integer.valueOf;
 import static net.nickac.buttondeck.networking.impl.MatrizPacket.NUM_COLS;
 import static net.nickac.buttondeck.networking.impl.MatrizPacket.NUM_ROWS;
 import static net.nickac.buttondeck.utils.Constants.sharedPreferences;
@@ -264,7 +265,7 @@ Log.d("DEBUG", "TAMANHO DA TELA:"+ height );
     //private void ExecuteConector(){
         Intent intent = getIntent();
         String connectIP = intent.getStringExtra(EXTRA_IP);
-        int what_is_the_mode = Integer.valueOf(intent.getStringExtra(EXTRA_MODE));
+        int what_is_the_mode = valueOf(intent.getStringExtra(EXTRA_MODE));
         int connectPort = Constants.PORT_NUMBER;
         Constants.buttonDeckContext = this;
         vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -320,7 +321,7 @@ Log.d("DEBUG", "TAMANHO DA TELA:"+ height );
 
     public void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        Constants.PORT_NUMBER = Integer.valueOf(sharedPreferences.getString(TEXT, "5095"));
+        Constants.PORT_NUMBER = valueOf(sharedPreferences.getString(TEXT, "5095"));
         // switchOnOff = sharedPreferences.getBoolean(SWITCH1, false);
     }
     @Override
@@ -348,8 +349,15 @@ Log.d("DEBUG", "TAMANHO DA TELA:"+ height );
     protected void onStop() {
         Constants.buttonDeckContext = null;
         super.onStop();
-  if (server != null) server.close();
-  server = null;
+        if(valueOf(MainActivity.mode_init) == 1){
+            if (server != null) server.close();
+            server = null;
+
+        }else{
+            if (client != null) client.close();
+            client = null;
+        }
+
     }
 
     @Override

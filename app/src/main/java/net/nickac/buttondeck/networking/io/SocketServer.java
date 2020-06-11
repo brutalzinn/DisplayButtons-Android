@@ -188,7 +188,7 @@ public class SocketServer {
             if (internalThread != null) internalThread.interrupt();
             if (dataThread != null) dataThread.interrupt();
             if (dataDeliveryThread != null) dataDeliveryThread.interrupt();
-        // if (internalSocket != null) internalSocket.close();
+        if (internalSocket != null) internalSocket.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

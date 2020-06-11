@@ -39,13 +39,11 @@ public int deckCount_total = 0;
     }
     @Override
     public void execute_server(SocketServer client, boolean received) {
-        if(received){
-if(deckCount_total < deckCount_packets){
 
-    client.sendPacket(clonePacket());
-}
 
-        }
+
+
+
 
     }
 
@@ -65,15 +63,21 @@ if(deckCount_total < deckCount_packets){
     }
     @Override
     public void fromInputStream(DataInputStream reader) throws IOException {
-        int imagesToRead = reader.readInt();
-        deckCount_total = imagesToRead;
-        for (int i = 0; i < imagesToRead; i++) {
+        if (Constants.buttonDeckContext != null) {
+            int imagesToRead = reader.readInt();
 
-            try {
-                readDeckImage(reader);
-            } catch (IOException ignored) {
+            for (int i = 0; i < imagesToRead; i++) {
+
+                try {
+                    readDeckImage(reader);
+                } catch (IOException ignored) {
+                }
+                if (imagesToRead < i) {
+
+                    Constants.buttonDeckContext.server.sendPacket(new SlotLabelButtonChangeChunkPacket());
+                }
+
             }
-            deckCount_packets = i;
         }
     }
 
@@ -102,6 +106,7 @@ if(deckCount_total < deckCount_packets){
 
                         view.setTextColor(Color.parseColor(color));
                         view.setTextSize(size);
+
                         view.setGravity(pos);
 
 

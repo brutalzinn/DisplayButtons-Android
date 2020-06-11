@@ -136,8 +136,8 @@ int id = 1 ;
 
 
 
-                    int optimalSize = ((height - ( 20 * (2 + NUM_COLS))) - (5 * 2)) / 2;
-
+                    int optimalSize = ((height - ( 20 *  2)) - (5 * 2)) / 3;
+Log.d("DEBUG", "TAMANHO DA TELA:"+ height );
                     int optimalFinal = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, optimalSize, getResources().getDisplayMetrics());
 
 

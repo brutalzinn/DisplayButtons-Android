@@ -79,7 +79,7 @@ writer.writeBoolean(true);
                 Constants.buttonDeckContext.runOnUiThread(() -> {
                     //ButtonDeckActivity teste = new ButtonDeckActivity();
                   //  teste.populateButtons();
-
+Log.d("DEBUG", "CRIANDO MATRIZ!!!!");
                Constants.buttonDeckContext.limpar();
                     Constants.buttonDeckContext.populateButtons(valueOf(MainActivity.mode_init));
 can_start  = true;

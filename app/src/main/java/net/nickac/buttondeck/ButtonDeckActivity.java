@@ -265,7 +265,7 @@ Log.d("DEBUG", "TAMANHO DA TELA:"+ height );
     //private void ExecuteConector(){
         Intent intent = getIntent();
         String connectIP = intent.getStringExtra(EXTRA_IP);
-        int what_is_the_mode = valueOf(intent.getStringExtra(EXTRA_MODE));
+        int what_is_the_mode = valueOf(MainActivity.mode_init);
         int connectPort = Constants.PORT_NUMBER;
         Constants.buttonDeckContext = this;
         vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -284,7 +284,7 @@ Log.d("DEBUG", "TAMANHO DA TELA:"+ height );
         }
 
 
-        if (savedInstanceState == null && server == null) {
+        if (savedInstanceState == null && server == null || client == null) {
             if(what_is_the_mode  == 0) {
                 client = new TcpClient(connectIP, connectPort);
                 Log.d("DEBUG", "Escolhido conexão por wifi, na porta " + connectPort);

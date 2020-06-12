@@ -37,11 +37,14 @@ public class SlotImageClearChunkPacket implements INetworkPacket {
                 public void run() {
                     for (int slot : toClear) {
                         Button view = Constants.buttonDeckContext.getButtonByTag(slot);
-
+                        // TextView view_teste = Constants.buttonDeckContext.getTextViewyTag(slot);
                         if (view != null) {
-                          Log.i("ButtonDeck", "Setting button [CHUNK]!");
-                       //  view.setScaleType(ImageView.ScaleType.FIT_XY);
-                            view.setBackgroundResource(0);
+                            Log.i("ButtonDeck", "Setting button [CHUNK]!");
+                            //    view.setScaleX(ImageView.ScaleType.FIT_XY);
+                            //   view.setCompoundDrawablesWithIntrinsicBounds(null, null , null, null);
+                            view.setBackground(null);
+                            view.setText("");
+                            view.setGravity(0x00000000);
                         }
                         System.gc();
                     }

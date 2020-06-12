@@ -39,19 +39,19 @@ public class SlotImageClearPacket implements INetworkPacket {
                 if (slot <= 0) return;
                 if (Constants.buttonDeckContext != null)
                     Constants.buttonDeckContext.runOnUiThread(() -> {
-                    //Log.i("ButtonDeck", "Finding ID!");
+                        //Log.i("ButtonDeck", "Finding ID!");
 
-                   // ImageButton view = Constants.buttonDeckContext.findViewById(slot);
+                        // ImageButton view = Constants.buttonDeckContext.findViewById(slot);
                         Button view = Constants.buttonDeckContext.getButtonByTag(slot);
 
-                    if (view != null) {
-                        //Log.i("ButtonDeck", "Setting button!");
+                        if (view != null) {
+                            //Log.i("ButtonDeck", "Setting button!");
 
-               //         view.setScaleType(ImageView.ScaleType.FIT_XY);
-                        view.setBackgroundResource(0);
-                    }
-                    System.gc();
-                });
+                            // view.setScaleType(ImageView.ScaleType.FIT_XY);
+                            view.setBackgroundResource(0);
+                        }
+                        System.gc();
+                    });
             }
         }
     }

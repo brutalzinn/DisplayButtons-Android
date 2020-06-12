@@ -39,7 +39,10 @@ public class MatrizPacket implements INetworkPacket {
 public static boolean can_start  = false;
     @Override
     public void execute(TcpClient client, boolean received) {
+        if(received){
+            client.sendPacket(clonePacket());
 
+        }
     }
     @Override
     public void execute_server(SocketServer client, boolean received) {

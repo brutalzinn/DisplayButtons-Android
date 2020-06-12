@@ -35,13 +35,14 @@ public class SlotLabelButtonClearChunkPacket implements INetworkPacket {
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
+                    if(can_start == false) return;
                     for (int slot : toClear) {
-                        Button view = Constants.buttonDeckContext.getButtonByTag(slot);
+                        TextView view = Constants.buttonDeckContext.getButtonByTag(slot);
 
                         if (view != null) {
-                            //Log.i("ButtonDeck", "Setting button [CHUNK]!");
-                   //      view.setScaleType(ImageView.ScaleType.FIT_XY);
-                  //          view.setBackgroundResource(0);
+                            Log.i("ButtonDeck", "Setting Label [CHUNK]!");
+                            view.setText("");
+
                         }
                         System.gc();
                     }

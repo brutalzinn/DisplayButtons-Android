@@ -64,7 +64,7 @@ public class SlotImageClearChunkPacket implements INetworkPacket {
         }
     }
     @Override
-    public void execute_server(SocketServer client, boolean received) {
+    public void execute(SocketServer client, boolean received) {
         if (Constants.buttonDeckContext != null) {
             Runnable runnable = new Runnable() {
                 @Override

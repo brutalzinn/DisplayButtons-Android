@@ -65,7 +65,7 @@ public class SocketServer {
         ArchitectureAnnotation annot = packet.getClass().getAnnotation(ArchitectureAnnotation.class);
         if (annot != null) {
            if (!(annot.value() == PacketArchitecture.CLIENT_TO_SERVER || annot.value() == PacketArchitecture.BOTH_WAYS)) {
-  //  throw new IllegalStateException("Packet doesn't support being sent to the server.");
+// throw new IllegalStateException("Packet doesn't support being sent to the server.");
           }
         }
         toDeliver.add(packet);
@@ -93,7 +93,6 @@ public class SocketServer {
                 try {
 
                     mSocketServer = new ServerSocket(SERVER_PORT);
-
                     internalSocket = mSocketServer.accept();
 
                         SocketServer();
@@ -140,7 +139,7 @@ public class SocketServer {
 
                         outputStream.write(baos.toByteArray());
                         outputStream.flush();
-                        iNetworkPacket.execute_server(this, false);
+                        iNetworkPacket.execute(this, false);
 
                    stream.close();
                      baos.close();
@@ -169,7 +168,7 @@ public class SocketServer {
                         //     packet.execute(this, true);
                         //
                   Log.i("ButtonDeck", "read packet with ID " + packet.getPacketId() + ".");
-                        packet.execute_server(this, true);
+                        packet.execute(this, true);
 
                     }
 
@@ -189,6 +188,8 @@ public class SocketServer {
             if (dataThread != null) dataThread.interrupt();
             if (dataDeliveryThread != null) dataDeliveryThread.interrupt();
         if (internalSocket != null) internalSocket.close();
+        if(  mSocketServer != null )  mSocketServer.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -198,17 +199,6 @@ public class SocketServer {
     public void SocketServer()  throws IOException {
 
         try {
-
-
-        // PrintStream os = new PrintStream(internalSocket.getOutputStream());
-      //  DataInputStream is = new DataInputStream(internalSocket.getInputStream());
-
-        ;
-
-//         Log.d("DEBUG", "Message Received: " + is.readLine());
-          //  internalSocket.setSoTimeout(timeout);
-           // internalSocket.setTcpNoDelay(true);
-       //   internalSocket.connect(new InetSocketAddress(ip, port), timeout);
 
          for (Runnable r : eventConnected) {
               r.run();

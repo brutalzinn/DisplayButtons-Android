@@ -1,6 +1,7 @@
 package net.nickac.buttondeck.networking.impl;
 
 import android.os.Build;
+import android.util.Log;
 
 import net.nickac.buttondeck.networking.INetworkPacket;
 import net.nickac.buttondeck.networking.compat.GuidCompact;
@@ -28,7 +29,7 @@ public class DeviceIdentityPacket implements INetworkPacket {
         }
     }
     @Override
-    public void execute_server(SocketServer client, boolean received) {
+    public void execute(SocketServer client, boolean received) {
         if (received) {
             client.sendPacket(clonePacket());
         }
@@ -62,6 +63,7 @@ public class DeviceIdentityPacket implements INetworkPacket {
         if (reader.readBoolean()) {
             //We are going to receive a Guid.
             GuidCompact guid = new GuidCompact(reader.readUTF());
+            Log.d("DEVICE GUID: ", guid + "");
             //We have a guid. Now we should store it in a shared preference
             if (sharedPreferences != null) {
                 sharedPreferences.edit().putString(DEVICE_GUID_PREF, guid.toString()).apply();

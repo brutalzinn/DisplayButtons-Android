@@ -19,7 +19,7 @@ public class HeartbeatPacket implements INetworkPacket {
 
     }
     @Override
-    public void execute_server(SocketServer client, boolean received) {
+    public void execute(SocketServer client, boolean received) {
 
     }
 

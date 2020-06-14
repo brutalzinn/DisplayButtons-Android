@@ -56,7 +56,7 @@ public class SlotImageClearPacket implements INetworkPacket {
         }
     }
     @Override
-    public void execute_server(SocketServer client, boolean received) {
+    public void execute(SocketServer client, boolean received) {
         if (received) {
             if (Constants.buttonDeckContext != null) {
                 int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + slot, "id", Constants.buttonDeckContext.getPackageName());

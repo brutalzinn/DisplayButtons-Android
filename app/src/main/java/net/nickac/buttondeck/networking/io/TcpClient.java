@@ -83,7 +83,7 @@ public class TcpClient {
         ArchitectureAnnotation annot = packet.getClass().getAnnotation(ArchitectureAnnotation.class);
         if (annot != null) {
             if (!(annot.value() == PacketArchitecture.CLIENT_TO_SERVER || annot.value() == PacketArchitecture.BOTH_WAYS)) {
-          //      throw new IllegalStateException("Packet doesn't support being sent to the server.");
+         //     throw new IllegalStateException("Packet doesn't support being sent to the server.");
             }
         }
         toDeliver.add(packet);

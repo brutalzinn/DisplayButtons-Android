@@ -109,7 +109,7 @@ public int deckCount_total = 0;
 
                         view.setGravity(pos);
 
-
+view.setShadowLayer(2.6f,1.5f,1.3f,Color.parseColor("#FFFFFF"));
                   //      view.setPadding(0,pos,0,0);
 
                         view.setText(text);

@@ -32,7 +32,7 @@ import static net.nickac.buttondeck.networking.impl.MatrizPacket.can_start;
 public class SlotLabelButtonChangeChunkPacket implements INetworkPacket {
 public int deckCount_total = 0;
     public int deckCount_packets = 0;
-
+    public String color;
     @Override
     public void execute(TcpClient client, boolean received) {
 
@@ -88,7 +88,7 @@ public int deckCount_total = 0;
         String text = reader.readUTF();
         int size = reader.readInt();
         int pos = reader.readInt();
-        String color = reader.readUTF();
+         color = reader.readUTF();
 
 
         if (Constants.buttonDeckContext != null) {
@@ -103,8 +103,16 @@ public int deckCount_total = 0;
                     if (view != null) {
                         Log.d("DEbug", "MUDANDO LABEL PARA" + text + " NO ID: " + labelSlot);
 
+                    if(color == null || color.length() == 0) {
+                        Log.d("DEbug", "COR VINDO NULA:" + color);
+
+                        view.setTextColor(Color.parseColor("#FFFFFF"));
+                    }else{
+                        Log.d("DEbug", "Mudando cor para :" + color);
 
                         view.setTextColor(Color.parseColor(color));
+                    }
+
                         view.setTextSize(size);
 
                         view.setGravity(pos);

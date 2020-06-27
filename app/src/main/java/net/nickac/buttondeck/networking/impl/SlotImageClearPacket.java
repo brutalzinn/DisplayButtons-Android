@@ -46,11 +46,11 @@ public class SlotImageClearPacket implements INetworkPacket {
 
                         if (view != null) {
                             //Log.i("ButtonDeck", "Setting button!");
-
+                            view.setGravity(0x00000011 | 0x00000001);
                             // view.setScaleType(ImageView.ScaleType.FIT_XY);
                             view.setBackgroundResource(0);
                         }
-                        System.gc();
+                    //    System.gc();
                     });
             }
         }

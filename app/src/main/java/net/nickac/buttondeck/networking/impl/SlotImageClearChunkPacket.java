@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import net.nickac.buttondeck.networking.INetworkPacket;
@@ -19,6 +20,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static net.nickac.buttondeck.ButtonDeckActivity.height;
+import static net.nickac.buttondeck.ButtonDeckActivity.width;
 
 /**
  * Created by NickAc on 06/01/2018.
@@ -41,10 +45,15 @@ public class SlotImageClearChunkPacket implements INetworkPacket {
                         if (view != null) {
                             Log.i("ButtonDeck", "Setting button [CHUNK]!");
                             //    view.setScaleX(ImageView.ScaleType.FIT_XY);
+
+                            //  button.setAdjustViewBounds(true);
+
+
                             //   view.setCompoundDrawablesWithIntrinsicBounds(null, null , null, null);
                             view.setBackground(null);
                             view.setText("");
-                            view.setGravity(0x00000000);
+                            view.setGravity(0);
+
                         }
                         System.gc();
                     }

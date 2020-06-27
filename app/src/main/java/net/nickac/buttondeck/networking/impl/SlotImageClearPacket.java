@@ -4,6 +4,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import net.nickac.buttondeck.ButtonDeckActivity;
 import net.nickac.buttondeck.networking.INetworkPacket;
 import net.nickac.buttondeck.networking.io.ArchitectureAnnotation;
 import net.nickac.buttondeck.networking.io.PacketArchitecture;
@@ -46,8 +47,9 @@ public class SlotImageClearPacket implements INetworkPacket {
 
                         if (view != null) {
                             //Log.i("ButtonDeck", "Setting button!");
-                            view.setGravity(0x00000011 | 0x00000001);
-                            // view.setScaleType(ImageView.ScaleType.FIT_XY);
+                       view.setGravity(0);
+
+                      // view.setScaleType(ImageView.ScaleType.FIT_XY);
                             view.setBackgroundResource(0);
                         }
                     //    System.gc();

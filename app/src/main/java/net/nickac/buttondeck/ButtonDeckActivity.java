@@ -48,8 +48,8 @@ public class ButtonDeckActivity extends AppCompatActivity {
     private static TcpClient client;
     public static final String SHARED_PREFS = "sharedPrefs";
     public static SocketServer server;
-private static int width ;
-    private static int height;
+public static int width ;
+    public static int height;
     ImageButton buttons[][] = new ImageButton[NUM_ROWS][NUM_COLS];
     TableRow tablerow;
     //private static final int mode = 1;
@@ -150,7 +150,7 @@ Log.d("DEBUG", "TAMANHO DA TELA:"+ height );
 
             //            button.setLayoutParams(params);
                         TableRow.LayoutParams params = new TableRow.LayoutParams();
-                     //   button.setAdjustViewBounds(true);
+                    //  button.setAdjustViewBounds(true);
                         button.setMaxWidth(optimalSize);
                         button.setMaxHeight(optimalSize);
 

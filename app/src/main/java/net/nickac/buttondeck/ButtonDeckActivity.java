@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
@@ -103,11 +104,12 @@ int id = 1 ;
         for (int row = 0; row < NUM_ROWS; row++) {
             tablerow = new TableRow(this);
             tablerow.setLayoutParams(new TableLayout.LayoutParams(
-                    TableLayout.LayoutParams.MATCH_PARENT,
-                    TableLayout.LayoutParams.MATCH_PARENT,
+                    TableLayout.LayoutParams.WRAP_CONTENT,
+                    TableLayout.LayoutParams.WRAP_CONTENT,
                     1.0f));
-            table.addView(tablerow);
 
+            tablerow.setGravity(Gravity.CENTER_VERTICAL);
+            table.addView(tablerow);
                 for (int col = 0; col < NUM_COLS; col++){
 //            for (int col = 0; col < NUM_COLS; col++){
 

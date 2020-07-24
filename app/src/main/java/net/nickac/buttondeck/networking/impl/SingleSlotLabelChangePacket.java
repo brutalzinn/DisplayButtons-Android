@@ -59,7 +59,7 @@ public class SingleSlotLabelChangePacket implements INetworkPacket {
         //Server to client
 
             readDeckImage(reader);
-        
+
     }
 
     private void readDeckImage(DataInputStream reader) throws IOException {

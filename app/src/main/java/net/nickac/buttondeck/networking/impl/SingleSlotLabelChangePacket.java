@@ -46,7 +46,7 @@ public class SingleSlotLabelChangePacket implements INetworkPacket {
 
     @Override
     public long getPacketId() {
-        return 5;
+        return 14;
     }
 
     @Override
@@ -57,9 +57,9 @@ public class SingleSlotLabelChangePacket implements INetworkPacket {
     @Override
     public void fromInputStream(DataInputStream reader) throws IOException {
         //Server to client
-        if (reader.readBoolean()) {
+
             readDeckImage(reader);
-        }
+        
     }
 
     private void readDeckImage(DataInputStream reader) throws IOException {

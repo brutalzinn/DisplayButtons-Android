@@ -88,7 +88,7 @@ public class SlotLabelClearPacket implements INetworkPacket {
 
     @Override
     public long getPacketId() {
-        return 9;
+        return 15;
     }
 
     @Override

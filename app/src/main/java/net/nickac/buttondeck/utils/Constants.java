@@ -36,19 +36,19 @@ public class Constants {
     public static LongSparseArray<INetworkPacket> packetMap = new LongSparseArray<>();
 
     static {
-        registerPacket(new HelloPacket());
-        registerPacket(new DeviceIdentityPacket());
-        registerPacket(new HeartbeatPacket());
-        registerPacket(new DesktopDisconnectPacket());
-        registerPacket(new SingleSlotImageChangePacket());
-        registerPacket(new AlternativeHelloPacket());
-        registerPacket(new SlotImageChangeChunkPacket());
-        registerPacket(new ButtonInteractPacket(ButtonInteractPacket.ButtonAction.NONE));
-        registerPacket(new SlotImageClearPacket());
-        registerPacket(new SlotImageClearChunkPacket());
-        registerPacket(new MatrizPacket());
-        registerPacket(new SlotLabelButtonChangeChunkPacket());
-        registerPacket(new SlotLabelButtonClearChunkPacket());
+        registerPacket(new HelloPacket()); // 1
+        registerPacket(new DeviceIdentityPacket()); //2
+        registerPacket(new HeartbeatPacket()); // 3
+        registerPacket(new DesktopDisconnectPacket()); //4
+        registerPacket(new SingleSlotImageChangePacket()); //5
+        registerPacket(new AlternativeHelloPacket()); //6
+        registerPacket(new SlotImageChangeChunkPacket()); //7
+        registerPacket(new ButtonInteractPacket(ButtonInteractPacket.ButtonAction.NONE)); //8
+        registerPacket(new SlotImageClearPacket()); //9
+        registerPacket(new SlotImageClearChunkPacket()); //10
+        registerPacket(new MatrizPacket()); //11
+        registerPacket(new SlotLabelButtonChangeChunkPacket()); //12
+        registerPacket(new SlotLabelButtonClearChunkPacket()); //13
 
 
 

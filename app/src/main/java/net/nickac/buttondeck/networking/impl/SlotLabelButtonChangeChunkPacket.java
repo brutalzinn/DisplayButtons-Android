@@ -1,6 +1,9 @@
 package net.nickac.buttondeck.networking.impl;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.provider.CalendarContract;
 import android.text.Html;
 import android.util.Log;
@@ -30,6 +33,7 @@ import static net.nickac.buttondeck.networking.impl.MatrizPacket.can_start;
  */
 @ArchitectureAnnotation(PacketArchitecture.CLIENT_TO_SERVER)
 public class SlotLabelButtonChangeChunkPacket implements INetworkPacket {
+    private static final int bytesLimit = 1024 * 50;
 public int deckCount_total = 0;
     public int deckCount_packets = 0;
     public String color;
@@ -82,8 +86,10 @@ public int deckCount_total = 0;
     }
 
     private void readDeckImage(DataInputStream reader) throws IOException {
-
+        byte[] imageBytes = new byte[bytesLimit];
         int labelSlot = reader.readInt();
+        int arrayLength = reader.readInt();
+        reader.readFully(imageBytes, 0, arrayLength);
         String font = reader.readUTF();
         String text = reader.readUTF();
         int size = reader.readInt();
@@ -94,6 +100,7 @@ public int deckCount_total = 0;
         if (Constants.buttonDeckContext != null) {
             //Start a new thread to create a bitmap
             Thread th = new Thread(() -> {
+                Bitmap bmp = BitmapFactory.decodeByteArray(imageBytes, 0, arrayLength);
 
                 ///    int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + imageSlot, "id", Constants.buttonDeckContext.getPackageName());
                 if (labelSlot <= 0) return;
@@ -121,6 +128,7 @@ view.setShadowLayer(2.6f,1.5f,1.3f,Color.parseColor("#FFFFFF"));
                   //      view.setPadding(0,pos,0,0);
 
                         view.setText(text);
+                        view.setBackground(new BitmapDrawable(Constants.buttonDeckContext.getResources(), bmp));
 
                      //  view.setTextSize(size);
                       //view.setTextColor(color);

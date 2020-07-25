@@ -36,7 +36,7 @@ public class SlotUniversalClearPacket implements INetworkPacket {
     public void execute(TcpClient client, boolean received) {
         if (received) {
             if (Constants.buttonDeckContext != null) {
-                int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + slot, "id", Constants.buttonDeckContext.getPackageName());
+                // int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + slot, "id", Constants.buttonDeckContext.getPackageName());
                 if (slot <= 0) return;
                 if (Constants.buttonDeckContext != null)
                     Constants.buttonDeckContext.runOnUiThread(() -> {
@@ -47,14 +47,14 @@ public class SlotUniversalClearPacket implements INetworkPacket {
 
                         if (view != null) {
                             //Log.i("ButtonDeck", "Setting button!");
-                            view.setText("");
+                            view.setText(" ");
                             view.setBackgroundResource(0);
                             view.setGravity(0x00000000);
 
-                      // view.setScaleType(ImageView.ScaleType.FIT_XY);
-                           // view.setBackgroundResource(0);
+                            // view.setScaleType(ImageView.ScaleType.FIT_XY);
+                            // view.setBackgroundResource(0);
                         }
-                      System.gc();
+                        //  System.gc();
                     });
             }
         }
@@ -63,7 +63,7 @@ public class SlotUniversalClearPacket implements INetworkPacket {
     public void execute(SocketServer client, boolean received) {
         if (received) {
             if (Constants.buttonDeckContext != null) {
-                int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + slot, "id", Constants.buttonDeckContext.getPackageName());
+               // int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + slot, "id", Constants.buttonDeckContext.getPackageName());
                 if (slot <= 0) return;
                 if (Constants.buttonDeckContext != null)
                     Constants.buttonDeckContext.runOnUiThread(() -> {
@@ -74,14 +74,14 @@ public class SlotUniversalClearPacket implements INetworkPacket {
 
                         if (view != null) {
                             //Log.i("ButtonDeck", "Setting button!");
-                            view.setText("");
+                            view.setText(" ");
                             view.setBackgroundResource(0);
                             view.setGravity(0x00000000);
 
                             // view.setScaleType(ImageView.ScaleType.FIT_XY);
                             // view.setBackgroundResource(0);
                         }
-                        System.gc();
+                      //  System.gc();
                     });
             }
         }

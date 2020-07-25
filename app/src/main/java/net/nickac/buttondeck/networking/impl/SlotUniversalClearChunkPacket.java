@@ -41,11 +41,11 @@ public class SlotUniversalClearChunkPacket implements INetworkPacket {
 
                         if (view != null) {
                             Log.i("ButtonDeck", "Setting Label [CHUNK]!");
-                            view.setText("");
-                            view.setBackground(null);
+                            view.setText(" ");
+                            view.setBackgroundResource(0);
                             view.setGravity(0x00000000);
                         }
-                        System.gc();
+                   //     System.gc();
                     }
                     synchronized (this) {
                         this.notify();

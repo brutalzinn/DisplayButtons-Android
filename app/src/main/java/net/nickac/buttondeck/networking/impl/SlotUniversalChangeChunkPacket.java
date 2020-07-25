@@ -78,7 +78,7 @@ public int deckCount_total = 0;
                 }
                 if (imagesToRead < i) {
 
-                    Constants.buttonDeckContext.server.sendPacket(new SlotUniversalChangeChunkPacket());
+                   // Constants.buttonDeckContext.server.sendPacket(new SlotUniversalChangeChunkPacket());
                 }
 
             }
@@ -87,13 +87,12 @@ public int deckCount_total = 0;
 
     private void readDeckImage(DataInputStream reader) throws IOException {
         byte[] imageBytes = new byte[bytesLimit];
-
         int arrayLength = reader.readInt();
         reader.readFully(imageBytes, 0, arrayLength);
 
         int labelSlot = reader.readInt();
         String font = reader.readUTF();
-        String text = reader.readUTF();
+        final String[] text = {reader.readUTF()};
         int size = reader.readInt();
         int pos = reader.readInt();
          color = reader.readUTF();
@@ -112,7 +111,7 @@ public int deckCount_total = 0;
                     if (view != null) {
                         view.setBackground(new BitmapDrawable(Constants.buttonDeckContext.getResources(), bmp));
 
-                        Log.d("DEbug", "MUDANDO LABEL PARA" + text + " NO ID: " + labelSlot);
+                        Log.d("DEbug", "MUDANDO LABEL PARA" + text[0] + " NO ID: " + labelSlot);
 
                     if(color == null || color.length() == 0) {
                         Log.d("DEbug", "COR VINDO NULA:" + color);
@@ -130,8 +129,10 @@ public int deckCount_total = 0;
 
 view.setShadowLayer(2.6f,1.5f,1.3f,Color.parseColor("#FFFFFF"));
                   //      view.setPadding(0,pos,0,0);
-
-                        view.setText(text);
+if(text[0].isEmpty()){
+    text[0] = " ";
+}
+                        view.setText(text[0]);
 
                      //  view.setTextSize(size);
                       //view.setTextColor(color);

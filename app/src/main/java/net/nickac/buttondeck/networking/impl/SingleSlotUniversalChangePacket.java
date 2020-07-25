@@ -58,21 +58,15 @@ public class SingleSlotUniversalChangePacket implements INetworkPacket {
     public void fromInputStream(DataInputStream reader) throws IOException {
         //Server to client
 
-            readDeckImage(reader);
-
-    }
-
-    private void readDeckImage(DataInputStream reader) throws IOException {
-
         byte[] imageBytes = new byte[bytesLimit];
         int arrayLenght = reader.readInt();
         reader.readFully(imageBytes, 0, arrayLenght);
         int labelSlot = reader.readInt();
         String font = reader.readUTF();
-        String text = reader.readUTF();
+        final String[] text = {reader.readUTF()};
         int size = reader.readInt();
         int pos = reader.readInt();
-       String color = reader.readUTF();
+        String color = reader.readUTF();
         /*if (numberRead != arrayLenght) {
             //Log.e("ButtonDeck", "The number of bytes read is different from the size of the array");
             return;
@@ -90,9 +84,9 @@ public class SingleSlotUniversalChangePacket implements INetworkPacket {
                 //int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + imageSlot, "id", Constants.buttonDeckContext.getPackageName());
                 if (labelSlot <= 0) return;
                 Constants.buttonDeckContext.runOnUiThread(() -> {
-                //  Log.i("ButtonDeck", "Findind ID!");
+                    //  Log.i("ButtonDeck", "Findind ID!");
 
-                 //   ImageButton view = Constants.buttonDeckContext.findViewById(imageSlot);
+                    //   ImageButton view = Constants.buttonDeckContext.findViewById(imageSlot);
 
                     Button view = Constants.buttonDeckContext.getButtonByTag(labelSlot);
                     if (view != null) {
@@ -101,7 +95,7 @@ public class SingleSlotUniversalChangePacket implements INetworkPacket {
 
 
 
-                        Log.d("DEbug", "MUDANDO LABEL PARA" + text + " NO ID: " + labelSlot);
+                        Log.d("DEbug", "MUDANDO LABEL PARA" + text[0] + " NO ID: " + labelSlot);
 
                         if(color == null || color.length() == 0) {
                             Log.d("DEbug", "COR VINDO NULA:" + color);
@@ -119,8 +113,10 @@ public class SingleSlotUniversalChangePacket implements INetworkPacket {
 
                         view.setShadowLayer(2.6f,1.5f,1.3f,Color.parseColor("#FFFFFF"));
                         //      view.setPadding(0,pos,0,0);
-
-                        view.setText(text);
+                        if(text[0].isEmpty()){
+                            text[0] = " ";
+                        }
+                        view.setText(text[0]);
 
                         //  view.setTextSize(size);
                         //view.setTextColor(color);
@@ -132,7 +128,7 @@ public class SingleSlotUniversalChangePacket implements INetworkPacket {
 
 
 
-                           }
+                    }
                     System.gc();
                 });
 
@@ -142,4 +138,10 @@ public class SingleSlotUniversalChangePacket implements INetworkPacket {
     }
 
 
-}
+
+
+    private void readDeckImage(DataInputStream reader) throws IOException {
+
+
+
+}}

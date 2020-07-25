@@ -32,7 +32,7 @@ import static net.nickac.buttondeck.networking.impl.MatrizPacket.can_start;
  * Please see the project root to find the LICENSE file.
  */
 @ArchitectureAnnotation(PacketArchitecture.CLIENT_TO_SERVER)
-public class SlotLabelButtonChangeChunkPacket implements INetworkPacket {
+public class SlotUniversalChangeChunkPacket implements INetworkPacket {
     private static final int bytesLimit = 1024 * 50;
 public int deckCount_total = 0;
     public int deckCount_packets = 0;
@@ -53,7 +53,7 @@ public int deckCount_total = 0;
 
     @Override
     public INetworkPacket clonePacket() {
-        return new SlotLabelButtonChangeChunkPacket();
+        return new SlotUniversalChangeChunkPacket();
     }
 
     @Override
@@ -78,7 +78,7 @@ public int deckCount_total = 0;
                 }
                 if (imagesToRead < i) {
 
-                    Constants.buttonDeckContext.server.sendPacket(new SlotLabelButtonChangeChunkPacket());
+                    Constants.buttonDeckContext.server.sendPacket(new SlotUniversalChangeChunkPacket());
                 }
 
             }

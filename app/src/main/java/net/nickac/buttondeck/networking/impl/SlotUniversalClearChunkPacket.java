@@ -26,7 +26,7 @@ import static net.nickac.buttondeck.networking.impl.MatrizPacket.can_start;
  * Please see the project root to find the LICENSE file.
  */
 @ArchitectureAnnotation(PacketArchitecture.CLIENT_TO_SERVER)
-public class SlotLabelButtonClearChunkPacket implements INetworkPacket {
+public class SlotUniversalClearChunkPacket implements INetworkPacket {
     List<Integer> toClear = new ArrayList<>();
 
     @Override
@@ -95,7 +95,7 @@ public class SlotLabelButtonClearChunkPacket implements INetworkPacket {
     }
     @Override
     public INetworkPacket clonePacket() {
-        return new SlotLabelButtonClearChunkPacket();
+        return new SlotUniversalClearChunkPacket();
     }
 
     @Override

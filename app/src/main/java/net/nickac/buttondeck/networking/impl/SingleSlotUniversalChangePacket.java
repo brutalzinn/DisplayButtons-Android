@@ -64,7 +64,9 @@ public class SingleSlotUniversalChangePacket implements INetworkPacket {
 
     private void readDeckImage(DataInputStream reader) throws IOException {
 
-
+        byte[] imageBytes = new byte[bytesLimit];
+        int arrayLenght = reader.readInt();
+        reader.readFully(imageBytes, 0, arrayLenght);
         int labelSlot = reader.readInt();
         String font = reader.readUTF();
         String text = reader.readUTF();
@@ -79,6 +81,7 @@ public class SingleSlotUniversalChangePacket implements INetworkPacket {
             //Start a new thread to create a bitmap
             //Log.i("ButtonDeck", "Starting a new thread to decode the bitmap!");
             Thread th = new Thread(() -> {
+                Bitmap bmp = BitmapFactory.decodeByteArray(imageBytes, 0, arrayLenght);
 
 
 
@@ -94,6 +97,7 @@ public class SingleSlotUniversalChangePacket implements INetworkPacket {
                     Button view = Constants.buttonDeckContext.getButtonByTag(labelSlot);
                     if (view != null) {
 
+                        view.setBackground(new BitmapDrawable(Constants.buttonDeckContext.getResources(), bmp));
 
 
 

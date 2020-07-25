@@ -22,13 +22,13 @@ import java.io.IOException;
  * Please see the project root to find the LICENSE file.
  */
 @ArchitectureAnnotation(PacketArchitecture.CLIENT_TO_SERVER)
-public class SlotLabelClearPacket implements INetworkPacket {
+public class SlotUniversalClearPacket implements INetworkPacket {
     int slot = -1;
 
-    public SlotLabelClearPacket() {
+    public SlotUniversalClearPacket() {
     }
 
-    public SlotLabelClearPacket(int slot) {
+    public SlotUniversalClearPacket(int slot) {
         this.slot = slot;
     }
 
@@ -83,7 +83,7 @@ public class SlotLabelClearPacket implements INetworkPacket {
     }
     @Override
     public INetworkPacket clonePacket() {
-        return new SlotLabelClearPacket();
+        return new SlotUniversalClearPacket();
     }
 
     @Override

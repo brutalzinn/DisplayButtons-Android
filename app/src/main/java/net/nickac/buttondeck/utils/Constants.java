@@ -18,7 +18,7 @@ import net.nickac.buttondeck.networking.impl.SingleSlotLabelChangePacket;
 import net.nickac.buttondeck.networking.impl.SlotImageChangeChunkPacket;
 import net.nickac.buttondeck.networking.impl.SlotImageClearChunkPacket;
 import net.nickac.buttondeck.networking.impl.SlotImageClearPacket;
-import net.nickac.buttondeck.networking.impl.SlotLabelButtonChangeChunkPacket;
+import net.nickac.buttondeck.networking.impl.SlotUniversalChangeChunkPacket;
 import net.nickac.buttondeck.networking.impl.SlotLabelButtonClearChunkPacket;
 import net.nickac.buttondeck.networking.impl.SlotLabelClearPacket;
 
@@ -49,7 +49,7 @@ public class Constants {
         registerPacket(new SlotImageClearPacket());
         registerPacket(new SlotImageClearChunkPacket());
         registerPacket(new MatrizPacket());
-        registerPacket(new SlotLabelButtonChangeChunkPacket());
+        registerPacket(new SlotUniversalChangeChunkPacket());
         registerPacket(new SlotLabelButtonClearChunkPacket());
         registerPacket(new SingleSlotLabelChangePacket());
         registerPacket(new SlotLabelClearPacket());

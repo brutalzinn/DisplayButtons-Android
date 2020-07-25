@@ -58,7 +58,7 @@ public int deckCount_total = 0;
 
     @Override
     public long getPacketId() {
-        return 12;
+        return 8;
     }
 
     @Override

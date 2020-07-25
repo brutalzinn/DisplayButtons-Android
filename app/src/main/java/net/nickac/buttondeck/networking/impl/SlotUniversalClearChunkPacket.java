@@ -42,7 +42,8 @@ public class SlotUniversalClearChunkPacket implements INetworkPacket {
                         if (view != null) {
                             Log.i("ButtonDeck", "Setting Label [CHUNK]!");
                             view.setText("");
-
+                            view.setBackground(null);
+                            view.setGravity(0x00000000);
                         }
                         System.gc();
                     }
@@ -72,9 +73,10 @@ public class SlotUniversalClearChunkPacket implements INetworkPacket {
                         TextView view = Constants.buttonDeckContext.getButtonByTag(slot);
 
                         if (view != null) {
-                    Log.i("ButtonDeck", "Setting Label [CHUNK]!");
+                            Log.i("ButtonDeck", "Setting Label [CHUNK]!");
                             view.setText("");
-
+                            view.setBackground(null);
+                            view.setGravity(0x00000000);
                         }
                         System.gc();
                     }
@@ -100,7 +102,7 @@ public class SlotUniversalClearChunkPacket implements INetworkPacket {
 
     @Override
     public long getPacketId() {
-        return 13;
+        return 9;
     }
 
     @Override

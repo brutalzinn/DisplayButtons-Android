@@ -59,7 +59,7 @@ if(received){
 
     @Override
     public long getPacketId() {
-        return 11;
+        return 7;
     }
 
     @Override

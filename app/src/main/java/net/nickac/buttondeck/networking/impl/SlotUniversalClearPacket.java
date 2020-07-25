@@ -47,12 +47,14 @@ public class SlotUniversalClearPacket implements INetworkPacket {
 
                         if (view != null) {
                             //Log.i("ButtonDeck", "Setting button!");
-                       view.setGravity(0);
+                            view.setText("");
+                            view.setBackgroundResource(0);
+                            view.setGravity(0x00000000);
 
                       // view.setScaleType(ImageView.ScaleType.FIT_XY);
-                            view.setBackgroundResource(0);
+                           // view.setBackgroundResource(0);
                         }
-                    //    System.gc();
+                      System.gc();
                     });
             }
         }
@@ -72,9 +74,12 @@ public class SlotUniversalClearPacket implements INetworkPacket {
 
                         if (view != null) {
                             //Log.i("ButtonDeck", "Setting button!");
-
-                           // view.setScaleType(ImageView.ScaleType.FIT_XY);
+                            view.setText("");
                             view.setBackgroundResource(0);
+                            view.setGravity(0x00000000);
+
+                            // view.setScaleType(ImageView.ScaleType.FIT_XY);
+                            // view.setBackgroundResource(0);
                         }
                         System.gc();
                     });
@@ -88,7 +93,7 @@ public class SlotUniversalClearPacket implements INetworkPacket {
 
     @Override
     public long getPacketId() {
-        return 15;
+        return 11;
     }
 
     @Override

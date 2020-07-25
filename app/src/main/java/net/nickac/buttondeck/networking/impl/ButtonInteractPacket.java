@@ -46,7 +46,7 @@ public class ButtonInteractPacket implements INetworkPacket {
 
     @Override
     public long getPacketId() {
-        return 8;
+        return 6;
     }
 
     @Override

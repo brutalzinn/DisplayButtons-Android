@@ -40,7 +40,7 @@ public class AlternativeHelloPacket implements INetworkPacket {
 
     @Override
     public long getPacketId() {
-        return 6;
+        return 5;
     }
 
     @Override

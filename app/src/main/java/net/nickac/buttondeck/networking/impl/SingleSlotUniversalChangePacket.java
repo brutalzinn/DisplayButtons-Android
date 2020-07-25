@@ -46,7 +46,7 @@ public class SingleSlotUniversalChangePacket implements INetworkPacket {
 
     @Override
     public long getPacketId() {
-        return 14;
+        return 10;
     }
 
     @Override

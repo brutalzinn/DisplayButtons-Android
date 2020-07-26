@@ -26,7 +26,7 @@ import java.io.IOException;
  * Please see the project root to find the LICENSE file.
  */
 @ArchitectureAnnotation(PacketArchitecture.CLIENT_TO_SERVER)
-public class SingleSlotImageChangePacket implements INetworkPacket {
+public class SingleUniversalChangePacket implements INetworkPacket {
     public static final int bytesLimit = 1024 * 50;
 
     public String color;
@@ -41,7 +41,7 @@ public class SingleSlotImageChangePacket implements INetworkPacket {
 
     @Override
     public INetworkPacket clonePacket() {
-        return new SingleSlotImageChangePacket();
+        return new SingleUniversalChangePacket();
     }
 
     @Override

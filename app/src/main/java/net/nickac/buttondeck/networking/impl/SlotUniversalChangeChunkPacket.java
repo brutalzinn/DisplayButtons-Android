@@ -28,6 +28,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import static java.lang.String.valueOf;
 import static net.nickac.buttondeck.networking.impl.MatrizPacket.can_start;
 
 /**
@@ -92,11 +93,11 @@ public int deckCount_total = 0;
     private void readDeckImage(DataInputStream reader) throws IOException {
         byte[] imageBytes = new byte[bytesLimit];
 
+        String json =  reader.readUTF();
 
-        String json = reader.readUTF();
-        Gson gson = new GsonBuilder().create();
-        Json JsonGetter=gson.fromJson(json, Json.class);
 
+
+            // reader.readFully(imageBytes, 0, JsonGetter.ArrayLenght());
 //        int labelSlot = reader.readInt();
 //        int arrayLength = reader.readInt();
 //        reader.readFully(imageBytes, 0, arrayLength);
@@ -108,14 +109,21 @@ public int deckCount_total = 0;
 
 
         if (Constants.buttonDeckContext != null) {
+
+
             //Start a new thread to create a bitmap
             Thread th = new Thread(() -> {
-                Bitmap bmp = BitmapFactory.decodeByteArray(imageBytes, 0, JsonGetter.ArrayLenght());
+
+
+                Gson gson = new Gson();
+                Json.JsonTester JsonGetter= new Gson().fromJson(json, Json.JsonTester.class);
+
+                Bitmap bmp = BitmapFactory.decodeByteArray(imageBytes, 0, JsonGetter.arraylenght);
 
                 ///    int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + imageSlot, "id", Constants.buttonDeckContext.getPackageName());
-                if (JsonGetter.Slot() <= 0) return;
+                if (JsonGetter.slot <= 0) return;
                 Constants.buttonDeckContext.runOnUiThread(() -> {
-                Button view = Constants.buttonDeckContext.getButtonByTag(JsonGetter.Slot());
+                Button view = Constants.buttonDeckContext.getButtonByTag(JsonGetter.slot);
                 //  TextView button = Constants.buttonDeckContext.getTextViewyTag(labelSlot);
                     if (view != null) {
                     //    Log.d("DEbug", "MUDANDO LABEL PARA" + text + " NO ID: " + labelSlot);
@@ -130,14 +138,14 @@ public int deckCount_total = 0;
                         view.setTextColor(Color.parseColor(color));
                     }
 
-                        view.setTextSize(JsonGetter.Size());
+                        view.setTextSize(JsonGetter.size);
 
-                        view.setGravity(JsonGetter.Position());
+                        view.setGravity(JsonGetter.position);
 
 view.setShadowLayer(2.6f,1.5f,1.3f,Color.parseColor("#FFFFFF"));
                   //      view.setPadding(0,pos,0,0);
 
-                        view.setText(JsonGetter.Text());
+                        view.setText(JsonGetter.text);
                         view.setBackground(new BitmapDrawable(Constants.buttonDeckContext.getResources(), bmp));
 
                      //  view.setTextSize(size);

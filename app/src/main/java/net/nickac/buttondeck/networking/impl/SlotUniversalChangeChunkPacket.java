@@ -13,12 +13,16 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import net.nickac.buttondeck.networking.INetworkPacket;
 import net.nickac.buttondeck.networking.io.ArchitectureAnnotation;
 import net.nickac.buttondeck.networking.io.PacketArchitecture;
 import net.nickac.buttondeck.networking.io.SocketServer;
 import net.nickac.buttondeck.networking.io.TcpClient;
 import net.nickac.buttondeck.utils.Constants;
+import net.nickac.buttondeck.utils.Json;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -87,28 +91,34 @@ public int deckCount_total = 0;
 
     private void readDeckImage(DataInputStream reader) throws IOException {
         byte[] imageBytes = new byte[bytesLimit];
-        int labelSlot = reader.readInt();
-        int arrayLength = reader.readInt();
-        reader.readFully(imageBytes, 0, arrayLength);
-        String font = reader.readUTF();
-        String text = reader.readUTF();
-        int size = reader.readInt();
-        int pos = reader.readInt();
-         color = reader.readUTF();
+
+
+        String json = reader.readUTF();
+        Gson gson = new GsonBuilder().create();
+        Json JsonGetter=gson.fromJson(json, Json.class);
+
+//        int labelSlot = reader.readInt();
+//        int arrayLength = reader.readInt();
+//        reader.readFully(imageBytes, 0, arrayLength);
+//        String font = reader.readUTF();
+//        String text = reader.readUTF();
+//        int size = reader.readInt();
+//        int pos = reader.readInt();
+//         color = reader.readUTF();
 
 
         if (Constants.buttonDeckContext != null) {
             //Start a new thread to create a bitmap
             Thread th = new Thread(() -> {
-                Bitmap bmp = BitmapFactory.decodeByteArray(imageBytes, 0, arrayLength);
+                Bitmap bmp = BitmapFactory.decodeByteArray(imageBytes, 0, JsonGetter.ArrayLenght());
 
                 ///    int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + imageSlot, "id", Constants.buttonDeckContext.getPackageName());
-                if (labelSlot <= 0) return;
+                if (JsonGetter.Slot() <= 0) return;
                 Constants.buttonDeckContext.runOnUiThread(() -> {
-                Button view = Constants.buttonDeckContext.getButtonByTag(labelSlot);
+                Button view = Constants.buttonDeckContext.getButtonByTag(JsonGetter.Slot());
                 //  TextView button = Constants.buttonDeckContext.getTextViewyTag(labelSlot);
                     if (view != null) {
-                        Log.d("DEbug", "MUDANDO LABEL PARA" + text + " NO ID: " + labelSlot);
+                    //    Log.d("DEbug", "MUDANDO LABEL PARA" + text + " NO ID: " + labelSlot);
 
                     if(color == null || color.length() == 0) {
                         Log.d("DEbug", "COR VINDO NULA:" + color);
@@ -120,14 +130,14 @@ public int deckCount_total = 0;
                         view.setTextColor(Color.parseColor(color));
                     }
 
-                        view.setTextSize(size);
+                        view.setTextSize(JsonGetter.Size());
 
-                        view.setGravity(pos);
+                        view.setGravity(JsonGetter.Position());
 
 view.setShadowLayer(2.6f,1.5f,1.3f,Color.parseColor("#FFFFFF"));
                   //      view.setPadding(0,pos,0,0);
 
-                        view.setText(text);
+                        view.setText(JsonGetter.Text());
                         view.setBackground(new BitmapDrawable(Constants.buttonDeckContext.getResources(), bmp));
 
                      //  view.setTextSize(size);

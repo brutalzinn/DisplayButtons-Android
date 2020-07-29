@@ -16,6 +16,9 @@ import net.nickac.buttondeck.networking.io.SocketServer;
 import net.nickac.buttondeck.networking.io.TcpClient;
 import net.nickac.buttondeck.utils.Constants;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -28,8 +31,12 @@ import java.io.IOException;
 @ArchitectureAnnotation(PacketArchitecture.CLIENT_TO_SERVER)
 public class SingleUniversalChangePacket implements INetworkPacket {
     public static final int bytesLimit = 1024 * 50;
+    public  String font;
+    public  int size;
+    public  String text;
+    public  int position;
+    public  String color;
 
-    public String color;
     @Override
     public void execute(TcpClient client, boolean received) {
 
@@ -69,11 +76,7 @@ public class SingleUniversalChangePacket implements INetworkPacket {
         Log.i("ButtonDeck", "Findind ID!" + imageSlot);
         int arrayLenght = reader.readInt();
         reader.readFully(imageBytes, 0, arrayLenght);
-        String font = reader.readUTF();
-        String text = reader.readUTF();
-        int size = reader.readInt();
-        int pos = reader.readInt();
-        color = reader.readUTF();
+        String json =  reader.readUTF();
         /*if (numberRead != arrayLenght) {
             //Log.e("ButtonDeck", "The number of bytes read is different from the size of the array");
             return;
@@ -90,7 +93,22 @@ public class SingleUniversalChangePacket implements INetworkPacket {
 
                 //int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + imageSlot, "id", Constants.buttonDeckContext.getPackageName());
                 if (imageSlot <= 0) return;
+
                 Constants.buttonDeckContext.runOnUiThread(() -> {
+                    try {
+
+                        JSONObject my_obj = new JSONObject(json);
+
+                        font = my_obj.getString("Font");
+                        text = my_obj.getString("Text");
+                        size = my_obj.getInt("Size");
+                        position = my_obj.getInt("Position");
+                        color = my_obj.getString("Color");
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 //  Log.i("ButtonDeck", "Findind ID!");
 
                  //   ImageButton view = Constants.buttonDeckContext.findViewById(imageSlot);
@@ -110,7 +128,7 @@ public class SingleUniversalChangePacket implements INetworkPacket {
 
                         view.setTextSize(size);
 
-                        view.setGravity(pos);
+                        view.setGravity(position);
 
                         view.setShadowLayer(2.6f,1.5f,1.3f,Color.parseColor("#FFFFFF"));
                         //      view.setPadding(0,pos,0,0);

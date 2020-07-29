@@ -13,8 +13,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+
 
 import net.nickac.buttondeck.networking.INetworkPacket;
 import net.nickac.buttondeck.networking.io.ArchitectureAnnotation;
@@ -23,6 +22,9 @@ import net.nickac.buttondeck.networking.io.SocketServer;
 import net.nickac.buttondeck.networking.io.TcpClient;
 import net.nickac.buttondeck.utils.Constants;
 import net.nickac.buttondeck.utils.Json;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -41,7 +43,15 @@ public class SlotUniversalChangeChunkPacket implements INetworkPacket {
     private static final int bytesLimit = 1024 * 50;
 public int deckCount_total = 0;
     public int deckCount_packets = 0;
-    public String color;
+
+    public  int slot;
+    public  int arraylenght;
+    public  byte [] internalbtpm;
+    public  String font;
+    public  int size;
+    public  String text;
+    public  int position;
+    public  String color;
     @Override
     public void execute(TcpClient client, boolean received) {
 
@@ -93,19 +103,11 @@ public int deckCount_total = 0;
     private void readDeckImage(DataInputStream reader) throws IOException {
         byte[] imageBytes = new byte[bytesLimit];
 
-        String json =  reader.readUTF();
+      String json =  reader.readUTF();
 
 
 
-            // reader.readFully(imageBytes, 0, JsonGetter.ArrayLenght());
-//        int labelSlot = reader.readInt();
-//        int arrayLength = reader.readInt();
-//        reader.readFully(imageBytes, 0, arrayLength);
-//        String font = reader.readUTF();
-//        String text = reader.readUTF();
-//        int size = reader.readInt();
-//        int pos = reader.readInt();
-//         color = reader.readUTF();
+
 
 
         if (Constants.buttonDeckContext != null) {
@@ -115,20 +117,34 @@ public int deckCount_total = 0;
             Thread th = new Thread(() -> {
 
 
-                Gson gson = new Gson();
-                Json.JsonTester JsonGetter= new Gson().fromJson(json, Json.JsonTester.class);
 
-                Bitmap bmp = BitmapFactory.decodeByteArray(imageBytes, 0, JsonGetter.arraylenght);
+                try {
+
+                    JSONObject my_obj = new JSONObject(json);
+
+                      internalbtpm = my_obj.getString("InternalBtpm").getBytes();
+                     font = my_obj.getString("Font");
+                     text = my_obj.getString("Text");
+                     size = my_obj.getInt("Size");
+                    position = my_obj.getInt("Position");
+                    color = my_obj.getString("Color");
+                     slot= my_obj.getInt("Slot");
+                     arraylenght = my_obj.getInt("ArrayLenght");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                Bitmap bmp = BitmapFactory.decodeByteArray(internalbtpm, 0, arraylenght);
 
                 ///    int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + imageSlot, "id", Constants.buttonDeckContext.getPackageName());
-                if (JsonGetter.slot <= 0) return;
+                if (slot <= 0) return;
                 Constants.buttonDeckContext.runOnUiThread(() -> {
-                Button view = Constants.buttonDeckContext.getButtonByTag(JsonGetter.slot);
+                Button view = Constants.buttonDeckContext.getButtonByTag(slot);
                 //  TextView button = Constants.buttonDeckContext.getTextViewyTag(labelSlot);
                     if (view != null) {
                     //    Log.d("DEbug", "MUDANDO LABEL PARA" + text + " NO ID: " + labelSlot);
 
-                    if(color == null || color.length() == 0) {
+                    if(color== null || color.length() == 0) {
                         Log.d("DEbug", "COR VINDO NULA:" + color);
 
                         view.setTextColor(Color.parseColor("#FFFFFF"));
@@ -138,14 +154,14 @@ public int deckCount_total = 0;
                         view.setTextColor(Color.parseColor(color));
                     }
 
-                        view.setTextSize(JsonGetter.size);
+                        view.setTextSize(size);
 
-                        view.setGravity(JsonGetter.position);
+                        view.setGravity(position);
 
 view.setShadowLayer(2.6f,1.5f,1.3f,Color.parseColor("#FFFFFF"));
                   //      view.setPadding(0,pos,0,0);
 
-                        view.setText(JsonGetter.text);
+                        view.setText(text);
                         view.setBackground(new BitmapDrawable(Constants.buttonDeckContext.getResources(), bmp));
 
                      //  view.setTextSize(size);

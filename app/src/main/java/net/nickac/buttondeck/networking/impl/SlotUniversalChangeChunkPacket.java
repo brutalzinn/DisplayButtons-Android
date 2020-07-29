@@ -4,7 +4,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.provider.CalendarContract;
+import android.support.annotation.RequiresApi;
 import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
@@ -14,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import com.migcomponents.migbase64.Base64;
 
 import net.nickac.buttondeck.networking.INetworkPacket;
 import net.nickac.buttondeck.networking.io.ArchitectureAnnotation;
@@ -29,6 +32,7 @@ import org.json.JSONObject;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+
 
 import static java.lang.String.valueOf;
 import static net.nickac.buttondeck.networking.impl.MatrizPacket.can_start;
@@ -46,7 +50,7 @@ public int deckCount_total = 0;
 
     public  int slot;
     public  int arraylenght;
-    public  byte [] internalbtpm;
+    public  byte [] internalbtpm = new byte[bytesLimit];
     public  String font;
     public  int size;
     public  String text;
@@ -100,12 +104,18 @@ public int deckCount_total = 0;
         }
     }
 
+
     private void readDeckImage(DataInputStream reader) throws IOException {
         byte[] imageBytes = new byte[bytesLimit];
 
-      String json =  reader.readUTF();
 
 
+
+        int imageSlot = reader.readInt();
+        Log.i("ButtonDeck", "Findind ID!" + imageSlot);
+        int arrayLenght = reader.readInt();
+        reader.readFully(imageBytes, 0, arrayLenght);
+        String json =  reader.readUTF();
 
 
 
@@ -118,28 +128,29 @@ public int deckCount_total = 0;
 
 
 
-                try {
 
-                    JSONObject my_obj = new JSONObject(json);
 
-                      internalbtpm = my_obj.getString("InternalBtpm").getBytes();
-                     font = my_obj.getString("Font");
-                     text = my_obj.getString("Text");
-                     size = my_obj.getInt("Size");
-                    position = my_obj.getInt("Position");
-                    color = my_obj.getString("Color");
-                     slot= my_obj.getInt("Slot");
-                     arraylenght = my_obj.getInt("ArrayLenght");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                Bitmap bmp = BitmapFactory.decodeByteArray(internalbtpm, 0, arraylenght);
+                Bitmap bmp = BitmapFactory.decodeByteArray(imageBytes, 0, arrayLenght);
 
                 ///    int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + imageSlot, "id", Constants.buttonDeckContext.getPackageName());
-                if (slot <= 0) return;
+                if (imageSlot <= 0) return;
                 Constants.buttonDeckContext.runOnUiThread(() -> {
-                Button view = Constants.buttonDeckContext.getButtonByTag(slot);
+
+                    try {
+
+                        JSONObject my_obj = new JSONObject(json);
+
+                        font = my_obj.getString("Font");
+                        text = my_obj.getString("Text");
+                        size = my_obj.getInt("Size");
+                        position = my_obj.getInt("Position");
+                        color = my_obj.getString("Color");
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                Button view = Constants.buttonDeckContext.getButtonByTag(imageSlot);
                 //  TextView button = Constants.buttonDeckContext.getTextViewyTag(labelSlot);
                     if (view != null) {
                     //    Log.d("DEbug", "MUDANDO LABEL PARA" + text + " NO ID: " + labelSlot);

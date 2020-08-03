@@ -13,14 +13,12 @@ import net.nickac.buttondeck.networking.impl.DeviceIdentityPacket;
 import net.nickac.buttondeck.networking.impl.HeartbeatPacket;
 import net.nickac.buttondeck.networking.impl.HelloPacket;
 import net.nickac.buttondeck.networking.impl.MatrizPacket;
-import net.nickac.buttondeck.networking.impl.SingleSlotImageChangePacket;
-import net.nickac.buttondeck.networking.impl.SingleSlotLabelChangePacket;
+import net.nickac.buttondeck.networking.impl.SingleUniversalChangePacket;
 import net.nickac.buttondeck.networking.impl.SlotImageChangeChunkPacket;
 import net.nickac.buttondeck.networking.impl.SlotImageClearChunkPacket;
 import net.nickac.buttondeck.networking.impl.SlotImageClearPacket;
-import net.nickac.buttondeck.networking.impl.SlotLabelButtonChangeChunkPacket;
+import net.nickac.buttondeck.networking.impl.SlotUniversalChangeChunkPacket;
 import net.nickac.buttondeck.networking.impl.SlotLabelButtonClearChunkPacket;
-import net.nickac.buttondeck.networking.impl.SlotLabelClearPacket;
 
 /**
  * Created by NickAc on 24/12/2017.
@@ -38,21 +36,20 @@ public class Constants {
     public static LongSparseArray<INetworkPacket> packetMap = new LongSparseArray<>();
 
     static {
-        registerPacket(new HelloPacket());
-        registerPacket(new DeviceIdentityPacket());
-        registerPacket(new HeartbeatPacket());
-        registerPacket(new DesktopDisconnectPacket());
-        registerPacket(new SingleSlotImageChangePacket());
-        registerPacket(new AlternativeHelloPacket());
-        registerPacket(new SlotImageChangeChunkPacket());
-        registerPacket(new ButtonInteractPacket(ButtonInteractPacket.ButtonAction.NONE));
-        registerPacket(new SlotImageClearPacket());
-        registerPacket(new SlotImageClearChunkPacket());
-        registerPacket(new MatrizPacket());
-        registerPacket(new SlotLabelButtonChangeChunkPacket());
-        registerPacket(new SlotLabelButtonClearChunkPacket());
-        registerPacket(new SingleSlotLabelChangePacket());
-        registerPacket(new SlotLabelClearPacket());
+        registerPacket(new HelloPacket()); // 1
+        registerPacket(new DeviceIdentityPacket()); //2
+        registerPacket(new HeartbeatPacket()); // 3
+        registerPacket(new DesktopDisconnectPacket()); //4
+        registerPacket(new SingleUniversalChangePacket()); //5
+        registerPacket(new AlternativeHelloPacket()); //6
+        registerPacket(new SlotImageChangeChunkPacket()); //7
+        registerPacket(new ButtonInteractPacket(ButtonInteractPacket.ButtonAction.NONE)); //8
+        registerPacket(new SlotImageClearPacket()); //9
+        registerPacket(new SlotImageClearChunkPacket()); //10
+        registerPacket(new MatrizPacket()); //11
+        registerPacket(new SlotUniversalChangeChunkPacket()); //12
+        registerPacket(new SlotLabelButtonClearChunkPacket()); //13
+
 
 
      //   registerPacket(new UsbInteractPacket());

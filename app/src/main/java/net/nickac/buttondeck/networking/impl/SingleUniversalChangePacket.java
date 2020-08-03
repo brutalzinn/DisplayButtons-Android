@@ -2,6 +2,7 @@ package net.nickac.buttondeck.networking.impl;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.widget.Button;
@@ -15,6 +16,9 @@ import net.nickac.buttondeck.networking.io.SocketServer;
 import net.nickac.buttondeck.networking.io.TcpClient;
 import net.nickac.buttondeck.utils.Constants;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -25,9 +29,13 @@ import java.io.IOException;
  * Please see the project root to find the LICENSE file.
  */
 @ArchitectureAnnotation(PacketArchitecture.CLIENT_TO_SERVER)
-public class SingleSlotImageChangePacket implements INetworkPacket {
+public class SingleUniversalChangePacket implements INetworkPacket {
     public static final int bytesLimit = 1024 * 50;
-
+    public  String font;
+    public  int size;
+    public  String text;
+    public  int position;
+    public  String color;
 
     @Override
     public void execute(TcpClient client, boolean received) {
@@ -40,7 +48,7 @@ public class SingleSlotImageChangePacket implements INetworkPacket {
 
     @Override
     public INetworkPacket clonePacket() {
-        return new SingleSlotImageChangePacket();
+        return new SingleUniversalChangePacket();
     }
 
     @Override
@@ -68,6 +76,7 @@ public class SingleSlotImageChangePacket implements INetworkPacket {
         Log.i("ButtonDeck", "Findind ID!" + imageSlot);
         int arrayLenght = reader.readInt();
         reader.readFully(imageBytes, 0, arrayLenght);
+        String json =  reader.readUTF();
         /*if (numberRead != arrayLenght) {
             //Log.e("ButtonDeck", "The number of bytes read is different from the size of the array");
             return;
@@ -84,7 +93,22 @@ public class SingleSlotImageChangePacket implements INetworkPacket {
 
                 //int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + imageSlot, "id", Constants.buttonDeckContext.getPackageName());
                 if (imageSlot <= 0) return;
+
                 Constants.buttonDeckContext.runOnUiThread(() -> {
+                    try {
+
+                        JSONObject my_obj = new JSONObject(json);
+
+                        font = my_obj.getString("Font");
+                        text = my_obj.getString("Text");
+                        size = my_obj.getInt("Size");
+                        position = my_obj.getInt("Position");
+                        color = my_obj.getString("Color");
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 //  Log.i("ButtonDeck", "Findind ID!");
 
                  //   ImageButton view = Constants.buttonDeckContext.findViewById(imageSlot);
@@ -92,9 +116,31 @@ public class SingleSlotImageChangePacket implements INetworkPacket {
                     Button view = Constants.buttonDeckContext.getButtonByTag(imageSlot);
                     if (view != null) {
                       Log.i("ButtonDeck", "Setting button!");
+                        if(color == null || color.length() == 0) {
+                            Log.d("DEbug", "COR VINDO NULA:" + color);
 
+                            view.setTextColor(Color.parseColor("#FFFFFF"));
+                        }else{
+                            Log.d("DEbug", "Mudando cor para :" + color);
+
+                            view.setTextColor(Color.parseColor(color));
+                        }
+
+                        view.setTextSize(size);
+
+                        view.setGravity(position);
+
+                        view.setShadowLayer(2.6f,1.5f,1.3f,Color.parseColor("#FFFFFF"));
+                        //      view.setPadding(0,pos,0,0);
+
+                        view.setText(text);
                     //    view.setScaleType(ImageView.ScaleType.FIT_XY);
                         view.setBackground(new BitmapDrawable(Constants.buttonDeckContext.getResources(), bmp));
+
+
+
+
+
                     }
                     System.gc();
                 });

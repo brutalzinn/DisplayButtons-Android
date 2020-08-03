@@ -47,10 +47,9 @@ public class SlotImageClearPacket implements INetworkPacket {
 
                         if (view != null) {
                             //Log.i("ButtonDeck", "Setting button!");
-                       view.setGravity(0);
-
-                      // view.setScaleType(ImageView.ScaleType.FIT_XY);
-                            view.setBackgroundResource(0);
+                            view.setBackground(null);
+                            view.setText("");
+                            view.setGravity(0x00000000);
                         }
                     //    System.gc();
                     });
@@ -74,7 +73,9 @@ public class SlotImageClearPacket implements INetworkPacket {
                             //Log.i("ButtonDeck", "Setting button!");
 
                            // view.setScaleType(ImageView.ScaleType.FIT_XY);
-                            view.setBackgroundResource(0);
+                            view.setBackground(null);
+                            view.setText("");
+                            view.setGravity(0x00000000);
                         }
                         System.gc();
                     });

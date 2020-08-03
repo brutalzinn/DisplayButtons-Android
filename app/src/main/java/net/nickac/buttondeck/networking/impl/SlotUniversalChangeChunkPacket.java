@@ -1,7 +1,12 @@
 package net.nickac.buttondeck.networking.impl;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.provider.CalendarContract;
+import android.support.annotation.RequiresApi;
 import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
@@ -10,17 +15,26 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+
+
+
 import net.nickac.buttondeck.networking.INetworkPacket;
 import net.nickac.buttondeck.networking.io.ArchitectureAnnotation;
 import net.nickac.buttondeck.networking.io.PacketArchitecture;
 import net.nickac.buttondeck.networking.io.SocketServer;
 import net.nickac.buttondeck.networking.io.TcpClient;
 import net.nickac.buttondeck.utils.Constants;
+import net.nickac.buttondeck.utils.Json;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+
+import static java.lang.String.valueOf;
 import static net.nickac.buttondeck.networking.impl.MatrizPacket.can_start;
 
 /**
@@ -29,10 +43,19 @@ import static net.nickac.buttondeck.networking.impl.MatrizPacket.can_start;
  * Please see the project root to find the LICENSE file.
  */
 @ArchitectureAnnotation(PacketArchitecture.CLIENT_TO_SERVER)
-public class SlotLabelButtonChangeChunkPacket implements INetworkPacket {
+public class SlotUniversalChangeChunkPacket implements INetworkPacket {
+    private static final int bytesLimit = 1024 * 50;
 public int deckCount_total = 0;
     public int deckCount_packets = 0;
-    public String color;
+
+    public  int slot;
+    public  int arraylenght;
+    public  byte [] internalbtpm = new byte[bytesLimit];
+    public  String font;
+    public  int size;
+    public  String text;
+    public  int position;
+    public  String color;
     @Override
     public void execute(TcpClient client, boolean received) {
 
@@ -49,7 +72,7 @@ public int deckCount_total = 0;
 
     @Override
     public INetworkPacket clonePacket() {
-        return new SlotLabelButtonChangeChunkPacket();
+        return new SlotUniversalChangeChunkPacket();
     }
 
     @Override
@@ -74,36 +97,65 @@ public int deckCount_total = 0;
                 }
                 if (imagesToRead < i) {
 
-                    Constants.buttonDeckContext.server.sendPacket(new SlotLabelButtonChangeChunkPacket());
+                    Constants.buttonDeckContext.server.sendPacket(new SlotUniversalChangeChunkPacket());
                 }
 
             }
         }
     }
 
-    private void readDeckImage(DataInputStream reader) throws IOException {
 
-        int labelSlot = reader.readInt();
-        String font = reader.readUTF();
-        String text = reader.readUTF();
-        int size = reader.readInt();
-        int pos = reader.readInt();
-         color = reader.readUTF();
+    private void readDeckImage(DataInputStream reader) throws IOException {
+        byte[] imageBytes = new byte[bytesLimit];
+
+
+
+
+        int imageSlot = reader.readInt();
+        Log.i("ButtonDeck", "Findind ID!" + imageSlot);
+        int arrayLenght = reader.readInt();
+        reader.readFully(imageBytes, 0, arrayLenght);
+        String json =  reader.readUTF();
+
+
 
 
         if (Constants.buttonDeckContext != null) {
+
+
             //Start a new thread to create a bitmap
             Thread th = new Thread(() -> {
 
+
+
+
+
+                Bitmap bmp = BitmapFactory.decodeByteArray(imageBytes, 0, arrayLenght);
+
                 ///    int id = Constants.buttonDeckContext.getResources().getIdentifier("button" + imageSlot, "id", Constants.buttonDeckContext.getPackageName());
-                if (labelSlot <= 0) return;
+                if (imageSlot <= 0) return;
                 Constants.buttonDeckContext.runOnUiThread(() -> {
-                Button view = Constants.buttonDeckContext.getButtonByTag(labelSlot);
+
+                    try {
+
+                        JSONObject my_obj = new JSONObject(json);
+
+                        font = my_obj.getString("Font");
+                        text = my_obj.getString("Text");
+                        size = my_obj.getInt("Size");
+                        position = my_obj.getInt("Position");
+                        color = my_obj.getString("Color");
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                Button view = Constants.buttonDeckContext.getButtonByTag(imageSlot);
                 //  TextView button = Constants.buttonDeckContext.getTextViewyTag(labelSlot);
                     if (view != null) {
-                        Log.d("DEbug", "MUDANDO LABEL PARA" + text + " NO ID: " + labelSlot);
+                    //    Log.d("DEbug", "MUDANDO LABEL PARA" + text + " NO ID: " + labelSlot);
 
-                    if(color == null || color.length() == 0) {
+                    if(color== null || color.length() == 0) {
                         Log.d("DEbug", "COR VINDO NULA:" + color);
 
                         view.setTextColor(Color.parseColor("#FFFFFF"));
@@ -115,12 +167,13 @@ public int deckCount_total = 0;
 
                         view.setTextSize(size);
 
-                        view.setGravity(pos);
+                        view.setGravity(position);
 
 view.setShadowLayer(2.6f,1.5f,1.3f,Color.parseColor("#FFFFFF"));
                   //      view.setPadding(0,pos,0,0);
 
                         view.setText(text);
+                        view.setBackground(new BitmapDrawable(Constants.buttonDeckContext.getResources(), bmp));
 
                      //  view.setTextSize(size);
                       //view.setTextColor(color);

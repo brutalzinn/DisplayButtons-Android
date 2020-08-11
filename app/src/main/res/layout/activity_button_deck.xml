@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:gravity="fill_vertical"
 
-    android:shrinkColumns="*" > <!-- this makes the difference -->
+    android:shrinkColumns="*"
 
     tools:context=".ButtonDeckActivity" >
 

@@ -38,7 +38,7 @@ public class AdsMob extends AppCompatActivity {
             public void onAdClosed() {
                 // Load the next interstitial.
                 //mInterstitialAd.loadAd(new AdRequest.Builder().build());
-               startActivity(new Intent(Constants.AdsMobContext, MainActivity.class));
+               startActivity(new Intent(AdsMob.this, MainActivity.class));
 
             }
 

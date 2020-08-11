@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MODE = "0";
     public static String mode_init = "0";
     public static String mode_init_ip = "127.0.0.1";
-    private InterstitialAd mInterstitialAd;
+
 
     public static boolean isEmulator() {
         return Build.FINGERPRINT.startsWith("generic")
@@ -58,89 +58,98 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.admob);
 
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-                setContentView(R.layout.activity_principal_menu);
-            }
-        });
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-2620537343731622~6773279064");
-        Button config_button = findViewById(R.id.main_action_config);
-        config_button.setOnClickListener (new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ConfigActivity.class);
-            //    intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "1");
-                startActivity(intent);
-              //  setContentView(R.layout.activity_config_app);
-            }
-        });
-        View.OnClickListener actionHandle = null;
+             setContentView(R.layout.activity_principal_menu);
+
+
+
+
+                Button config_button = findViewById(R.id.main_action_config);
+                config_button.setOnClickListener (new View.OnClickListener() {
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(), ConfigActivity.class);
+                        //    intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "1");
+                        startActivity(intent);
+                        //  setContentView(R.layout.activity_config_app);
+                    }
+                });
+                View.OnClickListener actionHandle = null;
 
 //        rescanButton.setOnClickListener(view -> scanDevices());
 
-        String mode = getIntent().getStringExtra("mode");
-try {
-    if (mode.length() > 0) {
+                String mode = getIntent().getStringExtra("mode");
+                try {
+                    if (mode.length() > 0) {
 
-        Intent intent = new Intent(getApplicationContext(), ButtonDeckActivity.class);
-        intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "1");
-        startActivity(intent);
-        mode_init = "1";
-        Log.d("debug", "ENTRANDO NO MODO USB AUTOMATICAMENTE.. " + mode);
-    }
-
-}catch (Exception e){
-    println("DEU ERRO AQUI. MAS PASSO BEM");
-
-}
-
-
-
-        actionHandle = v -> {
-            switch (v.getId()) {
-                case R.id.button_socket:
-                    setContentView(R.layout.activity_main);
-                    Log.d("DEBUG","CALLED SOCKET WIFI");
-
-
-                    TextView textView = findViewById(R.id.protocolVersionTextView);
-                    textView.setText(textView.getText().toString().replace("{0}", String.valueOf(Constants.PROTOCOL_VERSION)));
-
-                    Button rescanButton = findViewById(R.id.rescanButton);
-
-                    boolean alreadyScanned = getPreferences(MODE_PRIVATE).getBoolean(autoScanPref, false);
-                    rescanButton.setVisibility(!alreadyScanned ? View.INVISIBLE : View.VISIBLE);
-                    rescanButton.setOnClickListener(view -> scanDevices());
-                    mode_init = "0";
-                   if (!alreadyScanned) {
-
-
-
-
-                        scanDevices();
-
+                        Intent intent = new Intent(getApplicationContext(), ButtonDeckActivity.class);
+                        intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "1");
+                        startActivity(intent);
+                        mode_init = "1";
+                        Log.d("debug", "ENTRANDO NO MODO USB AUTOMATICAMENTE.. " + mode);
                     }
 
-                    break;
+                }catch (Exception e){
+                    println("DEU ERRO AQUI. MAS PASSO BEM");
 
-                case R.id.button_usb:
-                    Intent intent = new Intent(getApplicationContext(), ButtonDeckActivity.class);
-                //    intent.putExtra(ButtonDeckActivity.EXTRA_MODE, 1);
-                    intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "1");
-                    mode_init = "1";
-                    startActivity(intent);
+                }
 
 
-                    break;
+
+                actionHandle = v -> {
+                    switch (v.getId()) {
+                        case R.id.button_socket:
+                            setContentView(R.layout.activity_main);
+                            Log.d("DEBUG","CALLED SOCKET WIFI");
+
+
+                            TextView textView = findViewById(R.id.protocolVersionTextView);
+                            textView.setText(textView.getText().toString().replace("{0}", String.valueOf(Constants.PROTOCOL_VERSION)));
+
+                            Button rescanButton = findViewById(R.id.rescanButton);
+
+                            boolean alreadyScanned = getPreferences(MODE_PRIVATE).getBoolean(autoScanPref, false);
+                            rescanButton.setVisibility(!alreadyScanned ? View.INVISIBLE : View.VISIBLE);
+                            rescanButton.setOnClickListener(view -> scanDevices());
+                            mode_init = "0";
+                            if (!alreadyScanned) {
+
+
+
+
+                                scanDevices();
+
+                            }
+
+                            break;
+
+                        case R.id.button_usb:
+                            Intent intent = new Intent(getApplicationContext(), ButtonDeckActivity.class);
+                            //    intent.putExtra(ButtonDeckActivity.EXTRA_MODE, 1);
+                            intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "1");
+                            mode_init = "1";
+                            startActivity(intent);
+
+
+                            break;
+                    }
+                };
+
+                (findViewById(R.id.button_usb)).setOnClickListener(actionHandle);
+
+                (findViewById(R.id.button_socket)).setOnClickListener(actionHandle);
+
+
+
+
+
+
+
+
+
+
             }
-        };
 
-        (findViewById(R.id.button_usb)).setOnClickListener(actionHandle);
 
-        (findViewById(R.id.button_socket)).setOnClickListener(actionHandle);
         //    devices.
         // Toast.makeText(this, "Connecting to " + devices.get(0).getDeviceName() + "!", Toast.LENGTH_LONG).show();
         //   Toast.makeText(getApplicationContext(), "Connecting por usb !", Toast.LENGTH_LONG).show();
@@ -148,7 +157,7 @@ try {
         //               startActivity(intent);
 
 
-    }
+
 
 
     @Override

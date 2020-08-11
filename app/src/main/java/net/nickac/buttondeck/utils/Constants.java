@@ -4,7 +4,9 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.util.LongSparseArray;
 
+import net.nickac.buttondeck.AdsMob;
 import net.nickac.buttondeck.ButtonDeckActivity;
+import net.nickac.buttondeck.MainActivity;
 import net.nickac.buttondeck.networking.INetworkPacket;
 import net.nickac.buttondeck.networking.impl.AlternativeHelloPacket;
 import net.nickac.buttondeck.networking.impl.ButtonInteractPacket;
@@ -27,6 +29,8 @@ import net.nickac.buttondeck.networking.impl.SlotLabelButtonClearChunkPacket;
  */
 public class Constants {
     public static ButtonDeckActivity buttonDeckContext;
+    public static AdsMob AdsMobContext;
+    public static MainActivity MainActivityContext;
     public static String sharedPreferencesName = "ApplicationData";
     public static SharedPreferences sharedPreferences;
 

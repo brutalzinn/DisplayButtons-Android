@@ -17,7 +17,7 @@
         <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-xxxxxxxxxxxxxxxx~yyyyyyyyyy"/>
+            android:value="ca-app-pub-3940256099942544~1033173712"/>
 
         <activity
             android:name=".ButtonDeckActivity"
@@ -28,16 +28,23 @@
             android:usesCleartextTraffic="true"
             android:configChanges="keyboardHidden|orientation|screenSize" />
 
-
         <activity
-            android:name=".MainActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:usesCleartextTraffic="true">
+            android:name=".AdsMob"
+            android:usesCleartextTraffic="true"
+
+            android:configChanges="keyboardHidden|orientation|screenSize" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:usesCleartextTraffic="true">
+
 
         </activity>
     </application>

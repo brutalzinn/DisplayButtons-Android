@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
 
                         case R.id.button_usb:
-                            Intent intent = new Intent(getApplicationContext(), ButtonDeckActivity.class);
+                            Intent intent = new Intent(MainActivity.this, ButtonDeckActivity.class);
                             //    intent.putExtra(ButtonDeckActivity.EXTRA_MODE, 1);
                             intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "1");
                             mode_init = "1";

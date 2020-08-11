@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.provider.CalendarContract;
-import android.support.annotation.RequiresApi;
 import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;

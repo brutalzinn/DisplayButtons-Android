@@ -4,13 +4,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 import net.nickac.buttondeck.networking.io.SocketServer;
 import net.nickac.buttondeck.utils.Constants;
@@ -28,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MODE = "0";
     public static String mode_init = "0";
     public static String mode_init_ip = "127.0.0.1";
+    private InterstitialAd mInterstitialAd;
+
     public static boolean isEmulator() {
         return Build.FINGERPRINT.startsWith("generic")
                 || Build.FINGERPRINT.startsWith("unknown")
@@ -48,8 +58,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_principal_menu);
+        setContentView(R.layout.admob);
 
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+                setContentView(R.layout.activity_principal_menu);
+            }
+        });
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-2620537343731622~6773279064");
         Button config_button = findViewById(R.id.main_action_config);
         config_button.setOnClickListener (new View.OnClickListener() {
             public void onClick(View v) {

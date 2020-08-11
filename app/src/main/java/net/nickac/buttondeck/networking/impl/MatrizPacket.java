@@ -1,17 +1,8 @@
 package net.nickac.buttondeck.networking.impl;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Looper;
 import android.util.Log;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 
-import net.nickac.buttondeck.ButtonDeckActivity;
 import net.nickac.buttondeck.MainActivity;
-import net.nickac.buttondeck.R;
 import net.nickac.buttondeck.networking.INetworkPacket;
 import net.nickac.buttondeck.networking.io.ArchitectureAnnotation;
 import net.nickac.buttondeck.networking.io.PacketArchitecture;
@@ -22,9 +13,7 @@ import net.nickac.buttondeck.utils.Constants;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.logging.Handler;
 
-import static android.support.v4.content.ContextCompat.startActivity;
 import static java.lang.Integer.valueOf;
 
 /**

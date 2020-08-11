@@ -250,7 +250,7 @@ Log.d("DEBUG", "TAMANHO DA TELA:"+ height );
     protected void onCreate(Bundle savedInstanceState) {
         //Default activity creation
         super.onCreate(savedInstanceState);
-
+//        setContentView(R.layout.activity_main);
         //Request full screen
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,

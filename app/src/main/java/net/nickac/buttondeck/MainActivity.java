@@ -58,92 +58,81 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_principal_menu);
 
-             setContentView(R.layout.activity_principal_menu);
-
-
-
-
-                Button config_button = findViewById(R.id.main_action_config);
-                config_button.setOnClickListener (new View.OnClickListener() {
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getApplicationContext(), ConfigActivity.class);
-                        //    intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "1");
-                        startActivity(intent);
-                        //  setContentView(R.layout.activity_config_app);
-                    }
-                });
-                View.OnClickListener actionHandle = null;
+        Button config_button = findViewById(R.id.main_action_config);
+        config_button.setOnClickListener (new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ConfigActivity.class);
+                //    intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "1");
+                startActivity(intent);
+                //  setContentView(R.layout.activity_config_app);
+            }
+        });
+        View.OnClickListener actionHandle = null;
 
 //        rescanButton.setOnClickListener(view -> scanDevices());
 
-                String mode = getIntent().getStringExtra("mode");
-                try {
-                    if (mode.length() > 0) {
+        String mode = getIntent().getStringExtra("mode");
+        try {
+            if (mode.length() > 0) {
 
-                        Intent intent = new Intent(getApplicationContext(), ButtonDeckActivity.class);
-                        intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "1");
-                        startActivity(intent);
-                        mode_init = "1";
-                        Log.d("debug", "ENTRANDO NO MODO USB AUTOMATICAMENTE.. " + mode);
+                Intent intent = new Intent(getApplicationContext(), ButtonDeckActivity.class);
+                intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "1");
+                startActivity(intent);
+                mode_init = "1";
+                Log.d("debug", "ENTRANDO NO MODO USB AUTOMATICAMENTE.. " + mode);
+            }
+
+        }catch (Exception e){
+            println("DEU ERRO AQUI. MAS PASSO BEM");
+
+        }
+
+
+
+        actionHandle = v -> {
+            switch (v.getId()) {
+                case R.id.button_socket:
+                    setContentView(R.layout.activity_main);
+                    Log.d("DEBUG","CALLED SOCKET WIFI");
+
+
+                    TextView textView = findViewById(R.id.protocolVersionTextView);
+                    textView.setText(textView.getText().toString().replace("{0}", String.valueOf(Constants.PROTOCOL_VERSION)));
+
+                    Button rescanButton = findViewById(R.id.rescanButton);
+
+                    boolean alreadyScanned = getPreferences(MODE_PRIVATE).getBoolean(autoScanPref, false);
+                    rescanButton.setVisibility(!alreadyScanned ? View.INVISIBLE : View.VISIBLE);
+                    rescanButton.setOnClickListener(view -> scanDevices());
+                    mode_init = "0";
+                    if (!alreadyScanned) {
+
+
+
+
+                        scanDevices();
+
                     }
 
-                }catch (Exception e){
-                    println("DEU ERRO AQUI. MAS PASSO BEM");
+                    break;
 
-                }
-
-
-
-                actionHandle = v -> {
-                    switch (v.getId()) {
-                        case R.id.button_socket:
-                            setContentView(R.layout.activity_main);
-                            Log.d("DEBUG","CALLED SOCKET WIFI");
+                case R.id.button_usb:
+                    Intent intent = new Intent(getApplicationContext(), ButtonDeckActivity.class);
+                    //    intent.putExtra(ButtonDeckActivity.EXTRA_MODE, 1);
+                    intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "1");
+                    mode_init = "1";
+                    startActivity(intent);
 
 
-                            TextView textView = findViewById(R.id.protocolVersionTextView);
-                            textView.setText(textView.getText().toString().replace("{0}", String.valueOf(Constants.PROTOCOL_VERSION)));
+                    break;
+            }
+        };
 
-                            Button rescanButton = findViewById(R.id.rescanButton);
+        (findViewById(R.id.button_usb)).setOnClickListener(actionHandle);
 
-                            boolean alreadyScanned = getPreferences(MODE_PRIVATE).getBoolean(autoScanPref, false);
-                            rescanButton.setVisibility(!alreadyScanned ? View.INVISIBLE : View.VISIBLE);
-                            rescanButton.setOnClickListener(view -> scanDevices());
-                            mode_init = "0";
-                            if (!alreadyScanned) {
-
-
-
-
-                                scanDevices();
-
-                            }
-
-                            break;
-
-                        case R.id.button_usb:
-                            Intent intent = new Intent(MainActivity.this, ButtonDeckActivity.class);
-                            //    intent.putExtra(ButtonDeckActivity.EXTRA_MODE, 1);
-                            intent.putExtra(ButtonDeckActivity.EXTRA_MODE, "1");
-                            mode_init = "1";
-                            startActivity(intent);
-
-
-                            break;
-                    }
-                };
-
-                (findViewById(R.id.button_usb)).setOnClickListener(actionHandle);
-
-                (findViewById(R.id.button_socket)).setOnClickListener(actionHandle);
-
-
-
-
-
-
-
+        (findViewById(R.id.button_socket)).setOnClickListener(actionHandle);
 
 
 

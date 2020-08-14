@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,9 +23,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.nickac.buttondeck.networking.impl.ButtonInteractPacket;
 import net.nickac.buttondeck.networking.impl.HelloPacket;
@@ -217,11 +220,59 @@ Log.d("DEBUG", "TAMANHO DA TELA:"+ height );
 
 
                 tablerow.addView(button);
+
                   //  tablerow.addView(textview);
 //                buttons[row][col] = button;
                 }
 
             }
+
+
+        View parentView = Constants.buttonDeckContext.findViewById( R.id.relativelayoutactivybuttons );
+
+
+
+
+
+
+                parentView.setOnTouchListener(new OnSwipeTouchListener(ButtonDeckActivity.this) {
+                    public void onSwipeTop() {
+                        Toast.makeText(ButtonDeckActivity.this, "top", Toast.LENGTH_SHORT).show();
+                    }
+                    public void onSwipeRight() {
+                        Log.d("SWIPE", "RIGHHHHHHHHHHHHHT");
+
+
+                        parentView.setRight( parentView.getRight()  - 250);
+                        parentView.invalidate();
+                    }
+                    public void onSwipeLeft() {
+                  Log.d("SWIPE", "LEFFFFFFFT");
+
+                   //     WindowManager windowsManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE)
+
+
+//                        windowManager.updateViewLayout(myImageView, windowParams);
+
+                        // layoutParams.leftMargin = X - _xDelta;
+                        //  layoutParams.topMargin = Y - _yDelta;
+
+
+                        parentView.setLeft( parentView.getLeft() -250);
+                        parentView.invalidate();
+                    }
+                    public void onSwipeBottom() {
+                        Toast.makeText(ButtonDeckActivity.this, "bottom", Toast.LENGTH_SHORT).show();
+                    }
+
+                });
+
+
+
+
+
+
+
 
 
 

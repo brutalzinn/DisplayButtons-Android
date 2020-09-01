@@ -24,8 +24,11 @@ import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+<<<<<<< HEAD
 
 import androidx.appcompat.app.AppCompatActivity;
+=======
+>>>>>>> parent of 0009499... comitando
 
 import net.nickac.buttondeck.networking.impl.ButtonInteractPacket;
 import net.nickac.buttondeck.networking.impl.HelloPacket;

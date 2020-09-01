@@ -4,7 +4,11 @@
     android:layout_height="wrap_content"
     android:gravity="fill_vertical"
 
+<<<<<<< HEAD
     android:shrinkColumns="*"
+=======
+    android:shrinkColumns="*" > <!-- this makes the difference -->
+>>>>>>> parent of 0009499... comitando
 
     tools:context=".ButtonDeckActivity" >
 

@@ -140,7 +140,7 @@ int id = 1 ;
 
 
 
-                    int optimalSize = ((height - ( 20 *  2)) - (5 * 2)) / 3;
+                    int optimalSize = (height) /2;
 Log.d("DEBUG", "TAMANHO DA TELA:"+ height );
                     int optimalFinal = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, optimalSize, getResources().getDisplayMetrics());
 
@@ -157,8 +157,8 @@ Log.d("DEBUG", "TAMANHO DA TELA:"+ height );
                         button.setMaxWidth(optimalSize);
                         button.setMaxHeight(optimalSize);
 
-                        params.width = optimalFinal;
-                        params.height = optimalFinal;
+                        params.width = optimalFinal + 10;
+                        params.height = optimalFinal + 10;
                         button.setLayoutParams(params);
 
                         int finalI = id - 1;

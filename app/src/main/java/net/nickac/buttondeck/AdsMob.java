@@ -40,7 +40,8 @@ private MySession session;
     private void updateADS(){
         mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
         if(!session.isUserPurchased()) {
-            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+            startActivity(new Intent(AdsMob.this, MainActivity.class));
+            //  mInterstitialAd.loadAd(new AdRequest.Builder().build());
             mInterstitialAd.setAdListener(new AdListener() {
 
                 @Override

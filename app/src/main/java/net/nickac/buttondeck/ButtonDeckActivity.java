@@ -101,17 +101,20 @@ return column_var;
     public void populateButtons(int what_is_the_mode) {
         TableLayout table = (TableLayout) findViewById(R.id.tableForButtons);
 int id = 1 ;
+
+int calc = NUM_COLS * NUM_ROWS;
 //erro corrigido 08/06/2020
         for (int row = 0; row < NUM_ROWS; row++) {
             tablerow = new TableRow(this);
             tablerow.setLayoutParams(new TableLayout.LayoutParams(
-                    TableLayout.LayoutParams.WRAP_CONTENT,
-                    TableLayout.LayoutParams.WRAP_CONTENT,
+                    TableLayout.LayoutParams.MATCH_PARENT,
+                    TableLayout.LayoutParams.MATCH_PARENT,
                     1.0f));
 
             tablerow.setGravity(Gravity.CENTER_VERTICAL);
             table.addView(tablerow);
                 for (int col = 0; col < NUM_COLS; col++){
+
 //            for (int col = 0; col < NUM_COLS; col++){
 
                 final int FINAL_COL = col;
@@ -119,48 +122,40 @@ int id = 1 ;
 
                 Button button = new Button(this);
 
-
-
                 button.setTag("button"+id);
-
-             //   textview.setTag("textview"+id);
-
-
-
-
-
-
-
-
 
                         Display display = getWindowManager().getDefaultDisplay();
                          width = display.getWidth();
                          height = display.getHeight();
                          Log.d("LOG","USANDO SDK antigo");
 
+//                  int optimalSize = ((height - (85 * 2)) - (40 * 3)) / 3;
+                    int optimalSize = ((height - (85 * 2)) - (40 * 3)) / 2;
+                    Log.d("DEBUG", "OptimalSize:"+ optimalSize );
 
-
-                    int optimalSize = (height) /2;
-Log.d("DEBUG", "TAMANHO DA TELA:"+ height );
+                    Log.d("DEBUG", "TAMANHO DA TELA:"+ height );
                     int optimalFinal = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, optimalSize, getResources().getDisplayMetrics());
-
-
-
                     final boolean[] mDownTouch = {false};
 
-                    //ImageButton button = getImageButton(i + 1);
                     if (button != null) {
-
-            //            button.setLayoutParams(params);
                         TableRow.LayoutParams params = new TableRow.LayoutParams();
-                    //  button.setAdjustViewBounds(true);
                         button.setMaxWidth(optimalSize);
                         button.setMaxHeight(optimalSize);
+params.rightMargin = 10;
+params.bottomMargin = 10;
+                        params.width = optimalFinal;
+                     //
+                        if(calc > 4)
 
-                        params.width = optimalFinal + 10;
-                        params.height = optimalFinal + 10;
+                        {
+                            params.height = optimalFinal + 60;
+
+                        }else{
+                            params.height = optimalFinal + 122;
+                        }
+
                         button.setLayoutParams(params);
-
+                        Log.d("DEBUG", "optimalFinal:"+ optimalFinal );
                         int finalI = id - 1;
                         button.setOnTouchListener((view, event) -> {
                             switch (event.getAction()) {
@@ -216,8 +211,8 @@ Log.d("DEBUG", "TAMANHO DA TELA:"+ height );
                 button.setPadding(0, 0, 0, 0);
 
 
+                    tablerow.addView(button);
 
-                tablerow.addView(button);
                   //  tablerow.addView(textview);
 //                buttons[row][col] = button;
                 }

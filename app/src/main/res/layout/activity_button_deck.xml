@@ -1,14 +1,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:gravity="fill_vertical"
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     android:shrinkColumns="*"
 =======
     android:shrinkColumns="*" > <!-- this makes the difference -->
 >>>>>>> parent of 0009499... comitando
+=======
+
+>>>>>>> hotifx
 
     tools:context=".ButtonDeckActivity" >
 
@@ -17,8 +21,8 @@
         android:id="@+id/tableForButtons"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
-
+        android:orientation="horizontal"
+        android:shrinkColumns="*"
         android:stretchColumns="*">
 
     </TableLayout></RelativeLayout>

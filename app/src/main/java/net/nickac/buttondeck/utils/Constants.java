@@ -33,7 +33,7 @@ public class Constants {
     public static MainActivity MainActivityContext;
     public static String sharedPreferencesName = "ApplicationData";
     public static SharedPreferences sharedPreferences;
-
+    public static final String LICENSE_KEY = "ApplicationData";
     public static String DEVICE_GUID_PREF = "device_guid";
     public static int PROTOCOL_VERSION = 12;
     public static int PORT_NUMBER = 5095;

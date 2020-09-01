@@ -36,7 +36,10 @@ public class SingleUniversalChangePacket implements INetworkPacket {
     public  String text;
     public  int position;
     public  String color;
-
+    public float dx;
+    public float dy;
+    public float radius;
+    public String shadow_color;
     @Override
     public void execute(TcpClient client, boolean received) {
 
@@ -104,7 +107,10 @@ public class SingleUniversalChangePacket implements INetworkPacket {
                         size = my_obj.getInt("Size");
                         position = my_obj.getInt("Position");
                         color = my_obj.getString("Color");
-
+                        radius = (float) my_obj.getDouble("Stroke_radius");
+                        dx = (float) my_obj.getDouble("Stroke_dx");
+                        dy = (float) my_obj.getDouble("Stroke_dy");
+                        shadow_color = my_obj.getString("Stroke_color");
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -130,8 +136,7 @@ public class SingleUniversalChangePacket implements INetworkPacket {
 
                         view.setGravity(position);
 
-                        view.setShadowLayer(2.6f,1.5f,1.3f,Color.parseColor("#FFFFFF"));
-                        //      view.setPadding(0,pos,0,0);
+                        view.setShadowLayer(radius,dx,dy,Color.parseColor(shadow_color));//      view.setPadding(0,pos,0,0);
 
                         view.setText(text);
                     //    view.setScaleType(ImageView.ScaleType.FIT_XY);

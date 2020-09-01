@@ -54,6 +54,11 @@ public int deckCount_total = 0;
     public  int size;
     public  String text;
     public  int position;
+    public float dx;
+            public float dy;
+            public float radius;
+            public String shadow_color;
+
     public  String color;
     @Override
     public void execute(TcpClient client, boolean received) {
@@ -145,6 +150,11 @@ public int deckCount_total = 0;
                         position = my_obj.getInt("Position");
                         color = my_obj.getString("Color");
 
+                  radius = (float) my_obj.getDouble("Stroke_radius");
+                        dx = (float) my_obj.getDouble("Stroke_dx");
+                        dy = (float) my_obj.getDouble("Stroke_dy");
+                        shadow_color = my_obj.getString("Stroke_color");
+
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -163,14 +173,23 @@ public int deckCount_total = 0;
 
                         view.setTextColor(Color.parseColor(color));
                     }
+                        if(shadow_color== null || color.length() == 0) {
+                            shadow_color = "#FFFFFF";
+                        }
 
                         view.setTextSize(size);
 
                         view.setGravity(position);
 
-view.setShadowLayer(2.6f,1.5f,1.3f,Color.parseColor("#FFFFFF"));
+view.setShadowLayer(radius,dx,dy,Color.parseColor(shadow_color));
                   //      view.setPadding(0,pos,0,0);
 
+                        Log.d("DEbug", "Radius :" + radius);
+
+                        Log.d("DEbug", "Dx :" + dx);
+
+                        Log.d("DEbug", "Dy :" + dy);
+                        Log.d("DEbug", "Color Shadow :" + shadow_color);
                         view.setText(text);
                         view.setBackground(new BitmapDrawable(Constants.buttonDeckContext.getResources(), bmp));
 

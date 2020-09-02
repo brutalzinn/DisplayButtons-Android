@@ -4,7 +4,15 @@
     android:layout_height="match_parent"
     android:gravity="fill_vertical"
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+    android:shrinkColumns="*"
+=======
+    android:shrinkColumns="*" > <!-- this makes the difference -->
+>>>>>>> parent of 0009499... comitando
+=======
 
+>>>>>>> hotifx
 
     tools:context=".ButtonDeckActivity" >
 

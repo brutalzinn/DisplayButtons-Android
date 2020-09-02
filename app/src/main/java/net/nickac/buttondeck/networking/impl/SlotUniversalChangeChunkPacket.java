@@ -58,6 +58,7 @@ public int deckCount_total = 0;
             public float dy;
             public float radius;
             public String shadow_color;
+            public boolean is_stroke;
 
     public  String color;
     @Override
@@ -154,6 +155,7 @@ public int deckCount_total = 0;
                         dx = (float) my_obj.getDouble("Stroke_dx");
                         dy = (float) my_obj.getDouble("Stroke_dy");
                         shadow_color = my_obj.getString("Stroke_color");
+                        is_stroke = my_obj.getBoolean("IsStroke");
 
 
                     } catch (JSONException e) {
@@ -180,8 +182,11 @@ public int deckCount_total = 0;
                         view.setTextSize(size);
 
                         view.setGravity(position);
-
-view.setShadowLayer(radius,dx,dy,Color.parseColor(shadow_color));
+if(is_stroke) {
+    view.setShadowLayer(radius, dx, dy, Color.parseColor(shadow_color));
+}else{
+    view.setShadowLayer(0,0,0,0);
+}
                   //      view.setPadding(0,pos,0,0);
 
                         Log.d("DEbug", "Radius :" + radius);

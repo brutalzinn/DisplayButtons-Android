@@ -40,6 +40,7 @@ public class SingleUniversalChangePacket implements INetworkPacket {
     public float dy;
     public float radius;
     public String shadow_color;
+    public boolean is_stroke;
     @Override
     public void execute(TcpClient client, boolean received) {
 
@@ -111,7 +112,7 @@ public class SingleUniversalChangePacket implements INetworkPacket {
                         dx = (float) my_obj.getDouble("Stroke_dx");
                         dy = (float) my_obj.getDouble("Stroke_dy");
                         shadow_color = my_obj.getString("Stroke_color");
-
+                        is_stroke = my_obj.getBoolean("IsStroke");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -136,8 +137,11 @@ public class SingleUniversalChangePacket implements INetworkPacket {
 
                         view.setGravity(position);
 
-                        view.setShadowLayer(radius,dx,dy,Color.parseColor(shadow_color));//      view.setPadding(0,pos,0,0);
-
+                        if(is_stroke) {
+                            view.setShadowLayer(radius, dx, dy, Color.parseColor(shadow_color));
+                        }else{
+                            view.setShadowLayer(0,0,0,0);
+                        }
                         view.setText(text);
                     //    view.setScaleType(ImageView.ScaleType.FIT_XY);
                         view.setBackground(new BitmapDrawable(Constants.buttonDeckContext.getResources(), bmp));

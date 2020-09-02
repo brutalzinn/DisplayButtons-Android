@@ -105,7 +105,7 @@ return column_var;
         TableLayout table = (TableLayout) findViewById(R.id.tableForButtons);
 int id = 1 ;
 
-int calc = NUM_COLS * NUM_ROWS;
+
 //erro corrigido 08/06/2020
         for (int row = 0; row < NUM_ROWS; row++) {
             tablerow = new TableRow(this);
@@ -148,10 +148,10 @@ params.rightMargin = 10;
 params.bottomMargin = 10;
                         params.width = optimalFinal;
                      //
-                        if(calc > 4)
+                        if(NUM_ROWS > 2)
 
                         {
-                            params.height = optimalFinal + 60;
+                            params.height = optimalFinal + 40;
 
                         }else{
                             params.height = optimalFinal + 122;

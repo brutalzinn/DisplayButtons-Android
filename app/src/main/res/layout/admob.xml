@@ -18,5 +18,6 @@
         android:layout_marginBottom="674dp"
         app:layout_constraintBottom_toBottomOf="parent"
         adSize="INTERSTITIAL"
+
         app:layout_constraintVertical_bias="0.284" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">DisplayButtons</string>
+    <string name="app_name" translatable="false">Display Buttons</string>
     <string name="default_status">Auto-connecting…</string>
     <string name="protocol_version">Protocol version: {0}</string>
     <string name="devices_found_none">No devices found!</string>
@@ -10,4 +10,7 @@
 
 <string name="action_settings">Settings</string>
 <string name="hello_world">Hello world!</string>
+
+    <string name="admob_appid">ca-app-pub-2620537343731622~6773279064</string>
+    <string name="admob_banner_id">ca-app-pub-2620537343731622/5822979269</string>
 </resources>

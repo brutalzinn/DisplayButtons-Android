@@ -38,15 +38,15 @@ private MySession session;
 
         }
     private void updateADS(){
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-        if(!session.isUserPurchased()) {
-            startActivity(new Intent(AdsMob.this, MainActivity.class));
-            //  mInterstitialAd.loadAd(new AdRequest.Builder().build());
+      //  mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.setAdUnitId("@string/admob_appid");
+          //  startActivity(new Intent(AdsMob.this, MainActivity.class));
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());
             mInterstitialAd.setAdListener(new AdListener() {
 
                 @Override
                 public void onAdLoaded() {
-                    mInterstitialAd.show();
+                  mInterstitialAd.show();
                     // Code to be executed when an ad finishes loading.
                 }
 
@@ -59,11 +59,7 @@ private MySession session;
                 }
 
             });
-        }else{
-            startActivity(new Intent(AdsMob.this, MainActivity.class));
 
-
-        }
 
 
 

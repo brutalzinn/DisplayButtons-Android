@@ -63,7 +63,7 @@ public class ConfigActivity extends AppCompatActivity {
 
         Button config_button_save = findViewById(R.id.config_save);
      Button config_button_back = findViewById(R.id.config_back);
-        Button paypremium_button = findViewById(R.id.buyproversion);
+//        Button paypremium_button = findViewById(R.id.buyproversion);
      config_button_save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
@@ -86,12 +86,12 @@ public class ConfigActivity extends AppCompatActivity {
          }
      });
 
-        paypremium_button.setOnClickListener(new View.OnClickListener() {
+      /*//  paypremium_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
               bp.purchase((Activity) getApplicationContext(),"PremiumProduct");
             }
-        });
+        });*/
         loadData();
     }
 

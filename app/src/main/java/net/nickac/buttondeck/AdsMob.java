@@ -39,7 +39,7 @@ private MySession session;
         }
     private void updateADS(){
       //  mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-        mInterstitialAd.setAdUnitId("@string/admob_appid");
+        mInterstitialAd.setAdUnitId("@string/admob_banner_id");
           //  startActivity(new Intent(AdsMob.this, MainActivity.class));
             mInterstitialAd.loadAd(new AdRequest.Builder().build());
             mInterstitialAd.setAdListener(new AdListener() {

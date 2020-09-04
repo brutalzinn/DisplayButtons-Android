@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android'
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "net.nickac.buttondeck"
+        applicationId "net.robertocpaes.displaybuttons"
         minSdkVersion 16
         targetSdkVersion 29
         versionCode 1

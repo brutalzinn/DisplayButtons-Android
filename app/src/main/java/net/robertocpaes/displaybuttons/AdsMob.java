@@ -31,7 +31,8 @@ private MySession session;
 
 
         session = new MySession(this);
-        updateADS();
+        startActivity(new Intent(AdsMob.this, MainActivity.class));
+        //    updateADS();
 
 
 

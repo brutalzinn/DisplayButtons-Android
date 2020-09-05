@@ -195,7 +195,12 @@ if(is_stroke) {
 
                         Log.d("DEbug", "Dy :" + dy);
                         Log.d("DEbug", "Color Shadow :" + shadow_color);
-                        view.setText(text);
+                        if(text != null){
+                            view.setText(text);
+                        }else{
+                            view.setText(0);
+                        }
+
                         view.setBackground(new BitmapDrawable(Constants.buttonDeckContext.getResources(), bmp));
 
                      //  view.setTextSize(size);

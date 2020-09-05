@@ -142,7 +142,11 @@ public class SingleUniversalChangePacket implements INetworkPacket {
                         }else{
                             view.setShadowLayer(0,0,0,0);
                         }
-                        view.setText(text);
+                        if(text != null){
+                            view.setText(text);
+                        }else{
+                            view.setText(0);
+                        }
                     //    view.setScaleType(ImageView.ScaleType.FIT_XY);
                         view.setBackground(new BitmapDrawable(Constants.buttonDeckContext.getResources(), bmp));
 

@@ -23,7 +23,7 @@
           -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/admob_appid"/>
+            android:value="ca-app-pub-2620537343731622~2015666003"/>
 
 
         <activity

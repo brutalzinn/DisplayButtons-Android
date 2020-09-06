@@ -11,6 +11,7 @@
 <string name="action_settings">Settings</string>
 <string name="hello_world">Hello world!</string>
 
-    <string name="admob_appid">ca-app-pub-2620537343731622~6773279064</string>
-    <string name="admob_banner_id">ca-app-pub-2620537343731622/5822979269</string>
+    <string name="AdMobAPPId">ca-app-pub-2620537343731622~2015666003</string>
+    <string name="AdMobAdId">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="AdId">\@string/</string>
 </resources>

@@ -32,6 +32,7 @@ public class Constants {
     public static AdsMob AdsMobContext;
     public static MainActivity MainActivityContext;
     public static String sharedPreferencesName = "ApplicationData";
+    public static boolean isAdsIntroAlready = false;
     public static SharedPreferences sharedPreferences;
     public static final String LICENSE_KEY = "ApplicationData";
     public static String DEVICE_GUID_PREF = "device_guid";

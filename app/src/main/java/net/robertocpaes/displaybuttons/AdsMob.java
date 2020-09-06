@@ -29,6 +29,7 @@ import java.util.List;
 public class AdsMob extends AppCompatActivity {
     public InterstitialAd mInterstitialAd;
 private MySession session;
+private boolean started = false;
     private BillingProcessor bp;
     AdView adView;
     @Override
@@ -38,9 +39,11 @@ private MySession session;
 
 
 
-
-       updateADS();
-
+if(Constants.isAdsIntroAlready == false) {
+    updateADS();
+}else{
+    startActivity(new Intent(AdsMob.this, MainActivity.class));
+}
 
 
 
@@ -74,7 +77,11 @@ private MySession session;
                 public void onAdLoaded() {
                   //  Toast.makeText(AdsMob.this, "onAdLoaded()", Toast.LENGTH_SHORT).show();
                     // Code to be executed when an ad finishes loading.
-                    mInterstitialAd.show();
+                    if(mInterstitialAd.isLoaded()){
+                        mInterstitialAd.show();
+
+                    }
+                  Constants.isAdsIntroAlready = true;
                 }
 
                 @Override
@@ -103,13 +110,6 @@ private MySession session;
 
     }
 
-    private void startGame() {
-        // Request a new ad if one isn't already loaded, hide the button, and kick off the timer.
-
-
-        //retryButton.setVisibility(View.INVISIBLE);
-       // resumeGame(GAME_LENGTH_MILLISECONDS);
-    }
 }
 
 

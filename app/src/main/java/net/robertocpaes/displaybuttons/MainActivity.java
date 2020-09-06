@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
 
         // Start loading the ad in the background.
+
         adView.loadAd(adRequest);
 
 
@@ -213,13 +214,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // values/strings.xml.
-        adView = findViewById(R.id.ad_view_mainactivity);
-
-        // Create an ad request.
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-        // Start loading the ad in the background.
-        adView.loadAd(adRequest);
 
         Button rescanButton = findViewById(R.id.rescanButton);
 

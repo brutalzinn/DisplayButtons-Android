@@ -17,6 +17,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
@@ -27,6 +28,7 @@ import net.robertocpaes.displaybuttons.utils.networkscan.NetworkDeviceAdapter;
 import net.robertocpaes.displaybuttons.utils.networkscan.NetworkSearch;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static java.sql.DriverManager.println;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MODE = "0";
     public static String mode_init = "0";
     public static String mode_init_ip = "127.0.0.1";
+    private AdView adView;
 
 
     public static boolean isEmulator() {
@@ -59,6 +62,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal_menu);
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {}
+        });
+
+        // Set your test devices. Check your logcat output for the hashed device ID to
+        // get test ads on a physical device. e.g.
+        // "Use RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
+        // to get test ads on this device."
+        MobileAds.setRequestConfiguration(
+                new RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
+                        .build());
+        List<String> testDeviceIds = Arrays.asList("DF163BC1F66E309840CFFE4E9DF6BCC4");
+        RequestConfiguration configuration =
+                new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
+        MobileAds.setRequestConfiguration(configuration);
+        // Gets the ad view defined in layout/ad_fragment.xml with ad unit ID set in
+        // values/strings.xml.
+        adView = findViewById(R.id.ad_view_mainactivity);
+
+        // Create an ad request.
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        // Start loading the ad in the background.
+        adView.loadAd(adRequest);
+
 
         Button config_button = findViewById(R.id.main_action_config);
         config_button.setOnClickListener (new View.OnClickListener() {
@@ -152,16 +181,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (adView != null) {
+            adView.resume();
+        }
     }
 
     @Override
     protected void onPause() {
+        if (adView != null) {
+            adView.pause();
+        }
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
 
+        if (adView != null) {
+            adView.destroy();
+        }
         super.onDestroy();
     }
 
@@ -173,6 +211,15 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             return;
         }
+
+        // values/strings.xml.
+        adView = findViewById(R.id.ad_view_mainactivity);
+
+        // Create an ad request.
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        // Start loading the ad in the background.
+        adView.loadAd(adRequest);
 
         Button rescanButton = findViewById(R.id.rescanButton);
 

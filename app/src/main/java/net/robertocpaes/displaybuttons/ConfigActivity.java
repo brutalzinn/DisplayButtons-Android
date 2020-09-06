@@ -16,9 +16,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.TransactionDetails;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 import net.robertocpaes.displaybuttons.utils.Constants;
 import net.robertocpaes.displaybuttons.utils.MySession;
+
+import java.util.Arrays;
 
 public class ConfigActivity extends AppCompatActivity {
     public static final String SHARED_PREFS = "sharedPrefs";
@@ -28,36 +36,40 @@ public class ConfigActivity extends AppCompatActivity {
     private MySession session;
     private TextView textView;
     private EditText editText;
+    private AdView adView;
+
     private boolean readyToPurchase = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
      super.onCreate(savedInstanceState);
      setContentView(R.layout.activity_config_app);
-        bp = new BillingProcessor(this, Constants.LICENSE_KEY, null, new BillingProcessor.IBillingHandler() {
+
+
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
-            public void onProductPurchased(String productId, TransactionDetails details) {
-                session.setUserPurchased(true);
-
-            }
-
-            @Override
-            public void onPurchaseHistoryRestored() {
-
-            }
-
-            @Override
-            public void onBillingError(int errorCode, Throwable error) {
-                session.setUserPurchased(false);
-            }
-
-            @Override
-            public void onBillingInitialized() {
-
-                readyToPurchase = true;
-
-
-            }
+            public void onInitializationComplete(InitializationStatus initializationStatus) {}
         });
+
+        // Set your test devices. Check your logcat output for the hashed device ID to
+        // get test ads on a physical device. e.g.
+        // "Use RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
+        // to get test ads on this device."
+        MobileAds.setRequestConfiguration(
+                new RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
+                        .build());
+
+        // Gets the ad view defined in layout/ad_fragment.xml with ad unit ID set in
+        // values/strings.xml.
+        adView = findViewById(R.id.ad_view_config);
+
+        // Create an ad request.
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        // Start loading the ad in the background.
+        adView.loadAd(adRequest);
+
+
 
         editText = (EditText) findViewById(R.id.config_port_text);
 
@@ -108,5 +120,29 @@ public class ConfigActivity extends AppCompatActivity {
         editText.setText(sharedPreferences.getString(TEXT, ""));
        // switchOnOff = sharedPreferences.getBoolean(SWITCH1, false);
     }
+    @Override
+    public void onPause() {
+        if (adView != null) {
+            adView.pause();
+        }
+        super.onPause();
+    }
 
+    /** Called when returning to the activity */
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (adView != null) {
+            adView.resume();
+        }
+    }
+
+    /** Called before the activity is destroyed */
+    @Override
+    public void onDestroy() {
+        if (adView != null) {
+            adView.destroy();
+        }
+        super.onDestroy();
+    }
 }

@@ -12,6 +12,10 @@
 <string name="hello_world">Hello world!</string>
 
     <string name="AdMobAPPId">ca-app-pub-2620537343731622~2015666003</string>
-    <string name="AdMobAdId">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="AdMobMainActivity">ca-app-pub-2620537343731622/9833929355</string>
+
+    <string name="AdMobConfigActivity">ca-app-pub-2620537343731622/3268521006</string>
+
+    <string name="AdMobWifiActivity">ca-app-pub-2620537343731622/1245170500</string>
     <string name="AdId">\@string/</string>
 </resources>

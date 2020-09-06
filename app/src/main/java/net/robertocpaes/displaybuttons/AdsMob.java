@@ -14,12 +14,17 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 import net.robertocpaes.displaybuttons.utils.Constants;
 import net.robertocpaes.displaybuttons.utils.MySession;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class AdsMob extends AppCompatActivity {
     public InterstitialAd mInterstitialAd;
@@ -46,8 +51,21 @@ private MySession session;
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {}
         });
+
+        // Set your test devices. Check your logcat output for the hashed device ID to
+        // get test ads on a physical device. e.g.
+        // "Use RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
+        // to get test ads on this device."
+        MobileAds.setRequestConfiguration(
+                new RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
+                        .build());
+        List<String> testDeviceIds = Arrays.asList("DF163BC1F66E309840CFFE4E9DF6BCC4");
+        RequestConfiguration configuration =
+                new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
+        MobileAds.setRequestConfiguration(configuration);
+
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-2620537343731622/4519374567");
+        mInterstitialAd.setAdUnitId("ca-app-pub-2620537343731622/1249696477");
         //    startActivity(new Intent(AdsMob.this, MainActivity.class));
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
             mInterstitialAd.setAdListener(new AdListener() {
@@ -63,8 +81,11 @@ private MySession session;
                 public void onAdClosed() {
                     startActivity(new Intent(AdsMob.this, MainActivity.class));
                 }
+                @Override
+                public void onAdFailedToLoad(LoadAdError loadAdError) {
+                    startActivity(new Intent(AdsMob.this, MainActivity.class));
 
-
+                }
 
             });
 

@@ -6,18 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AdsMob" >
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
-        android:layout_width="737dp"
-        android:layout_height="1423dp"
-        android:layout_marginStart="7dp"
-        android:layout_marginLeft="7dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="269dp"
-        android:layout_marginRight="269dp"
-        android:layout_marginBottom="674dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        adSize="INTERSTITIAL"
 
-        app:layout_constraintVertical_bias="0.284" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

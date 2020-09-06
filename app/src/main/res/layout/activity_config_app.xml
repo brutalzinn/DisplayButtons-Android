@@ -42,7 +42,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="30dp"
         android:text="SALVAR"
-        app:layout_constraintBottom_toTopOf="@+id/ad_view_config"
+        app:layout_constraintBottom_toTopOf="@+id/ad_view_container_config"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/config_back" />
 
@@ -54,20 +54,18 @@
         android:layout_marginEnd="31dp"
         android:layout_marginBottom="30dp"
         android:text="VOLTAR"
-        app:layout_constraintBottom_toTopOf="@+id/ad_view_config"
+        app:layout_constraintBottom_toTopOf="@+id/ad_view_container_config"
         app:layout_constraintEnd_toStartOf="@+id/config_save"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/ad_view_config"
-        android:layout_width="match_parent"
+    <FrameLayout
+        android:id="@+id/ad_view_container_config"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:layout_marginBottom="10dp"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/AdMobConfigActivity"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

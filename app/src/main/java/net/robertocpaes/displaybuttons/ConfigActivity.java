@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.TransactionDetails;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
@@ -27,6 +31,7 @@ import net.robertocpaes.displaybuttons.utils.Constants;
 import net.robertocpaes.displaybuttons.utils.MySession;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class ConfigActivity extends AppCompatActivity {
     public static final String SHARED_PREFS = "sharedPrefs";
@@ -36,6 +41,7 @@ public class ConfigActivity extends AppCompatActivity {
     private MySession session;
     private TextView textView;
     private EditText editText;
+    private FrameLayout adContainerView;
     private AdView adView;
 
     private boolean readyToPurchase = false;
@@ -58,16 +64,26 @@ public class ConfigActivity extends AppCompatActivity {
         MobileAds.setRequestConfiguration(
                 new RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
                         .build());
+        List<String> testDeviceIds = Arrays.asList("DF163BC1F66E309840CFFE4E9DF6BCC4");
+        RequestConfiguration configuration =
+                new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
+        MobileAds.setRequestConfiguration(configuration);
 
         // Gets the ad view defined in layout/ad_fragment.xml with ad unit ID set in
         // values/strings.xml.
-        adView = findViewById(R.id.ad_view_config);
+        adContainerView = findViewById(R.id.ad_view_container_config);
+        adContainerView.post(new Runnable() {
+            @Override
+            public void run() {
+                loadBanner();
+            }
+        });
 
         // Create an ad request.
-        AdRequest adRequest = new AdRequest.Builder().build();
+
 
         // Start loading the ad in the background.
-        adView.loadAd(adRequest);
+
 
 
 
@@ -114,6 +130,41 @@ public class ConfigActivity extends AppCompatActivity {
       //editor.putBoolean(SWITCH1, switch1.isChecked());
         editor.apply();
         Toast.makeText(this, "Data saved", Toast.LENGTH_SHORT).show();
+    }
+    private void loadBanner() {
+        // Create an ad request.
+        adView = new AdView(this);
+        adView.setAdUnitId("ca-app-pub-2620537343731622/3268521006");
+        adContainerView.removeAllViews();
+        adContainerView.addView(adView);
+
+        AdSize adSize = getAdSize();
+        adView.setAdSize(adSize);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        // Start loading the ad in the background.
+        adView.loadAd(adRequest);
+    }
+
+    private AdSize getAdSize() {
+        // Determine the screen width (less decorations) to use for the ad width.
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+
+        float density = outMetrics.density;
+
+        float adWidthPixels = adContainerView.getWidth();
+
+        // If the ad hasn't been laid out, default to the full screen width.
+        if (adWidthPixels == 0) {
+            adWidthPixels = outMetrics.widthPixels;
+        }
+
+        int adWidth = (int) (adWidthPixels / density);
+
+        return AdSize.getCurrentOrientationBannerAdSizeWithWidth(this, adWidth);
     }
     public void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);

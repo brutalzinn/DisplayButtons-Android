@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +17,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
@@ -39,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     public static String mode_init = "0";
     public static String mode_init_ip = "127.0.0.1";
     private AdView adView;
+    private FrameLayout adContainerView;
 
 
     public static boolean isEmulator() {
@@ -55,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         getPreferences(MODE_PRIVATE).edit().putBoolean(autoScanPref, false).apply();
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
         super.onBackPressed();
     }
 
@@ -80,14 +87,16 @@ public class MainActivity extends AppCompatActivity {
         MobileAds.setRequestConfiguration(configuration);
         // Gets the ad view defined in layout/ad_fragment.xml with ad unit ID set in
         // values/strings.xml.
-        adView = findViewById(R.id.ad_view_mainactivity);
 
-        // Create an ad request.
-        AdRequest adRequest = new AdRequest.Builder().build();
 
-        // Start loading the ad in the background.
+        adContainerView = findViewById(R.id.ad_view_container);
+        adContainerView.post(new Runnable() {
+            @Override
+            public void run() {
+                loadBanner();
+            }
+        });
 
-        adView.loadAd(adRequest);
 
 
         Button config_button = findViewById(R.id.main_action_config);
@@ -122,10 +131,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         actionHandle = v -> {
+
             switch (v.getId()) {
                 case R.id.button_socket:
                     setContentView(R.layout.activity_main);
                     Log.d("DEBUG","CALLED SOCKET WIFI");
+
 
 
                     TextView textView = findViewById(R.id.protocolVersionTextView);
@@ -169,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
+
         //    devices.
         // Toast.makeText(this, "Connecting to " + devices.get(0).getDeviceName() + "!", Toast.LENGTH_LONG).show();
         //   Toast.makeText(getApplicationContext(), "Connecting por usb !", Toast.LENGTH_LONG).show();
@@ -176,8 +188,9 @@ public class MainActivity extends AppCompatActivity {
         //               startActivity(intent);
 
 
-
-
+    /**
+     *
+     */
 
     @Override
     protected void onResume() {
@@ -202,6 +215,40 @@ public class MainActivity extends AppCompatActivity {
             adView.destroy();
         }
         super.onDestroy();
+    }
+    private void loadBanner() {
+        // Create an ad request.
+        adView = new AdView(this);
+        adView.setAdUnitId("ca-app-pub-2620537343731622/9833929355");
+        adContainerView.removeAllViews();
+        adContainerView.addView(adView);
+
+        AdSize adSize = getAdSize();
+        adView.setAdSize(adSize);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        // Start loading the ad in the background.
+        adView.loadAd(adRequest);
+    }
+    private AdSize getAdSize() {
+        // Determine the screen width (less decorations) to use for the ad width.
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+
+        float density = outMetrics.density;
+
+        float adWidthPixels = adContainerView.getWidth();
+
+        // If the ad hasn't been laid out, default to the full screen width.
+        if (adWidthPixels == 0) {
+            adWidthPixels = outMetrics.widthPixels;
+        }
+
+        int adWidth = (int) (adWidthPixels / density);
+
+        return AdSize.getCurrentOrientationBannerAdSizeWithWidth(this, adWidth);
     }
 
     public void scanDevices() {

@@ -36,7 +36,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize" />
 
         <activity
-            android:name=".AdsMob"
+            android:name=".MainActivity"
             android:usesCleartextTraffic="true"
 
             android:configChanges="keyboardHidden|orientation|screenSize" >
@@ -48,13 +48,7 @@
 
         </activity>
 
-        <activity
-            android:name=".MainActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:usesCleartextTraffic="true">
 
-
-        </activity>
     </application>
 
 

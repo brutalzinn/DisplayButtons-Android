@@ -41,6 +41,10 @@ public class SingleUniversalChangePacket implements INetworkPacket {
     public float radius;
     public String shadow_color;
     public boolean is_stroke;
+    public boolean is_italic;
+    public boolean is_bold;
+    public boolean is_normal;
+    public boolean is_hint;
     @Override
     public void execute(TcpClient client, boolean received) {
 
@@ -113,6 +117,11 @@ public class SingleUniversalChangePacket implements INetworkPacket {
                         dy = (float) my_obj.getDouble("Stroke_dy");
                         shadow_color = my_obj.getString("Stroke_color");
                         is_stroke = my_obj.getBoolean("IsStroke");
+
+                        is_bold = my_obj.getBoolean("Isboldtext");
+                        is_normal = my_obj.getBoolean("Isnormaltext");
+                        is_hint = my_obj.getBoolean("Ishinttext");
+                        is_italic = my_obj.getBoolean("Isitalictext");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

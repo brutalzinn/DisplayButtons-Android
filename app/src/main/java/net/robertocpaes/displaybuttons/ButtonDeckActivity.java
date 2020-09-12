@@ -123,7 +123,7 @@ public class ButtonDeckActivity extends AppCompatActivity {
                 Button button = new Button(this);
 
                 button.setTag("button"+id);
-button.setAllCaps(false);
+
                 Display display = getWindowManager().getDefaultDisplay();
                 width = display.getWidth();
                 height = display.getHeight();

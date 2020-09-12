@@ -1,9 +1,12 @@
 package net.robertocpaes.displaybuttons.networking.impl;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.fonts.Font;
 import android.os.Build;
 import android.provider.CalendarContract;
 import android.text.Html;
@@ -59,6 +62,10 @@ public int deckCount_total = 0;
             public float radius;
             public String shadow_color;
             public boolean is_stroke;
+    public boolean is_italic;
+    public boolean is_bold;
+    public boolean is_normal;
+    public boolean is_hint;
 
     public  String color;
     @Override
@@ -129,7 +136,7 @@ public int deckCount_total = 0;
 
 
             //Start a new thread to create a bitmap
-            Thread th = new Thread(() -> {
+            @SuppressLint("WrongConstant") Thread th = new Thread(() -> {
 
 
 
@@ -157,6 +164,10 @@ public int deckCount_total = 0;
                         shadow_color = my_obj.getString("Stroke_color");
                         is_stroke = my_obj.getBoolean("IsStroke");
 
+                        is_bold = my_obj.getBoolean("Isboldtext");
+                        is_normal = my_obj.getBoolean("Isnormaltext");
+                        is_hint = my_obj.getBoolean("Ishinttext");
+                        is_italic = my_obj.getBoolean("Isitalictext");
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -197,6 +208,22 @@ if(is_stroke) {
                         Log.d("DEbug", "Color Shadow :" + shadow_color);
                         if(text != null){
                             view.setText(text);
+                            if(is_italic){
+                                view.setTypeface(null,Typeface.ITALIC);
+                            }
+                            if(is_normal){
+                                view.setTypeface(null,Typeface.NORMAL);
+                            }
+                            if(is_hint){
+                                view.setAllCaps(true);
+                            }else{
+                                view.setAllCaps(false);
+                            }
+                            if(is_bold){
+                                view.setTypeface(null,Typeface.BOLD);
+                            }
+
+
                         }else{
                             view.setText(0);
                         }

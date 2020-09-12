@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">DisplayButtons</string>
+    <string name="app_name" translatable="false">Display Buttons</string>
     <string name="default_status">Auto-connecting…</string>
     <string name="protocol_version">Protocol version: {0}</string>
     <string name="devices_found_none">No devices found!</string>
@@ -10,4 +10,12 @@
 
 <string name="action_settings">Settings</string>
 <string name="hello_world">Hello world!</string>
+
+    <string name="AdMobAPPId">ca-app-pub-2620537343731622~2015666003</string>
+    <string name="AdMobMainActivity">ca-app-pub-2620537343731622/9833929355</string>
+
+    <string name="AdMobConfigActivity">ca-app-pub-2620537343731622/3268521006</string>
+
+    <string name="AdMobWifiActivity">ca-app-pub-2620537343731622/1245170500</string>
+    <string name="AdId">\@string/</string>
 </resources>

@@ -3,6 +3,7 @@ package net.robertocpaes.displaybuttons.networking.impl;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.widget.Button;
@@ -153,6 +154,20 @@ public class SingleUniversalChangePacket implements INetworkPacket {
                         }
                         if(text != null){
                             view.setText(text);
+                            if(is_italic){
+                                view.setTypeface(null, Typeface.ITALIC);
+                            }
+                            if(is_normal){
+                                view.setTypeface(null,Typeface.NORMAL);
+                            }
+                            if(is_hint){
+                                view.setAllCaps(true);
+                            }else{
+                                view.setAllCaps(false);
+                            }
+                            if(is_bold){
+                                view.setTypeface(null,Typeface.BOLD);
+                            }
                         }else{
                             view.setText(0);
                         }

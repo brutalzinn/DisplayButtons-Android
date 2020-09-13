@@ -96,14 +96,10 @@ public class SocketServer {
 
 try {
     mSocketServer = new ServerSocket(SERVER_PORT);
-    mSocketServer.setSoTimeout(5000);
 
         internalSocket = mSocketServer.accept();
-
         SocketServer();
-
-
-
+        
 }
                     catch (IOException e) {
                     Log.i("ButtonDeck", "WCONNECTION LOST");

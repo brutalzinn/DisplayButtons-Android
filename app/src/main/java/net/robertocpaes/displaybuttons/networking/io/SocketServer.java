@@ -22,6 +22,7 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,6 +51,7 @@ public class SocketServer {
     private Thread dataThread;
     private Thread dataDeliveryThread;
     private List<Runnable> eventConnected = new ArrayList<>();
+    private List<Runnable> eventDisconnected = new ArrayList<>();
     private int timeout = 1500;
 
     public SocketServer(int port) {
@@ -77,6 +79,9 @@ public class SocketServer {
     }
     public void onConnected(Runnable event) {
         eventConnected.add(event);
+    }
+    public void onDisconnected(Runnable event) {
+        eventDisconnected.add(event);
     }
 
     public void setCreateNewThread(boolean createNewThread) {
@@ -177,10 +182,15 @@ public class SocketServer {
                 }
             }
         } catch (InterruptedException e1) {
+
+            Log.e("ButtonDeck", "ReadData stopped!");
+        } catch(SocketTimeoutException exception){
+
+
         } catch (IOException e1) {
             e1.printStackTrace();
         }
-        Log.e("ButtonDeck", "ReadData stopped!");
+
     }
     public void close() {
         try {
@@ -212,6 +222,10 @@ public class SocketServer {
 
         } catch (Exception e) {
             Log.d("DEBUG","fail to create a socket... " + e);
+            for (Runnable r : eventDisconnected) {
+                r.run();
+
+            }
         }
 
         }

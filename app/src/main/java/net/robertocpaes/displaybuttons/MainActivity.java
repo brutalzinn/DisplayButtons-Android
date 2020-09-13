@@ -1,5 +1,6 @@
 package net.robertocpaes.displaybuttons;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -26,6 +27,7 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 import net.robertocpaes.displaybuttons.networking.io.SocketServer;
+import net.robertocpaes.displaybuttons.utils.Admob;
 import net.robertocpaes.displaybuttons.utils.Constants;
 import net.robertocpaes.displaybuttons.utils.networkscan.NetworkDevice;
 import net.robertocpaes.displaybuttons.utils.networkscan.NetworkDeviceAdapter;
@@ -43,9 +45,15 @@ public class MainActivity extends AppCompatActivity {
     public static String mode_init = "0";
     public static String mode_init_ip = "127.0.0.1";
     private AdView adView;
+    private Admob AdMobBanner = new Admob();
     private FrameLayout adContainerView;
-
-
+    private Activity mCurrentActivity = null;
+    public Activity getCurrentActivity(){
+        return mCurrentActivity;
+    }
+    public void setCurrentActivity(Activity mCurrentActivity){
+        this.mCurrentActivity = mCurrentActivity;
+    }
     public static boolean isEmulator() {
         return Build.FINGERPRINT.startsWith("generic")
                 || Build.FINGERPRINT.startsWith("unknown")
@@ -69,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal_menu);
+        Constants.MainActivityContext = this;
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {}
@@ -93,7 +102,9 @@ public class MainActivity extends AppCompatActivity {
         adContainerView.post(new Runnable() {
             @Override
             public void run() {
-                loadBanner();
+                Activity currentActivity = ((MainActivity)Constants.MainActivityContext).getCurrentActivity();
+
+                AdMobBanner.loadBanner(adContainerView,Constants.MainActivityContext,currentActivity,"ca-app-pub-2620537343731622/9833929355");
             }
         });
 
@@ -136,7 +147,15 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.button_socket:
                     setContentView(R.layout.activity_main);
                     Log.d("DEBUG","CALLED SOCKET WIFI");
+                    adContainerView = findViewById(R.id.ad_view_wifi);
+                    adContainerView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Activity currentActivity = ((MainActivity)Constants.MainActivityContext).getCurrentActivity();
 
+                            AdMobBanner.loadBanner(adContainerView,Constants.MainActivityContext,currentActivity,"ca-app-pub-2620537343731622/9833929355");
+                        }
+                    });
 
 
                     TextView textView = findViewById(R.id.protocolVersionTextView);
@@ -195,62 +214,34 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (adView != null) {
-            adView.resume();
-        }
+
+       Constants.MainActivityContext.setCurrentActivity(this);
+        AdMobBanner.OnResume();
+
     }
 
     @Override
     protected void onPause() {
-        if (adView != null) {
-            adView.pause();
-        }
+        clearReferences();
+        AdMobBanner.onPause();
+
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
+        clearReferences();
+        AdMobBanner.OnDestroy();
 
-        if (adView != null) {
-            adView.destroy();
-        }
         super.onDestroy();
     }
-    private void loadBanner() {
-        // Create an ad request.
-        adView = new AdView(this);
-        adView.setAdUnitId("ca-app-pub-2620537343731622/9833929355");
-        adContainerView.removeAllViews();
-        adContainerView.addView(adView);
 
-        AdSize adSize = getAdSize();
-        adView.setAdSize(adSize);
 
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-        // Start loading the ad in the background.
-        adView.loadAd(adRequest);
+    private void clearReferences(){
+        Activity currActivity =  Constants.MainActivityContext.getCurrentActivity();
+        if (this.equals(currActivity))
+            Constants.MainActivityContext.setCurrentActivity(null);
     }
-    private AdSize getAdSize() {
-        // Determine the screen width (less decorations) to use for the ad width.
-        Display display = getWindowManager().getDefaultDisplay();
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        display.getMetrics(outMetrics);
-
-        float density = outMetrics.density;
-
-        float adWidthPixels = adContainerView.getWidth();
-
-        // If the ad hasn't been laid out, default to the full screen width.
-        if (adWidthPixels == 0) {
-            adWidthPixels = outMetrics.widthPixels;
-        }
-
-        int adWidth = (int) (adWidthPixels / density);
-
-        return AdSize.getCurrentOrientationBannerAdSizeWithWidth(this, adWidth);
-    }
-
     public void scanDevices() {
         if (isEmulator()) {
             // Emulator

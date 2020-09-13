@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="fill_vertical"
-
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
 
     tools:context=".ButtonDeckActivity" >
 
@@ -17,4 +17,14 @@
         android:shrinkColumns="*"
         android:stretchColumns="*">
 
-    </TableLayout></RelativeLayout>
+    </TableLayout>
+    <FrameLayout
+    android:id="@+id/ad_view_activitydeck"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_centerInParent="true"
+    android:layout_marginBottom="10dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent" /></RelativeLayout>

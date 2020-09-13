@@ -6,6 +6,7 @@ import android.util.LongSparseArray;
 
 import net.robertocpaes.displaybuttons.AdsMob;
 import net.robertocpaes.displaybuttons.ButtonDeckActivity;
+import net.robertocpaes.displaybuttons.ConfigActivity;
 import net.robertocpaes.displaybuttons.MainActivity;
 import net.robertocpaes.displaybuttons.networking.INetworkPacket;
 import net.robertocpaes.displaybuttons.networking.impl.AlternativeHelloPacket;
@@ -31,6 +32,7 @@ public class Constants {
     public static ButtonDeckActivity buttonDeckContext;
     public static AdsMob AdsMobContext;
     public static MainActivity MainActivityContext;
+    public static ConfigActivity ConfigActivityContext;
     public static String sharedPreferencesName = "ApplicationData";
     public static boolean isAdsIntroAlready = false;
     public static SharedPreferences sharedPreferences;

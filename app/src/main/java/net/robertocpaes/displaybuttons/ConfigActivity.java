@@ -27,6 +27,7 @@ import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
+import net.robertocpaes.displaybuttons.utils.Admob;
 import net.robertocpaes.displaybuttons.utils.Constants;
 import net.robertocpaes.displaybuttons.utils.MySession;
 
@@ -39,17 +40,24 @@ public class ConfigActivity extends AppCompatActivity {
     public static final String SWITCH1 = "switch1";
     private BillingProcessor bp;
     private MySession session;
+    private Admob AdMobBanner = new Admob();
     private TextView textView;
     private EditText editText;
     private FrameLayout adContainerView;
     private AdView adView;
-
+    private Activity mCurrentActivity = null;
+    public Activity getCurrentActivity(){
+        return mCurrentActivity;
+    }
+    public void setCurrentActivity(Activity mCurrentActivity){
+        this.mCurrentActivity = mCurrentActivity;
+    }
     private boolean readyToPurchase = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
      super.onCreate(savedInstanceState);
      setContentView(R.layout.activity_config_app);
-
+        Constants.ConfigActivityContext = this;
 
 
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
@@ -75,7 +83,9 @@ public class ConfigActivity extends AppCompatActivity {
         adContainerView.post(new Runnable() {
             @Override
             public void run() {
-                loadBanner();
+                Activity currentActivity = ((ConfigActivity)Constants.ConfigActivityContext).getCurrentActivity();
+
+                AdMobBanner.loadBanner(adContainerView,Constants.ConfigActivityContext,currentActivity,"ca-app-pub-2620537343731622/3268521006");
             }
         });
 
@@ -131,41 +141,8 @@ public class ConfigActivity extends AppCompatActivity {
         editor.apply();
         Toast.makeText(this, "Data saved", Toast.LENGTH_SHORT).show();
     }
-    private void loadBanner() {
-        // Create an ad request.
-        adView = new AdView(this);
-        adView.setAdUnitId("ca-app-pub-2620537343731622/3268521006");
-        adContainerView.removeAllViews();
-        adContainerView.addView(adView);
 
-        AdSize adSize = getAdSize();
-        adView.setAdSize(adSize);
 
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-        // Start loading the ad in the background.
-        adView.loadAd(adRequest);
-    }
-
-    private AdSize getAdSize() {
-        // Determine the screen width (less decorations) to use for the ad width.
-        Display display = getWindowManager().getDefaultDisplay();
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        display.getMetrics(outMetrics);
-
-        float density = outMetrics.density;
-
-        float adWidthPixels = adContainerView.getWidth();
-
-        // If the ad hasn't been laid out, default to the full screen width.
-        if (adWidthPixels == 0) {
-            adWidthPixels = outMetrics.widthPixels;
-        }
-
-        int adWidth = (int) (adWidthPixels / density);
-
-        return AdSize.getCurrentOrientationBannerAdSizeWithWidth(this, adWidth);
-    }
     public void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         editText.setText(sharedPreferences.getString(TEXT, ""));
@@ -173,9 +150,8 @@ public class ConfigActivity extends AppCompatActivity {
     }
     @Override
     public void onPause() {
-        if (adView != null) {
-            adView.pause();
-        }
+        clearReferences();
+        AdMobBanner.onPause();
         super.onPause();
     }
 
@@ -183,17 +159,21 @@ public class ConfigActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if (adView != null) {
-            adView.resume();
-        }
+        Constants.ConfigActivityContext.setCurrentActivity(this);
+
+        AdMobBanner.OnResume();
     }
 
     /** Called before the activity is destroyed */
     @Override
     public void onDestroy() {
-        if (adView != null) {
-            adView.destroy();
-        }
+        clearReferences();
+        AdMobBanner.OnDestroy();
         super.onDestroy();
+    }
+    private void clearReferences(){
+        Activity currActivity =  Constants.ConfigActivityContext.getCurrentActivity();
+        if (this.equals(currActivity))
+            Constants.ConfigActivityContext.setCurrentActivity(null);
     }
 }

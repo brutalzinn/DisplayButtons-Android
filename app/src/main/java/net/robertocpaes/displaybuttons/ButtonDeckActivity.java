@@ -2,6 +2,7 @@ package net.robertocpaes.displaybuttons;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -31,6 +33,7 @@ import net.robertocpaes.displaybuttons.networking.impl.ButtonInteractPacket;
 import net.robertocpaes.displaybuttons.networking.impl.HelloPacket;
 import net.robertocpaes.displaybuttons.networking.io.SocketServer;
 import net.robertocpaes.displaybuttons.networking.io.TcpClient;
+import net.robertocpaes.displaybuttons.utils.Admob;
 import net.robertocpaes.displaybuttons.utils.Constants;
 
 import java.io.IOException;
@@ -48,9 +51,18 @@ public class ButtonDeckActivity extends AppCompatActivity {
     public static final String EXTRA_MODE = "0";
     private static final int IDLE_DELAY_MINUTES = 5;
     private static TcpClient client;
+    private FrameLayout adContainerView;
+    private Admob AdMobBanner = new Admob();
     public static final String SHARED_PREFS = "sharedPrefs";
     public static SocketServer server;
     public static int width ;
+    private Activity mCurrentActivity = null;
+    public Activity getCurrentActivity(){
+        return mCurrentActivity;
+    }
+    public void setCurrentActivity(Activity mCurrentActivity){
+        this.mCurrentActivity = mCurrentActivity;
+    }
     public static int height;
     ImageButton buttons[][] = new ImageButton[NUM_ROWS][NUM_COLS];
     TableRow tablerow;
@@ -97,8 +109,16 @@ public class ButtonDeckActivity extends AppCompatActivity {
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
     }
+    @Override
+    public void onBackPressed() {
+
+        startActivity(new Intent(this, MainActivity.class));
+        super.onBackPressed();
+    }
     @SuppressLint("ClickableViewAccessibility")
     public void populateButtons(int what_is_the_mode) {
+
+        AdMobBanner.Disable();
         TableLayout table = (TableLayout) findViewById(R.id.tableForButtons);
         int id = 1 ;
 
@@ -296,17 +316,23 @@ public class ButtonDeckActivity extends AppCompatActivity {
 
                 try {
                     Log.d("DEBUG", "Escolhido conexão por usb, por redirecionamneto na porta," + connectPort);
+
+                    loadAd();
                     server = new SocketServer( connectPort);
                     //   socket.setCreateNewThread(false);
                     //          socket.StartServer();
                     server.connect();
                     server.onConnected(() -> server.sendPacket(new HelloPacket()));
+                    server.onDisconnected(() -> OnDisconnected());;
+
+
                     //     server.onConnected(() -> server.sendPacket(new AlternativeHelloPacket()));
                     //   server.waitForDisconnection();
                     //    server.waitForDisconnection();
 
                     //server.waitForDisconnection();
                 } catch (Exception e) {
+
                 }
             }
 
@@ -315,8 +341,24 @@ public class ButtonDeckActivity extends AppCompatActivity {
 
 
     }
+public void OnDisconnected(){
+    limpar();
+    AdMobBanner.Enable();
+    loadAd();
+}
+public void loadAd(){
+    adContainerView = findViewById(R.id.ad_view_activitydeck);
+    adContainerView.post(new Runnable() {
+        @Override
+        public void run() {
+            Activity currentActivity = ((ButtonDeckActivity)Constants.buttonDeckContext).getCurrentActivity();
 
+            AdMobBanner.loadBanner(adContainerView,Constants.buttonDeckContext,currentActivity,"ca-app-pub-2620537343731622/7631234009");
 
+        }
+    });
+
+}
     public void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         Constants.PORT_NUMBER = valueOf(sharedPreferences.getString(TEXT, "5095"));
@@ -338,14 +380,25 @@ public class ButtonDeckActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        Constants.buttonDeckContext = null;
+        clearReferences();
+        AdMobBanner.onPause();
+       // Constants.buttonDeckContext = null;
+
         super.onPause();
 
     }
+    @Override
+    protected void onDestroy() {
+        clearReferences();
+        AdMobBanner.OnDestroy();
 
+        super.onDestroy();
+    }
     @Override
     protected void onStop() {
-        Constants.buttonDeckContext = null;
+
+        //Constants.buttonDeckContext = null;
+
         super.onStop();
         if(valueOf(MainActivity.mode_init) == 1){
             if (server != null) server.close();
@@ -362,6 +415,15 @@ public class ButtonDeckActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Constants.buttonDeckContext = this;
+        Constants.buttonDeckContext.setCurrentActivity(this);
+        AdMobBanner.OnResume();
+
+
+    }
+    private void clearReferences(){
+        Activity currActivity =  Constants.buttonDeckContext.getCurrentActivity();
+        if (this.equals(currActivity))
+            Constants.buttonDeckContext.setCurrentActivity(null);
     }
 }
 

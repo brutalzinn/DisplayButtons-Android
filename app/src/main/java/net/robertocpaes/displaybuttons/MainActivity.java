@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     public static String mode_init = "0";
     public static String mode_init_ip = "127.0.0.1";
     private AdView adView;
-    private Admob AdMobBanner = new Admob();
+    private Admob AdMobBanner;
     private FrameLayout adContainerView;
     private Activity mCurrentActivity = null;
     public Activity getCurrentActivity(){
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal_menu);
-        Constants.MainActivityContext = this;
+
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {}
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         MobileAds.setRequestConfiguration(configuration);
         // Gets the ad view defined in layout/ad_fragment.xml with ad unit ID set in
         // values/strings.xml.
-
+        AdMobBanner = new Admob();
 
         adContainerView = findViewById(R.id.ad_view_container);
         adContainerView.post(new Runnable() {
@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        Constants.MainActivityContext = this;
        Constants.MainActivityContext.setCurrentActivity(this);
         AdMobBanner.OnResume();
 
@@ -222,18 +222,19 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        clearReferences();
         AdMobBanner.onPause();
+        clearReferences();
+
 
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        clearReferences();
-        AdMobBanner.OnDestroy();
 
-        super.onDestroy();
+        AdMobBanner.OnDestroy();
+        clearReferences();
+                super.onDestroy();
     }
 
 

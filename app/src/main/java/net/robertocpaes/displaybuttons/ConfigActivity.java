@@ -40,7 +40,7 @@ public class ConfigActivity extends AppCompatActivity {
     public static final String SWITCH1 = "switch1";
     private BillingProcessor bp;
     private MySession session;
-    private Admob AdMobBanner = new Admob();
+    private Admob AdMobBanner ;
     private TextView textView;
     private EditText editText;
     private FrameLayout adContainerView;
@@ -57,9 +57,9 @@ public class ConfigActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
      super.onCreate(savedInstanceState);
      setContentView(R.layout.activity_config_app);
-        Constants.ConfigActivityContext = this;
 
 
+        AdMobBanner= new Admob();
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {}
@@ -150,8 +150,9 @@ public class ConfigActivity extends AppCompatActivity {
     }
     @Override
     public void onPause() {
-        clearReferences();
         AdMobBanner.onPause();
+        clearReferences();
+
         super.onPause();
     }
 
@@ -159,6 +160,7 @@ public class ConfigActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+        Constants.ConfigActivityContext = this;
         Constants.ConfigActivityContext.setCurrentActivity(this);
 
         AdMobBanner.OnResume();
@@ -167,8 +169,9 @@ public class ConfigActivity extends AppCompatActivity {
     /** Called before the activity is destroyed */
     @Override
     public void onDestroy() {
-        clearReferences();
         AdMobBanner.OnDestroy();
+        clearReferences();
+
         super.onDestroy();
     }
     private void clearReferences(){

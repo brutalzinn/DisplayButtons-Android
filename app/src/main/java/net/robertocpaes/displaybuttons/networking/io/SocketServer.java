@@ -93,18 +93,19 @@ public class SocketServer {
     public void connect() throws IOException {
         if (createNewThread) {
             internalThread = new Thread(() -> {
-                try {
 
-                    mSocketServer = new ServerSocket(SERVER_PORT);
-                    mSocketServer.setSoTimeout(30000);
-                    internalSocket = mSocketServer.accept();
+try {
+    mSocketServer = new ServerSocket(SERVER_PORT);
+    mSocketServer.setSoTimeout(5000);
 
-                        SocketServer();
+        internalSocket = mSocketServer.accept();
+
+        SocketServer();
 
 
-                } catch ( java.io.InterruptedIOException e ) {
-                    System.err.println( "Timed Out (60 sec)!" );
-                } catch (IOException e) {
+
+}
+                    catch (IOException e) {
                     Log.i("ButtonDeck", "WCONNECTION LOST");
 
                 }

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -52,7 +53,8 @@ public class ButtonDeckActivity extends AppCompatActivity {
     private static final int IDLE_DELAY_MINUTES = 5;
     private static TcpClient client;
     private FrameLayout adContainerView;
-    private Admob AdMobBanner = new Admob();
+    private boolean ads_active = false;
+    private Admob AdMobBanner;
     public static final String SHARED_PREFS = "sharedPrefs";
     public static SocketServer server;
     public static int width ;
@@ -117,8 +119,10 @@ public class ButtonDeckActivity extends AppCompatActivity {
     }
     @SuppressLint("ClickableViewAccessibility")
     public void populateButtons(int what_is_the_mode) {
+if(adContainerView != null){
+    adContainerView.setVisibility(View.GONE);
+}
 
-        AdMobBanner.Disable();
         TableLayout table = (TableLayout) findViewById(R.id.tableForButtons);
         int id = 1 ;
 
@@ -229,21 +233,10 @@ public class ButtonDeckActivity extends AppCompatActivity {
                 id = id + 1;
                 // Make text not clip on small buttons
                 button.setPadding(0, 0, 0, 0);
-
-
                 tablerow.addView(button);
-
-                //  tablerow.addView(textview);
-//                buttons[row][col] = button;
             }
 
         }
-
-
-
-
-
-
 
 
     }
@@ -252,8 +245,10 @@ public class ButtonDeckActivity extends AppCompatActivity {
 
         TableLayout view =   findViewById(R.id.tableForButtons);
         int count=view.getChildCount();
+        if(count > 0) {
             for (int i = 0; i < count; i++)
                 view.removeAllViews();
+        }
 
     }
 
@@ -273,9 +268,10 @@ public class ButtonDeckActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_button_deck);
-        loadData();
-        Constants.buttonDeckContext = this;
 
+        loadData();
+        ads_active = false;
+        AdMobBanner = new Admob();
         //Save our reference on a variable. This will allow us to access this activity later.
 
         //limpar();
@@ -286,7 +282,7 @@ public class ButtonDeckActivity extends AppCompatActivity {
         String connectIP = intent.getStringExtra(EXTRA_IP);
         int what_is_the_mode = valueOf(MainActivity.mode_init);
         int connectPort = Constants.PORT_NUMBER;
-        Constants.buttonDeckContext = this;
+
         vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         //Ask android to keep the screen on
@@ -304,7 +300,7 @@ public class ButtonDeckActivity extends AppCompatActivity {
 
 
         if (savedInstanceState == null && server == null || client == null) {
-            if(what_is_the_mode  == 0) {
+            if (what_is_the_mode == 0) {
                 client = new TcpClient(connectIP, connectPort);
                 Log.d("DEBUG", "Escolhido conexão por wifi, na porta " + connectPort);
                 try {
@@ -312,36 +308,22 @@ public class ButtonDeckActivity extends AppCompatActivity {
                     client.onConnected(() -> client.sendPacket(new HelloPacket()));
                 } catch (IOException e) {
                 }
-            }
-            else {
+            } else {
+                loadAD();
                 try {
                     Log.d("DEBUG", "Escolhido conexão por usb, por redirecionamneto na porta," + connectPort);
 
-                    adContainerView = findViewById(R.id.ad_view_activitydeck);
-                    adContainerView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Activity currentActivity = ((ButtonDeckActivity)Constants.buttonDeckContext).getCurrentActivity();
 
-                            AdMobBanner.loadBanner(adContainerView,Constants.buttonDeckContext,currentActivity,"ca-app-pub-2620537343731622/7631234009");
-
-                        }
-                    });
-
-                    server = new SocketServer( connectPort);
+                    //   loadAD();
+                    server = new SocketServer(connectPort);
                     //   socket.setCreateNewThread(false);
                     //          socket.StartServer();
                     server.connect();
 
                     server.onConnected(() -> server.sendPacket(new HelloPacket()));
-                  //  server.onDisconnected(() -> OnDisconnected());;
 
 
-                    //     server.onConnected(() -> server.sendPacket(new AlternativeHelloPacket()));
-                    //   server.waitForDisconnection();
-                    //    server.waitForDisconnection();
 
-                    //server.waitForDisconnection();
                 } catch (Exception e) {
 
                 }
@@ -353,6 +335,21 @@ public class ButtonDeckActivity extends AppCompatActivity {
 
     }
 
+
+public void loadAD(){
+
+    adContainerView = findViewById(R.id.ad_view_activitydeck);
+    adContainerView.post(new Runnable() {
+        @Override
+        public void run() {
+            Activity currentActivity = ((ButtonDeckActivity)Constants.buttonDeckContext).getCurrentActivity();
+
+            AdMobBanner.loadBanner(adContainerView,Constants.buttonDeckContext,currentActivity,"ca-app-pub-2620537343731622/7631234009");
+
+        }
+    });
+
+}
     public void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         Constants.PORT_NUMBER = valueOf(sharedPreferences.getString(TEXT, "5095"));

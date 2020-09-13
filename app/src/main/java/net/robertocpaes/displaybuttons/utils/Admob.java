@@ -17,40 +17,8 @@ import com.google.android.gms.internal.ads.zzajz;
 public class Admob {
     private AdView adView;
 
-    public void Disable(){
-        if (adView != null) {
-            ViewGroup parent = (ViewGroup) adView.getParent();
-            parent.removeView(adView);
-            parent.invalidate();
-        }
-    }
-    public void Enable(){
-        if (adView != null) {
-            ViewGroup parent = (ViewGroup) adView.getParent();
-            parent.addView(adView);
-parent.invalidate();
-        }
-    }
 
-
-public void OnDestroy(){
-    if (adView != null) {
-        adView.destroy();
-    }
-}
-    public void onPause(){
-        if (adView != null) {
-            adView.pause();
-        }
-    }
-    public void OnResume(){
-        if (adView != null) {
-            adView.resume();
-        }
-    }
     public void loadBanner(FrameLayout view, Context context, Activity activity, String AdsId) {
-        // Create an ad request.
-
 
         adView = new AdView(context);
 
@@ -87,5 +55,35 @@ public void OnDestroy(){
 
         return AdSize.getCurrentOrientationBannerAdSizeWithWidth(context, adWidth);
     }
+    public void Disable(){
+        if (adView != null) {
+            ViewGroup parent = (ViewGroup) adView.getParent();
+            parent.removeView(adView);
+            parent.invalidate();
+        }
+    }
+    public void Enable(){
+        if (adView != null) {
+            ViewGroup parent = (ViewGroup) adView.getParent();
+            parent.addView(adView);
+            parent.invalidate();
+        }
+    }
 
+
+    public void OnDestroy(){
+        if (adView != null) {
+            adView.destroy();
+        }
+    }
+    public void onPause(){
+        if (adView != null) {
+            adView.pause();
+        }
+    }
+    public void OnResume(){
+        if (adView != null) {
+            adView.resume();
+        }
+    }
 }

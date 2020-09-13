@@ -59,8 +59,6 @@ public class SocketServer {
     }
     public void waitForDisconnection() throws InterruptedException, IOException {
        dataDeliveryThread.join();
-      // internalSocket.close();
-     //  connect();
 
     }
     public void sendPacket(INetworkPacket packet) {
@@ -98,20 +96,17 @@ public class SocketServer {
                 try {
 
                     mSocketServer = new ServerSocket(SERVER_PORT);
+                    mSocketServer.setSoTimeout(30000);
                     internalSocket = mSocketServer.accept();
 
                         SocketServer();
 
 
-
-
-
-
-
-
-
-
+                } catch ( java.io.InterruptedIOException e ) {
+                    System.err.println( "Timed Out (60 sec)!" );
                 } catch (IOException e) {
+                    Log.i("ButtonDeck", "WCONNECTION LOST");
+
                 }
             });
             internalThread.start();
@@ -178,18 +173,20 @@ public class SocketServer {
                     }
 
                 } else {
+
                     Thread.sleep(50);
+
                 }
             }
         } catch (InterruptedException e1) {
 
-            Log.e("ButtonDeck", "ReadData stopped!");
-        } catch(SocketTimeoutException exception){
-
-
-        } catch (IOException e1) {
-            e1.printStackTrace();
+            for (Runnable r : eventDisconnected) {
+                r.run();
+            }
+        }  catch (IOException e1) {
+            Log.d("ButtonDeck", "ReadData stopped EXCEPTION e1!");
         }
+
 
     }
     public void close() {
@@ -222,10 +219,7 @@ public class SocketServer {
 
         } catch (Exception e) {
             Log.d("DEBUG","fail to create a socket... " + e);
-            for (Runnable r : eventDisconnected) {
-                r.run();
 
-            }
         }
 
         }

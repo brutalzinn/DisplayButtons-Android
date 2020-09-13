@@ -252,8 +252,9 @@ public class ButtonDeckActivity extends AppCompatActivity {
 
         TableLayout view =   findViewById(R.id.tableForButtons);
         int count=view.getChildCount();
-        for(int i=0;i<count;i++)
-            view.removeAllViews();
+            for (int i = 0; i < count; i++)
+                view.removeAllViews();
+
     }
 
     private static Context context;
@@ -313,17 +314,27 @@ public class ButtonDeckActivity extends AppCompatActivity {
                 }
             }
             else {
-
                 try {
                     Log.d("DEBUG", "Escolhido conexão por usb, por redirecionamneto na porta," + connectPort);
 
-                    loadAd();
+                    adContainerView = findViewById(R.id.ad_view_activitydeck);
+                    adContainerView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Activity currentActivity = ((ButtonDeckActivity)Constants.buttonDeckContext).getCurrentActivity();
+
+                            AdMobBanner.loadBanner(adContainerView,Constants.buttonDeckContext,currentActivity,"ca-app-pub-2620537343731622/7631234009");
+
+                        }
+                    });
+
                     server = new SocketServer( connectPort);
                     //   socket.setCreateNewThread(false);
                     //          socket.StartServer();
                     server.connect();
+
                     server.onConnected(() -> server.sendPacket(new HelloPacket()));
-                    server.onDisconnected(() -> OnDisconnected());;
+                  //  server.onDisconnected(() -> OnDisconnected());;
 
 
                     //     server.onConnected(() -> server.sendPacket(new AlternativeHelloPacket()));
@@ -341,24 +352,7 @@ public class ButtonDeckActivity extends AppCompatActivity {
 
 
     }
-public void OnDisconnected(){
-    limpar();
-    AdMobBanner.Enable();
-    loadAd();
-}
-public void loadAd(){
-    adContainerView = findViewById(R.id.ad_view_activitydeck);
-    adContainerView.post(new Runnable() {
-        @Override
-        public void run() {
-            Activity currentActivity = ((ButtonDeckActivity)Constants.buttonDeckContext).getCurrentActivity();
 
-            AdMobBanner.loadBanner(adContainerView,Constants.buttonDeckContext,currentActivity,"ca-app-pub-2620537343731622/7631234009");
-
-        }
-    });
-
-}
     public void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         Constants.PORT_NUMBER = valueOf(sharedPreferences.getString(TEXT, "5095"));

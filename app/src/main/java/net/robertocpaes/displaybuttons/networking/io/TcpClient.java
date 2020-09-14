@@ -5,6 +5,8 @@ import android.util.Log;
 import net.robertocpaes.displaybuttons.networking.INetworkPacket;
 import net.robertocpaes.displaybuttons.utils.Constants;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -91,9 +93,12 @@ public class TcpClient {
 
     private void readData() {
         List<Byte> readBytes = new ArrayList<>();
+        final int bufferSize = 600;
+
         DataInputStream inputStream;
+
         try {
-            inputStream = new DataInputStream(internalSocket.getInputStream());
+            inputStream = new DataInputStream(new BufferedInputStream(internalSocket.getInputStream(),bufferSize));
             while (internalSocket != null && internalSocket.isConnected()) {
                 if (inputStream.available() > 0) {
                     long packetNumber = inputStream.readLong();
@@ -117,7 +122,7 @@ public class TcpClient {
     private void sendData() {
         DataOutputStream outputStream;
         try {
-            outputStream = new DataOutputStream(internalSocket.getOutputStream());
+            outputStream = new DataOutputStream(new BufferedOutputStream(internalSocket.getOutputStream()));
 
             while (internalSocket != null && internalSocket.isConnected()) {
                 if (toDeliver.size() < 1) {
@@ -166,6 +171,7 @@ public class TcpClient {
 
     private void initSocket() throws IOException {
         internalSocket = new Socket();
+        internalSocket.setTcpNoDelay(true);
         internalSocket.connect(new InetSocketAddress(ip, port), timeout);
         for (Runnable r : eventConnected) {
             r.run();

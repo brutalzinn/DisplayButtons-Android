@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Canvas;
 import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
@@ -82,6 +83,15 @@ public class ButtonDeckActivity extends AppCompatActivity {
         getWindow().setAttributes(lp);
     }
 
+    public void onDraw(Canvas canvas) {
+
+        try {
+            //Drawing Stuff
+
+        }catch(NullPointerException e){
+            Log.e("NULL POINTER EXCEPTION","Canvas NULL POINTER");
+        }
+    }
 
 // experimental
 
@@ -120,7 +130,7 @@ public class ButtonDeckActivity extends AppCompatActivity {
     @SuppressLint("ClickableViewAccessibility")
     public void populateButtons(int what_is_the_mode) {
 if(adContainerView != null){
-    adContainerView.setVisibility(View.GONE);
+    AdMobBanner.Disable();
 }
 
         TableLayout table = (TableLayout) findViewById(R.id.tableForButtons);

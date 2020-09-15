@@ -5,6 +5,8 @@ import android.util.Log;
 import net.robertocpaes.displaybuttons.networking.INetworkPacket;
 import net.robertocpaes.displaybuttons.utils.Constants;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -48,10 +50,12 @@ public class SocketServer {
     public ServerSocket server;
     private Socket internalSocket;
     private Thread internalThread;
+    public static final int bytesLimit = 1024 * 50;
     private Thread dataThread;
     private Thread dataDeliveryThread;
     private List<Runnable> eventConnected = new ArrayList<>();
     private List<Runnable> eventDisconnected = new ArrayList<>();
+
     private int timeout = 1500;
 
     public SocketServer(int port) {
@@ -115,7 +119,8 @@ try {
     private void sendData() {
         PrintStream outputStream;
         try {
-            outputStream = new PrintStream(internalSocket.getOutputStream());
+            outputStream = new PrintStream(new BufferedOutputStream(internalSocket.getOutputStream(),bytesLimit));
+
 
             while (internalSocket != null && internalSocket.isConnected()) {
                 if (toDeliver.size() < 1) {
@@ -155,7 +160,7 @@ try {
         List<Byte> readBytes = new ArrayList<>();
         DataInputStream inputStream;
         try {
-            inputStream = new DataInputStream(internalSocket.getInputStream());
+            inputStream = new DataInputStream(new BufferedInputStream(internalSocket.getInputStream(),bytesLimit));
             while (internalSocket != null && internalSocket.isConnected()) {
                 if (inputStream.available() > 0) {
                     long packetNumber = inputStream.readLong();

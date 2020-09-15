@@ -130,7 +130,9 @@ public class ButtonDeckActivity extends AppCompatActivity {
     @SuppressLint("ClickableViewAccessibility")
     public void populateButtons(int what_is_the_mode) {
 if(adContainerView != null){
-    AdMobBanner.Disable();
+
+    adContainerView.setEnabled(false);
+    adContainerView.setVisibility(View.GONE);
 }
 
         TableLayout table = (TableLayout) findViewById(R.id.tableForButtons);
@@ -281,7 +283,6 @@ if(adContainerView != null){
 
         loadData();
         ads_active = false;
-        AdMobBanner = new Admob();
         //Save our reference on a variable. This will allow us to access this activity later.
 
         //limpar();
@@ -319,11 +320,11 @@ if(adContainerView != null){
                 } catch (IOException e) {
                 }
             } else {
-                loadAD();
+
                 try {
                     Log.d("DEBUG", "Escolhido conexão por usb, por redirecionamneto na porta," + connectPort);
 
-
+                    loadAD();
                     //   loadAD();
                     server = new SocketServer(connectPort);
                     //   socket.setCreateNewThread(false);
@@ -415,6 +416,8 @@ public void loadAD(){
     @Override
     protected void onResume() {
         super.onResume();
+        AdMobBanner = new Admob();
+
         Constants.buttonDeckContext = this;
         Constants.buttonDeckContext.setCurrentActivity(this);
         AdMobBanner.OnResume();

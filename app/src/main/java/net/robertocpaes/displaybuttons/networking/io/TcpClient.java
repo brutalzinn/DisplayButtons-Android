@@ -25,6 +25,7 @@ import java.util.UUID;
  * Please see the project root to find the LICENSE file.
  */
 public class TcpClient {
+    public static final int bytesLimit = 1024 * 50;
     private final List<INetworkPacket> toDeliver = Collections.synchronizedList(new ArrayList<INetworkPacket>());
     boolean createNewThread = true;
     private UUID connectionUUID = UUID.randomUUID();
@@ -93,12 +94,12 @@ public class TcpClient {
 
     private void readData() {
         List<Byte> readBytes = new ArrayList<>();
-        final int bufferSize = 600;
+
 
         DataInputStream inputStream;
 
         try {
-            inputStream = new DataInputStream(new BufferedInputStream(internalSocket.getInputStream(),bufferSize));
+            inputStream = new DataInputStream(new BufferedInputStream(internalSocket.getInputStream(),bytesLimit));
             while (internalSocket != null && internalSocket.isConnected()) {
                 if (inputStream.available() > 0) {
                     long packetNumber = inputStream.readLong();
@@ -122,7 +123,7 @@ public class TcpClient {
     private void sendData() {
         DataOutputStream outputStream;
         try {
-            outputStream = new DataOutputStream(new BufferedOutputStream(internalSocket.getOutputStream()));
+            outputStream = new DataOutputStream(new BufferedOutputStream(internalSocket.getOutputStream(),bytesLimit));
 
             while (internalSocket != null && internalSocket.isConnected()) {
                 if (toDeliver.size() < 1) {

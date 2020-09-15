@@ -119,25 +119,18 @@ public int deckCount_total = 0;
 
 
 
-        long packetreceivedtime =   System.nanoTime();
+
         int imageSlot = reader.readInt();
         int arrayLenght = reader.readInt();
-        long packetreceivedbitmap =   System.nanoTime();
         reader.readFully(imageBytes, 0, arrayLenght);
-        long finalpacketbitmape = System.nanoTime() - packetreceivedbitmap;
-        long packetreceivedjson =   System.nanoTime();
         String json =  reader.readUTF();
-        long finalppacketjson = System.nanoTime() - packetreceivedjson;
-        long finalpackettime = System.nanoTime() - packetreceivedtime;
+
         /*if (numberRead != arrayLenght) {
             //Log.e("ButtonDeck", "The number of bytes read is different from the size of the array");
             return;
         }*/
 
 
-        System.out.println("Getting bitmap packets with " + finalpacketbitmape / 1000000000  +" SEconds/ Ms:"+finalpacketbitmape/  1000000 + " "+  finalpacketbitmape + " NanoSeconds");
-        System.out.println("Getting json button info with " + finalppacketjson / 1000000000 +" SEconds/ Ms:"+ finalpacketbitmape / 1000000 + " "+  finalpacketbitmape+ " NanoSeconds");
-        System.out.println("Getting all button info with " + finalpackettime / 1000000000 +" SEconds/ Ms:" + finalpacketbitmape / 1000000 + " "+  finalpacketbitmape+ " NanoSeconds");
 
 
         if (Constants.buttonDeckContext != null) {
@@ -154,10 +147,8 @@ public int deckCount_total = 0;
 
                 long finaljsontime = System.nanoTime() - jsoninittime;
 
-                Constants.buttonDeckContext.runOnUiThread(() -> {
-
-
-
+                Constants.buttonDeckContext.runOnUiThread(new Runnable() {
+                    long time = System.nanoTime();
                     String  font= "";
                     String text = "";
                     int  size = 0;
@@ -173,7 +164,12 @@ public int deckCount_total = 0;
                     boolean  is_bold = false;
                     boolean is_normal = false;
                     boolean is_hint = false;
-                    boolean  is_italic = false;
+                    boolean  is_italic;
+                    public void run() {
+
+
+
+
 
 
 
@@ -200,7 +196,7 @@ public int deckCount_total = 0;
                         e.printStackTrace();
                     }
 
-                    long time = System.nanoTime();
+
 
                     Button view = Constants.buttonDeckContext.getButtonByTag(imageSlot);
                     if (view != null) {
@@ -251,12 +247,13 @@ public int deckCount_total = 0;
                         long finaltime = System.nanoTime() - time;
 
 
-                        System.out.println("Setting button with " + finaltime / 1000000000 +" SEconds/ Ms:" + finaltime / 1000000 + " "+  finaltime+ " NanoSeconds");
-                        System.out.println("Setting bitmap with " + finalbitmaptime / 1000000000 +" SEconds/ Ms:" + finalbitmaptime / 1000000 + " "+  finalbitmaptime+ " NanoSeconds");
-                        System.out.println("Setting json with " + finaljsontime / 1000000000 +" SEconds/ Ms:" + finaljsontime / 1000000 + " "+  finaljsontime+ " NanoSeconds" );
+                        System.out.println("Setting All buttons with " + finaltime / 1000000000 +" SEconds/ Ms:" + finaltime / 1000000 + " "+  finaltime+ " NanoSeconds");
+
                     }
                     System.gc();
+                    }
                 });
+
             });
 
             th.start();

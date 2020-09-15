@@ -45,7 +45,7 @@ import static net.robertocpaes.displaybuttons.networking.impl.MatrizPacket.can_s
  * Please see the project root to find the LICENSE file.
  */
 @ArchitectureAnnotation(PacketArchitecture.CLIENT_TO_SERVER)
-public class SlotUniversalChangeChunkPacket implements INetworkPacket {
+public class SlotUniversalChangeChunkPacket implements INetworkPacket  {
     private static final int bytesLimit = 1024 * 50;
 public int deckCount_total = 0;
     public int deckCount_packets = 0;
@@ -112,7 +112,7 @@ public int deckCount_total = 0;
     }
 
 
-    private void readDeckImage(DataInputStream reader) throws IOException {
+    private void readDeckImage(DataInputStream reader)   throws IOException {
         byte[] imageBytes = new byte[bytesLimit];
 
 
@@ -134,24 +134,14 @@ public int deckCount_total = 0;
             return;
         }*/
 
+
         System.out.println("Getting bitmap packets with " + finalpacketbitmape / 1000000000  +" SEconds/ Ms:"+finalpacketbitmape/  1000000 + " "+  finalpacketbitmape + " NanoSeconds");
         System.out.println("Getting json button info with " + finalppacketjson / 1000000000 +" SEconds/ Ms:"+ finalpacketbitmape / 1000000 + " "+  finalpacketbitmape+ " NanoSeconds");
         System.out.println("Getting all button info with " + finalpackettime / 1000000000 +" SEconds/ Ms:" + finalpacketbitmape / 1000000 + " "+  finalpacketbitmape+ " NanoSeconds");
+
+
         if (Constants.buttonDeckContext != null) {
-            final String[] text = {""};
-            final String[] font = {""};
-            final int[] size = {0};
-            final int[] position = {0};
-            final float[] dx = {0};
-            final float[] dy = {0};
-            final float[] radius = {0};
-            final String[] shadow_color = {""};
-            final boolean[] is_stroke = {false};
-            final boolean[] is_italic = {false};
-            final boolean[] is_bold = {false};
-            final boolean[] is_normal = {false};
-            final boolean[] is_hint = {false};
-            final String[] color = {""};
+
 
             Thread th = new Thread(() -> {
                 if (imageSlot <= 0) return;
@@ -161,71 +151,93 @@ public int deckCount_total = 0;
                 //Log.i("ButtonDeck", "Decode Complete!");
                 finalbitmaptime = System.nanoTime() - bitmapinittime;
                 jsoninittime =   System.nanoTime();
-                try {
-
-                    JSONObject my_obj = new JSONObject(json);
-
-                    font[0] = my_obj.getString("Font");
-                    text[0] = my_obj.getString("Text");
-                    size[0] = my_obj.getInt("Size");
-                    position[0] = my_obj.getInt("Position");
-                    color[0] = my_obj.getString("Color");
-                    radius[0] = (float) my_obj.getDouble("Stroke_radius");
-                    dx[0] = (float) my_obj.getDouble("Stroke_dx");
-                    dy[0] = (float) my_obj.getDouble("Stroke_dy");
-                    shadow_color[0] = my_obj.getString("Stroke_color");
-                    is_stroke[0] = my_obj.getBoolean("IsStroke");
-
-                    is_bold[0] = my_obj.getBoolean("Isboldtext");
-                    is_normal[0] = my_obj.getBoolean("Isnormaltext");
-                    is_hint[0] = my_obj.getBoolean("Ishinttext");
-                    is_italic[0] = my_obj.getBoolean("Isitalictext");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
                 long finaljsontime = System.nanoTime() - jsoninittime;
 
-
                 Constants.buttonDeckContext.runOnUiThread(() -> {
+
+
+
+                    String  font= "";
+                    String text = "";
+                    int  size = 0;
+                    int  position = 0;
+                    String  color= "";
+
+                    float  radius = 0 ;
+                    float dx  = 0;
+                    float  dy  = 0;
+                    String shadow_color  = "";
+                    boolean is_stroke = false;
+
+                    boolean  is_bold = false;
+                    boolean is_normal = false;
+                    boolean is_hint = false;
+                    boolean  is_italic = false;
+
+
+
+                    try {
+
+                        JSONObject my_obj = new JSONObject(json);
+                        font = my_obj.getString("Font");
+                        text = my_obj.getString("Text");
+                        size = my_obj.getInt("Size");
+                        position = my_obj.getInt("Position");
+                        color = my_obj.getString("Color");
+
+                        radius = (float) my_obj.getDouble("Stroke_radius");
+                        dx = (float) my_obj.getDouble("Stroke_dx");
+                        dy = (float) my_obj.getDouble("Stroke_dy");
+                        shadow_color = my_obj.getString("Stroke_color");
+                        is_stroke = my_obj.getBoolean("IsStroke");
+
+                        is_bold = my_obj.getBoolean("Isboldtext");
+                        is_normal = my_obj.getBoolean("Isnormaltext");
+                        is_hint = my_obj.getBoolean("Ishinttext");
+                        is_italic = my_obj.getBoolean("Isitalictext");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
                     long time = System.nanoTime();
 
                     Button view = Constants.buttonDeckContext.getButtonByTag(imageSlot);
                     if (view != null) {
                         Log.i("ButtonDeck", "Setting button!");
-                        if(color[0] == null || color[0].length() == 0) {
-                            Log.d("DEbug", "COR VINDO NULA:" + color[0]);
+                        if(color == null || color.length() == 0) {
+                            Log.d("DEbug", "COR VINDO NULA:" + color);
 
                             view.setTextColor(Color.parseColor("#FFFFFF"));
                         }else{
-                            Log.d("DEbug", "Mudando cor para :" + color[0]);
+                            Log.d("DEbug", "Mudando cor para :" + color);
 
-                            view.setTextColor(Color.parseColor(color[0]));
+                            view.setTextColor(Color.parseColor(color));
                         }
 
-                        view.setTextSize(size[0]);
+                        view.setTextSize(size);
 
-                        view.setGravity(position[0]);
+                        view.setGravity(position);
 
-                        if(is_stroke[0]) {
-                            view.setShadowLayer(radius[0], dx[0], dy[0], Color.parseColor(shadow_color[0]));
+                        if(is_stroke) {
+                            view.setShadowLayer(radius, dx, dy, Color.parseColor(shadow_color));
                         }else{
                             view.setShadowLayer(0,0,0,0);
                         }
-                        if(text[0] != null){
-                            view.setText(text[0]);
-                            if(is_italic[0]){
+                        if(text != null){
+                            view.setText(text);
+                            if(is_italic){
                                 view.setTypeface(null, Typeface.ITALIC);
                             }
-                            if(is_normal[0]){
+                            if(is_normal){
                                 view.setTypeface(null,Typeface.NORMAL);
                             }
-                            if(is_hint[0]){
+                            if(is_hint){
                                 view.setAllCaps(true);
                             }else{
                                 view.setAllCaps(false);
                             }
-                            if(is_bold[0]){
+                            if(is_bold){
                                 view.setTypeface(null,Typeface.BOLD);
                             }
                         }else{

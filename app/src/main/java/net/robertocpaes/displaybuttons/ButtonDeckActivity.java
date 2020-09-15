@@ -129,7 +129,7 @@ public class ButtonDeckActivity extends AppCompatActivity {
     }
     @SuppressLint("ClickableViewAccessibility")
     public void populateButtons(int what_is_the_mode) {
-if(adContainerView != null){
+if(AdMobBanner != null){
 
     adContainerView.setEnabled(false);
     adContainerView.setVisibility(View.GONE);
@@ -282,7 +282,7 @@ if(adContainerView != null){
         setContentView(R.layout.activity_button_deck);
 
         loadData();
-        ads_active = false;
+
         //Save our reference on a variable. This will allow us to access this activity later.
 
         //limpar();

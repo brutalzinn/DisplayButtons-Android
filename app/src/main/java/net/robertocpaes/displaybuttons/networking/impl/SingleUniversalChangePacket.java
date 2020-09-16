@@ -106,7 +106,7 @@ public class SingleUniversalChangePacket implements INetworkPacket {
 
 
                 Constants.buttonDeckContext.runOnUiThread(new Runnable() {
-                    long time = System.nanoTime();
+
                     String  font= "";
                     String text = "";
                     int  size = 0;
@@ -199,13 +199,6 @@ public class SingleUniversalChangePacket implements INetworkPacket {
                             }
                             //    view.setScaleType(ImageView.ScaleType.FIT_XY);
                             view.setBackground(new BitmapDrawable(Constants.buttonDeckContext.getResources(), bmp));
-
-
-
-                            long finaltime = System.nanoTime() - time;
-
-
-                            System.out.println("Setting Single button with " + finaltime / 1000000000 +" SEconds/ Ms:" + finaltime / 1000000 + " "+  finaltime+ " NanoSeconds");
 
                         }
                         System.gc();

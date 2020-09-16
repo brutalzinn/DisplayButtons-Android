@@ -47,17 +47,7 @@ import static net.robertocpaes.displaybuttons.networking.impl.MatrizPacket.can_s
 @ArchitectureAnnotation(PacketArchitecture.CLIENT_TO_SERVER)
 public class SlotUniversalChangeChunkPacket implements INetworkPacket  {
     private static final int bytesLimit = 1024 * 50;
-public int deckCount_total = 0;
-    public int deckCount_packets = 0;
 
-    public  int slot;
-    public  int arraylenght;
-    public  byte [] internalbtpm = new byte[bytesLimit];
-
-    private  long finalbitmaptime ;
-    private long bitmapinittime ;
-    private long jsoninittime ;
-    private long finaljsontime ;
     private long finaltime;
 
 
@@ -120,6 +110,10 @@ public int deckCount_total = 0;
 
 
 
+
+
+
+
         int imageSlot = reader.readInt();
         int arrayLenght = reader.readInt();
         reader.readFully(imageBytes, 0, arrayLenght);
@@ -139,13 +133,11 @@ public int deckCount_total = 0;
             Thread th = new Thread(() -> {
                 if (imageSlot <= 0) return;
                 //Log.i("ButtonDeck", "Starting to decode the bitmap!");
-                long bitmapinittime =   System.nanoTime();
+
                 Bitmap bmp = BitmapFactory.decodeByteArray(imageBytes, 0, arrayLenght);
                 //Log.i("ButtonDeck", "Decode Complete!");
-                finalbitmaptime = System.nanoTime() - bitmapinittime;
-                jsoninittime =   System.nanoTime();
 
-                long finaljsontime = System.nanoTime() - jsoninittime;
+
 
                 Constants.buttonDeckContext.runOnUiThread(new Runnable() {
                     long time = System.nanoTime();
@@ -173,84 +165,84 @@ public int deckCount_total = 0;
 
 
 
-                    try {
+                        try {
 
-                        JSONObject my_obj = new JSONObject(json);
-                        font = my_obj.getString("Font");
-                        text = my_obj.getString("Text");
-                        size = my_obj.getInt("Size");
-                        position = my_obj.getInt("Position");
-                        color = my_obj.getString("Color");
+                            JSONObject my_obj = new JSONObject(json);
+                            font = my_obj.getString("Font");
+                            text = my_obj.getString("Text");
+                            size = my_obj.getInt("Size");
+                            position = my_obj.getInt("Position");
+                            color = my_obj.getString("Color");
 
-                        radius = (float) my_obj.getDouble("Stroke_radius");
-                        dx = (float) my_obj.getDouble("Stroke_dx");
-                        dy = (float) my_obj.getDouble("Stroke_dy");
-                        shadow_color = my_obj.getString("Stroke_color");
-                        is_stroke = my_obj.getBoolean("IsStroke");
+                            radius = (float) my_obj.getDouble("Stroke_radius");
+                            dx = (float) my_obj.getDouble("Stroke_dx");
+                            dy = (float) my_obj.getDouble("Stroke_dy");
+                            shadow_color = my_obj.getString("Stroke_color");
+                            is_stroke = my_obj.getBoolean("IsStroke");
 
-                        is_bold = my_obj.getBoolean("Isboldtext");
-                        is_normal = my_obj.getBoolean("Isnormaltext");
-                        is_hint = my_obj.getBoolean("Ishinttext");
-                        is_italic = my_obj.getBoolean("Isitalictext");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-
-
-                    Button view = Constants.buttonDeckContext.getButtonByTag(imageSlot);
-                    if (view != null) {
-                        Log.i("ButtonDeck", "Setting button!");
-                        if(color == null || color.length() == 0) {
-                            Log.d("DEbug", "COR VINDO NULA:" + color);
-
-                            view.setTextColor(Color.parseColor("#FFFFFF"));
-                        }else{
-                            Log.d("DEbug", "Mudando cor para :" + color);
-
-                            view.setTextColor(Color.parseColor(color));
+                            is_bold = my_obj.getBoolean("Isboldtext");
+                            is_normal = my_obj.getBoolean("Isnormaltext");
+                            is_hint = my_obj.getBoolean("Ishinttext");
+                            is_italic = my_obj.getBoolean("Isitalictext");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
 
-                        view.setTextSize(size);
 
-                        view.setGravity(position);
 
-                        if(is_stroke) {
-                            view.setShadowLayer(radius, dx, dy, Color.parseColor(shadow_color));
-                        }else{
-                            view.setShadowLayer(0,0,0,0);
-                        }
-                        if(text != null){
-                            view.setText(text);
-                            if(is_italic){
-                                view.setTypeface(null, Typeface.ITALIC);
-                            }
-                            if(is_normal){
-                                view.setTypeface(null,Typeface.NORMAL);
-                            }
-                            if(is_hint){
-                                view.setAllCaps(true);
+                        Button view = Constants.buttonDeckContext.getButtonByTag(imageSlot);
+                        if (view != null) {
+                            Log.i("ButtonDeck", "Setting button!");
+                            if(color == null || color.length() == 0) {
+                                Log.d("DEbug", "COR VINDO NULA:" + color);
+
+                                view.setTextColor(Color.parseColor("#FFFFFF"));
                             }else{
-                                view.setAllCaps(false);
+                                Log.d("DEbug", "Mudando cor para :" + color);
+
+                                view.setTextColor(Color.parseColor(color));
                             }
-                            if(is_bold){
-                                view.setTypeface(null,Typeface.BOLD);
+
+                            view.setTextSize(size);
+
+                            view.setGravity(position);
+
+                            if(is_stroke) {
+                                view.setShadowLayer(radius, dx, dy, Color.parseColor(shadow_color));
+                            }else{
+                                view.setShadowLayer(0,0,0,0);
                             }
-                        }else{
-                            view.setText(0);
+                            if(text != null){
+                                view.setText(text);
+                                if(is_italic){
+                                    view.setTypeface(null, Typeface.ITALIC);
+                                }
+                                if(is_normal){
+                                    view.setTypeface(null,Typeface.NORMAL);
+                                }
+                                if(is_hint){
+                                    view.setAllCaps(true);
+                                }else{
+                                    view.setAllCaps(false);
+                                }
+                                if(is_bold){
+                                    view.setTypeface(null,Typeface.BOLD);
+                                }
+                            }else{
+                                view.setText(0);
+                            }
+                            //    view.setScaleType(ImageView.ScaleType.FIT_XY);
+                            view.setBackground(new BitmapDrawable(Constants.buttonDeckContext.getResources(), bmp));
+
+
+
+                            long finaltime = System.nanoTime() - time;
+
+
+                            System.out.println("Setting Single button with " + finaltime / 1000000000 +" SEconds/ Ms:" + finaltime / 1000000 + " "+  finaltime+ " NanoSeconds");
+
                         }
-                        //    view.setScaleType(ImageView.ScaleType.FIT_XY);
-                        view.setBackground(new BitmapDrawable(Constants.buttonDeckContext.getResources(), bmp));
-
-
-
-                        long finaltime = System.nanoTime() - time;
-
-
-                        System.out.println("Setting All buttons with " + finaltime / 1000000000 +" SEconds/ Ms:" + finaltime / 1000000 + " "+  finaltime+ " NanoSeconds");
-
-                    }
-                    System.gc();
+                        System.gc();
                     }
                 });
 

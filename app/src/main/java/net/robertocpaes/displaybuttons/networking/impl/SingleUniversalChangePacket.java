@@ -32,23 +32,7 @@ import java.io.IOException;
 @ArchitectureAnnotation(PacketArchitecture.CLIENT_TO_SERVER)
 public class SingleUniversalChangePacket implements INetworkPacket {
     public static final int bytesLimit = 1024 * 50;
-    public  String font;
-    public  int size;
-    public  String text;
-    public  int position;
-    public  String color;
-    public float dx;
-    public float dy;
-    public float radius;
-    public String shadow_color;
-    public boolean is_stroke;
-    public boolean is_italic;
-    public boolean is_bold;
-    public boolean is_normal;
-    public boolean is_hint;
-    private  long finalbitmaptime ;
-    private long bitmapinittime ;
-    private long jsoninittime ;
+
     private long finaljsontime ;
 
 
@@ -115,13 +99,11 @@ public class SingleUniversalChangePacket implements INetworkPacket {
             Thread th = new Thread(() -> {
                 if (imageSlot <= 0) return;
                 //Log.i("ButtonDeck", "Starting to decode the bitmap!");
-                long bitmapinittime =   System.nanoTime();
+
                 Bitmap bmp = BitmapFactory.decodeByteArray(imageBytes, 0, arrayLenght);
                 //Log.i("ButtonDeck", "Decode Complete!");
-                finalbitmaptime = System.nanoTime() - bitmapinittime;
-                jsoninittime =   System.nanoTime();
 
-                long finaljsontime = System.nanoTime() - jsoninittime;
+
 
                 Constants.buttonDeckContext.runOnUiThread(new Runnable() {
                     long time = System.nanoTime();

@@ -84,18 +84,12 @@ public class SlotUniversalChangeChunkPacket implements INetworkPacket  {
         if (Constants.buttonDeckContext != null) {
 
             int imagesToRead = reader.readInt();
-            int i = 0;
-            for ( i = 0; i < imagesToRead; i++) {
 
+            for (int i = 0; i < imagesToRead; i++) {
                 try {
                     readDeckImage(reader);
                 } catch (IOException ignored) {
                 }
-
-
-            }
-            if( i == imagesToRead){
-                System.out.println("Setting ALL button with " + finaltime / 1000000000 +" SEconds/ Ms:" + finaltime / 1000000 + " "+  finaltime+ " NanoSeconds");
 
             }
         }

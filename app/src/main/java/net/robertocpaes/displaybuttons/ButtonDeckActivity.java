@@ -129,7 +129,7 @@ public class ButtonDeckActivity extends AppCompatActivity {
     }
     @SuppressLint("ClickableViewAccessibility")
     public void populateButtons(int what_is_the_mode) {
-if(AdMobBanner != null){
+if(AdMobBanner != null && what_is_the_mode == 1){
 
     adContainerView.setEnabled(false);
     adContainerView.setVisibility(View.GONE);

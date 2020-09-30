@@ -281,7 +281,7 @@ if(AdMobBanner != null && what_is_the_mode == 1){
 
         setContentView(R.layout.activity_button_deck);
 
-        loadData();
+        //loadData();
 
         //Save our reference on a variable. This will allow us to access this activity later.
 
@@ -292,7 +292,8 @@ if(AdMobBanner != null && what_is_the_mode == 1){
         Intent intent = getIntent();
         String connectIP = intent.getStringExtra(EXTRA_IP);
         int what_is_the_mode = valueOf(MainActivity.mode_init);
-        int connectPort = Constants.PORT_NUMBER;
+
+        int connectPort = Constants.getMyPort(this);
 
         vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -363,7 +364,7 @@ public void loadAD(){
 }
     public void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        Constants.PORT_NUMBER = valueOf(sharedPreferences.getString(TEXT, "5095"));
+      //  Constants.PORT_NUMBER = valueOf(sharedPreferences.getString(TEXT, "5095"));
         // switchOnOff = sharedPreferences.getBoolean(SWITCH1, false);
     }
     @Override
@@ -399,7 +400,7 @@ public void loadAD(){
     @Override
     protected void onStop() {
 
-        //Constants.buttonDeckContext = null;
+       //Constants.buttonDeckContext = null;
 
         super.onStop();
         if(valueOf(MainActivity.mode_init) == 1){

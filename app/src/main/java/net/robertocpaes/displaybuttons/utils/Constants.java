@@ -1,5 +1,6 @@
 package net.robertocpaes.displaybuttons.utils;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.util.LongSparseArray;
@@ -23,6 +24,9 @@ import net.robertocpaes.displaybuttons.networking.impl.SlotImageClearPacket;
 import net.robertocpaes.displaybuttons.networking.impl.SlotUniversalChangeChunkPacket;
 import net.robertocpaes.displaybuttons.networking.impl.SlotLabelButtonClearChunkPacket;
 
+import static android.content.Context.MODE_PRIVATE;
+import static java.lang.Integer.valueOf;
+
 /**
  * Created by NickAc on 24/12/2017.
  * This project is licensed with the MIT license.
@@ -31,6 +35,8 @@ import net.robertocpaes.displaybuttons.networking.impl.SlotLabelButtonClearChunk
 public class Constants {
     public static ButtonDeckActivity buttonDeckContext;
     public static AdsMob AdsMobContext;
+    public static final String SHARED_PREFS = "configPort";
+    public static final String TEXT = "5095";
     public static MainActivity MainActivityContext;
     public static ConfigActivity ConfigActivityContext;
     public static String sharedPreferencesName = "ApplicationData";
@@ -39,9 +45,13 @@ public class Constants {
     public static final String LICENSE_KEY = "ApplicationData";
     public static String DEVICE_GUID_PREF = "device_guid";
     public static int PROTOCOL_VERSION = 12;
-    public static int PORT_NUMBER = 5095;
     public static LongSparseArray<INetworkPacket> packetMap = new LongSparseArray<>();
 
+    public static int getMyPort(Context context){
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        return valueOf(sharedPreferences.getString(TEXT, "5095"));
+    }
     static {
         registerPacket(new HelloPacket()); // 1
         registerPacket(new DeviceIdentityPacket()); //2

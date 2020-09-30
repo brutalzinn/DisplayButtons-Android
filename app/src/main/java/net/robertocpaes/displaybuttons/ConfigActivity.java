@@ -35,8 +35,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ConfigActivity extends AppCompatActivity {
-    public static final String SHARED_PREFS = "sharedPrefs";
-    public static final String TEXT = "text";
+
     public static final String SWITCH1 = "switch1";
     private BillingProcessor bp;
     private MySession session;
@@ -134,9 +133,9 @@ public class ConfigActivity extends AppCompatActivity {
     }
 
     public void saveData() {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(TEXT, editText.getText().toString());
+        editor.putString(Constants.TEXT, editText.getText().toString());
       //editor.putBoolean(SWITCH1, switch1.isChecked());
         editor.apply();
         Toast.makeText(this, "Data saved", Toast.LENGTH_SHORT).show();
@@ -144,8 +143,8 @@ public class ConfigActivity extends AppCompatActivity {
 
 
     public void loadData() {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        editText.setText(sharedPreferences.getString(TEXT, ""));
+
+        editText.setText(Constants.getMyPort(this));
        // switchOnOff = sharedPreferences.getBoolean(SWITCH1, false);
     }
     @Override

@@ -55,7 +55,7 @@ public class DiscoverRunner implements Runnable {
             String host = subnet + "." + i;
             try {
                 InetAddress a = InetAddress.getByName(host);
-                NickTuple<Boolean, String> portOpen = isPortOpen(host, Constants.PORT_NUMBER, timeout);
+                NickTuple<Boolean, String> portOpen = isPortOpen(host, Constants.getMyPort(Constants.MainActivityContext), timeout);
                 if (portOpen.getKey()) {
                     results.add(new NickTuple<>(a, portOpen.getValue()));
                 }

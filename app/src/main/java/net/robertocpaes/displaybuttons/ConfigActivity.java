@@ -144,7 +144,7 @@ public class ConfigActivity extends AppCompatActivity {
 
     public void loadData() {
 
-        editText.setText(Constants.getMyPort(this));
+        editText.setText( "" + Constants.getMyPort(Constants.MainActivityContext));
        // switchOnOff = sharedPreferences.getBoolean(SWITCH1, false);
     }
     @Override
